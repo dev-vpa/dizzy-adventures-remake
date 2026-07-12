@@ -70,7 +70,7 @@ Export presets are in `export_presets.cfg` (**Project → Export**). Build artif
 |----------|-------------|
 | Windows | `assets/icons/app_icon_512.png` (nearest-neighbor scaling) |
 | Linux / Web | Project icon |
-| Android | Main + adaptive foreground: `app_icon_512.png`; adaptive background: `android_background_512.png` |
+| Android | Main: `app_icon_512.png`; adaptive foreground: `android_foreground_512.png` (transparent); background: `android_background_512.png` |
 
 ## License
 
