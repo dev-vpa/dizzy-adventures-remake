@@ -1,17 +1,33 @@
-# Godot 4+ specific ignores
+# Godot 4
 .godot/
 .nomedia
-
-# Godot-specific ignores
 .import/
-export.cfg
-export_credentials.cfg
-*.tmp
+*.import
 
-# Imported translations (automatically generated from CSV files)
+# Export
+export/
+export_presets.cfg
+export_credentials.cfg
+*.apk
+*.aab
+*.exe
+*.pck
+*.zip
+
+# Godot temp
+*.tmp
 *.translation
 
-# Mono-specific ignores
+# Mono (not used, but safe to ignore)
 .mono/
 data_*/
 mono_crash.*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Local Cursor config and project skill (not pushed to GitHub)
+.cursor/
