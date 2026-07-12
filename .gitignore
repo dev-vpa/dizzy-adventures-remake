@@ -28,5 +28,5 @@ Thumbs.db
 *.swp
 *~
 
-# Local Cursor config and project skill (not pushed to GitHub)
+# Local editor config (not pushed)
 .cursor/
