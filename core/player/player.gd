@@ -19,6 +19,7 @@ var _facing: int = 1
 var _spawn_position: Vector2
 var _action_queued := false
 var _hazard_cooldown := 0.0
+var _blocked_edges: Dictionary = {}
 
 
 func _ready() -> void:
@@ -57,6 +58,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if _hazard_cooldown > 0.0:
 		_hazard_cooldown -= delta
+	_tick_edge_blocks(delta)
 	_handle_inventory_input()
 	_try_action_nearby()
 	_check_fall_death()
@@ -149,3 +151,25 @@ func _check_screen_edge() -> void:
 func on_screen_entered(_screen_id: String) -> void:
 	_spawn_position = global_position
 	_hazard_cooldown = 0.8
+
+
+func is_edge_blocked(edge: String) -> bool:
+	return _blocked_edges.get(edge, 0.0) > 0.0
+
+
+func block_edge(edge: String, duration: float) -> void:
+	if duration <= 0.0:
+		return
+	_blocked_edges[edge] = maxf(_blocked_edges.get(edge, 0.0), duration)
+
+
+func _tick_edge_blocks(delta: float) -> void:
+	if _blocked_edges.is_empty():
+		return
+	var expired: Array[String] = []
+	for edge in _blocked_edges:
+		_blocked_edges[edge] -= delta
+		if _blocked_edges[edge] <= 0.0:
+			expired.append(edge)
+	for edge in expired:
+		_blocked_edges.erase(edge)

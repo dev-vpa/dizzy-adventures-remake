@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://villagepath"]
+[gd_scene format=3 uid="uid://villagepath"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
@@ -50,3 +50,32 @@ position = Vector2(280, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
+
+[node name="UpHint" type="Label" parent="."]
+offset_left = 220.0
+offset_top = 8.0
+offset_right = 292.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0.72, 0.66, 0.52, 1)
+theme_override_font_sizes/font_size = 10
+text = "↑ Cave"
+horizontal_alignment = 1
+
+[node name="RightHint" type="Label" parent="."]
+offset_left = 420.0
+offset_top = 352.0
+offset_right = 504.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
+theme_override_font_sizes/font_size = 9
+text = "→ Shop"
+horizontal_alignment = 2
+
+[node name="LeftHint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 352.0
+offset_right = 120.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
+theme_override_font_sizes/font_size = 9
+text = "← Jetty"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://underwatershallow"]
+[gd_scene format=3 uid="uid://r2q6urqheess"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]

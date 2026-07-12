@@ -25,4 +25,4 @@ func request_edge_transition(body: CharacterBody2D) -> void:
 	if _transition_cooldown > 0.0:
 		return
 	ScreenManager.try_edge_transition(body, screen_container)
-	_transition_cooldown = 0.35
+	_transition_cooldown = 0.6

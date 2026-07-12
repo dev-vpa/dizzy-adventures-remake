@@ -7,6 +7,8 @@ signal screen_changed(screen_id: String)
 const SCREEN_WIDTH := 512
 const SCREEN_HEIGHT := 384
 const EDGE_MARGIN := 8.0
+const SPAWN_INSET := 24.0
+const REENTRY_BLOCK_TIME := 0.75
 
 var _config: GameConfig
 var _screens: Dictionary = {}
@@ -65,13 +67,13 @@ func try_edge_transition(player: Node2D, container: Node2D) -> void:
 	var exits: Dictionary = screen_node.call("get_exits")
 	var pos := player.global_position
 
-	if pos.x <= EDGE_MARGIN and exits.has("left"):
+	if pos.x <= EDGE_MARGIN and exits.has("left") and not _edge_blocked(player, "left"):
 		_transition("left", exits["left"], player, container)
-	elif pos.x >= SCREEN_WIDTH - EDGE_MARGIN and exits.has("right"):
+	elif pos.x >= SCREEN_WIDTH - EDGE_MARGIN and exits.has("right") and not _edge_blocked(player, "right"):
 		_transition("right", exits["right"], player, container)
-	elif pos.y <= EDGE_MARGIN and exits.has("up"):
+	elif pos.y <= EDGE_MARGIN and exits.has("up") and not _edge_blocked(player, "up"):
 		_transition("up", exits["up"], player, container)
-	elif pos.y >= SCREEN_HEIGHT - EDGE_MARGIN and exits.has("down"):
+	elif pos.y >= SCREEN_HEIGHT - EDGE_MARGIN and exits.has("down") and not _edge_blocked(player, "down"):
 		_transition("down", exits["down"], player, container)
 
 
@@ -79,13 +81,26 @@ func _transition(direction: String, target_id: String, player: Node2D, container
 	load_screen(target_id, container, player)
 	match direction:
 		"left":
-			player.global_position.x = SCREEN_WIDTH - EDGE_MARGIN - 1.0
+			player.global_position.x = SCREEN_WIDTH - EDGE_MARGIN - SPAWN_INSET
+			_block_reentry(player, "right")
 		"right":
-			player.global_position.x = EDGE_MARGIN + 1.0
+			player.global_position.x = EDGE_MARGIN + SPAWN_INSET
+			_block_reentry(player, "left")
 		"up":
-			player.global_position.y = SCREEN_HEIGHT - EDGE_MARGIN - 1.0
+			player.global_position.y = SCREEN_HEIGHT - EDGE_MARGIN - SPAWN_INSET
+			_block_reentry(player, "down")
 		"down":
-			player.global_position.y = EDGE_MARGIN + 1.0
+			player.global_position.y = EDGE_MARGIN + SPAWN_INSET
+			_block_reentry(player, "up")
+
+
+func _edge_blocked(player: Node2D, edge: String) -> bool:
+	return player.has_method("is_edge_blocked") and player.call("is_edge_blocked", edge)
+
+
+func _block_reentry(player: Node2D, edge: String) -> void:
+	if player.has_method("block_edge"):
+		player.call("block_edge", edge, REENTRY_BLOCK_TIME)
 
 
 func _load_screen_registry(levels_path: String) -> void:
