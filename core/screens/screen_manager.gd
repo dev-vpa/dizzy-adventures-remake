@@ -11,7 +11,6 @@ const SPAWN_INSET := 24.0
 const REENTRY_BLOCK_TIME := 1.0
 const SPAWN_FLOOR_Y := 350.0
 const PLAYER_HALF_WIDTH := 11.0
-const PLAYER_HALF_HEIGHT := 14.0
 
 var _config: GameConfig
 var _screens: Dictionary = {}
@@ -121,31 +120,23 @@ func clamp_player_to_bounds(player: Node2D, container: Node2D) -> void:
 	var pos := player.global_position
 	var min_x := 0.0
 	var max_x := SCREEN_WIDTH
-	var min_y := 0.0
-	var max_y := SCREEN_HEIGHT
 
 	if not exits.has("left"):
 		min_x = EDGE_MARGIN + PLAYER_HALF_WIDTH
 	if not exits.has("right"):
 		max_x = SCREEN_WIDTH - EDGE_MARGIN - PLAYER_HALF_WIDTH
-	if not exits.has("up"):
-		min_y = EDGE_MARGIN + PLAYER_HALF_HEIGHT
-	if not exits.has("down"):
-		max_y = SCREEN_HEIGHT - EDGE_MARGIN - PLAYER_HALF_HEIGHT
 
-	pos.x = clampf(pos.x, min_x, max_x)
-	pos.y = clampf(pos.y, min_y, max_y)
-	player.global_position = pos
+	var clamped_x := clampf(pos.x, min_x, max_x)
+	if clamped_x == pos.x:
+		return
+
+	player.global_position.x = clamped_x
 
 	if player is CharacterBody2D:
 		if not exits.has("left") and player.velocity.x < 0.0:
 			player.velocity.x = 0.0
 		if not exits.has("right") and player.velocity.x > 0.0:
 			player.velocity.x = 0.0
-		if not exits.has("up") and player.velocity.y < 0.0:
-			player.velocity.y = 0.0
-		if not exits.has("down") and player.velocity.y > 0.0:
-			player.velocity.y = 0.0
 
 
 func _transition(direction: String, target_id: String, player: Node2D, container: Node2D) -> void:
