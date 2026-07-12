@@ -184,11 +184,12 @@ func _on_menu_pressed() -> void:
 	# Avoid accidental quit while moving near the HUD (1-life runs end here).
 	var dialog := ConfirmationDialog.new()
 	dialog.title = "Leave game?"
-	dialog.dialog_text = "Return to the main menu? Current progress on this run will be lost."
+	dialog.dialog_text = "Return to the main menu?\nProgress on this run will be lost."
+	dialog.dialog_autowrap = true
 	dialog.ok_button_text = "Main Menu"
 	dialog.cancel_button_text = "Keep Playing"
 	dialog.confirmed.connect(func() -> void:
 		GameManager.quit_to_main_menu()
 	)
 	add_child(dialog)
-	dialog.popup_centered()
+	dialog.popup_centered(Vector2i(380, 0))
