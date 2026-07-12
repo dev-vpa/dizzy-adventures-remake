@@ -7,15 +7,13 @@ Not affiliated with or endorsed by Codemasters or the Oliver Twins.
 
 \"Dizzy\", \"The Yolkfolk\" and all related characters and titles are
 trademarks of Oliver Twins Limited and The Codemasters Software Company
-Limited. All rights reserved.
-
-Press Enter or click Continue to start."""
+Limited. All rights reserved."""
 
 var _can_continue := false
 
 
 func _ready() -> void:
-	$MarginContainer/VBox/DisclaimerPanel/DisclaimerLabel.text = DISCLAIMER
+	$MarginContainer/VBox/DisclaimerPanel/ScrollContainer/DisclaimerLabel.text = DISCLAIMER
 	$MarginContainer/VBox/ContinueButton.disabled = true
 	$StartTimer.start(2.0)
 
