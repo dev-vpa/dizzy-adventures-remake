@@ -8,7 +8,7 @@
 size = Vector2(512, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
-size = Vector2(56, 64)
+size = Vector2(72, 72)
 
 [node name="ShopExterior" type="Node2D"]
 script = ExtResource("1")
@@ -33,24 +33,24 @@ offset_bottom = 16.0
 color = Color(0.74, 0.6, 0.36, 1)
 
 [node name="ShopFacade" type="Node2D" parent="."]
-position = Vector2(400, 268)
+position = Vector2(400, 344)
 
 [node name="Visual" type="ColorRect" parent="ShopFacade"]
 offset_left = -56.0
-offset_top = -56.0
+offset_top = -68.0
 offset_right = 56.0
-offset_bottom = 20.0
+offset_bottom = 8.0
 color = Color(0.58, 0.38, 0.28, 1)
 
 [node name="DoorVisual" type="ColorRect" parent="ShopFacade"]
 offset_left = -16.0
-offset_top = 4.0
+offset_top = -8.0
 offset_right = 16.0
-offset_bottom = 20.0
+offset_bottom = 8.0
 color = Color(0.32, 0.22, 0.16, 1)
 
 [node name="ShopDoor" type="Area2D" parent="."]
-position = Vector2(384, 316)
+position = Vector2(384, 338)
 collision_layer = 0
 collision_mask = 2
 monitoring = true
@@ -78,7 +78,7 @@ shape = SubResource("RectangleShape2D_door")
 
 [node name="DoorHint" type="Label" parent="."]
 offset_left = 280.0
-offset_top = 318.0
+offset_top = 328.0
 offset_right = 504.0
 offset_bottom = 348.0
 theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)

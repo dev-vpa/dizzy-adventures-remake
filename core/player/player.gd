@@ -85,6 +85,13 @@ func _try_action_nearby() -> void:
 		if area.is_in_group("pickup") and area.has_method("try_pick_up"):
 			if area.call("try_pick_up"):
 				return
+
+	for node in get_tree().get_nodes_in_group("interactable"):
+		if node is Area2D and (node as Area2D).overlaps_body(self):
+			if node.has_method("try_interact") and node.call("try_interact"):
+				return
+
+	for area in pickup_area.get_overlapping_areas():
 		if area.is_in_group("interactable") and area.has_method("try_interact"):
 			if area.call("try_interact"):
 				return
