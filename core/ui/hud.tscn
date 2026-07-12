@@ -56,7 +56,7 @@ layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 268.0
-offset_bottom = 132.0
+offset_bottom = 156.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="Margin" type="MarginContainer" parent="Root/HudPanel"]
@@ -87,6 +87,35 @@ text = "Lives: ♥"
 layout_mode = 2
 theme_override_constants/separation = 4
 
+[node name="ActionsHBox" type="HBoxContainer" parent="Root/HudPanel/Margin/VBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="DropButton" type="Button" parent="Root/HudPanel/Margin/VBox/ActionsHBox"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_menu")
+text = "Drop"
+
+[node name="UseButton" type="Button" parent="Root/HudPanel/Margin/VBox/ActionsHBox"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_menu")
+text = "Use"
+
 [node name="InventoryLabel" type="Label" parent="Root/HudPanel/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.78, 0.72, 0.58, 1)
@@ -104,4 +133,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
 text = "Menu"
 
+[connection signal="pressed" from="Root/HudPanel/Margin/VBox/ActionsHBox/DropButton" to="." method="_on_drop_pressed"]
+[connection signal="pressed" from="Root/HudPanel/Margin/VBox/ActionsHBox/UseButton" to="." method="_on_use_pressed"]
 [connection signal="pressed" from="Root/HudPanel/Margin/VBox/MenuButton" to="." method="_on_menu_pressed"]

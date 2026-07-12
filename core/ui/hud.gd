@@ -1,14 +1,17 @@
 extends CanvasLayer
 
-## In-game HUD: title, lives, inventory slots, menu.
+## In-game HUD: title, lives, inventory slots, menu. Touch-friendly slot taps + Drop/Use on mobile.
 
-var _slot_panels: Array[PanelContainer] = []
+var _slot_buttons: Array[Button] = []
 var _slot_icons: Array[ItemSprite] = []
+var _is_touch: bool = false
 
 
 func _ready() -> void:
+	_is_touch = DisplayServer.is_touchscreen_available()
 	if GameManager.active_config:
 		$Root/HudPanel/Margin/VBox/TitleLabel.text = GameManager.active_config.title
+	$Root/HudPanel/Margin/VBox/ActionsHBox.visible = _is_touch
 	_build_slots()
 	Inventory.inventory_changed.connect(_refresh)
 	Inventory.selection_changed.connect(_refresh)
@@ -21,17 +24,23 @@ func _build_slots() -> void:
 	var container: HBoxContainer = $Root/HudPanel/Margin/VBox/Slots
 	for child in container.get_children():
 		child.queue_free()
-	_slot_panels.clear()
+	_slot_buttons.clear()
 	_slot_icons.clear()
 
 	for i in Inventory.max_slots:
-		var panel := PanelContainer.new()
-		panel.custom_minimum_size = Vector2(26, 26)
-		panel.add_theme_stylebox_override("panel", _make_slot_style(false))
+		var slot_btn := Button.new()
+		slot_btn.flat = true
+		slot_btn.focus_mode = Control.FOCUS_NONE
+		slot_btn.custom_minimum_size = Vector2(30, 30)
+		slot_btn.add_theme_stylebox_override("normal", _make_slot_style(false))
+		slot_btn.add_theme_stylebox_override("hover", _make_slot_style(true))
+		slot_btn.add_theme_stylebox_override("pressed", _make_slot_style(true))
+		slot_btn.pressed.connect(_on_slot_pressed.bind(i))
 
 		var center := CenterContainer.new()
 		center.custom_minimum_size = Vector2(26, 26)
-		panel.add_child(center)
+		center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot_btn.add_child(center)
 
 		var icon := ItemSprite.new()
 		icon.bob_enabled = false
@@ -39,8 +48,8 @@ func _build_slots() -> void:
 		icon.visible = false
 		center.add_child(icon)
 
-		container.add_child(panel)
-		_slot_panels.append(panel)
+		container.add_child(slot_btn)
+		_slot_buttons.append(slot_btn)
 		_slot_icons.append(icon)
 
 
@@ -58,16 +67,36 @@ func _refresh() -> void:
 	var selected := Inventory.selected_index
 	for i in _slot_icons.size():
 		var icon := _slot_icons[i]
-		var panel := _slot_panels[i]
-		panel.add_theme_stylebox_override("panel", _make_slot_style(i == selected and not items.is_empty()))
+		var btn := _slot_buttons[i]
+		var is_selected := i == selected and not items.is_empty()
+		btn.add_theme_stylebox_override("normal", _make_slot_style(is_selected))
 		if i < items.size():
 			icon.configure(items[i])
 			icon.visible = true
 		else:
 			icon.visible = false
 
+	_update_action_buttons()
+	_update_hint(items)
+
+
+func _update_action_buttons() -> void:
+	if not _is_touch:
+		return
+	var has_item := not Inventory.get_items().is_empty()
+	$Root/HudPanel/Margin/VBox/ActionsHBox/DropButton.disabled = not has_item
+	$Root/HudPanel/Margin/VBox/ActionsHBox/UseButton.disabled = not has_item
+
+
+func _update_hint(items: Array[String]) -> void:
 	var summary: Label = $Root/HudPanel/Margin/VBox/InventoryLabel
-	if items.is_empty():
+	if _is_touch:
+		if items.is_empty():
+			summary.text = "Tap slot to select  ·  Drop / Use below"
+		else:
+			var name := ItemCatalog.get_display_name(Inventory.get_selected_item())
+			summary.text = "Held: %s" % name
+	elif items.is_empty():
 		summary.text = "Tab — select  ·  R — drop  ·  U — use"
 	else:
 		var name := ItemCatalog.get_display_name(Inventory.get_selected_item())
@@ -78,6 +107,29 @@ func _refresh_lives() -> void:
 	var label: Label = $Root/HudPanel/Margin/VBox/LivesLabel
 	var heart := "♥" if Lives.current_lives == 1 else "♥".repeat(Lives.current_lives)
 	label.text = "Lives: %s" % heart
+
+
+func _get_player() -> CharacterBody2D:
+	var nodes := get_tree().get_nodes_in_group("player")
+	if nodes.is_empty():
+		return null
+	return nodes[0] as CharacterBody2D
+
+
+func _on_slot_pressed(index: int) -> void:
+	Inventory.select_index(index)
+
+
+func _on_drop_pressed() -> void:
+	var player := _get_player()
+	if player and player.has_method("drop_item"):
+		player.drop_item()
+
+
+func _on_use_pressed() -> void:
+	var player := _get_player()
+	if player and player.has_method("use_item"):
+		player.use_item()
 
 
 func _on_menu_pressed() -> void:

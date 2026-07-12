@@ -20,6 +20,7 @@ var _spawn_position: Vector2
 
 
 func _ready() -> void:
+	add_to_group("player")
 	_spawn_position = global_position
 
 
@@ -68,6 +69,14 @@ func _try_pickup_nearby() -> void:
 		if area.is_in_group("pickup") and area.has_method("try_pick_up"):
 			if area.call("try_pick_up"):
 				return
+
+
+func drop_item() -> void:
+	_try_drop_item()
+
+
+func use_item() -> void:
+	Inventory.try_use_selected()
 
 
 func _try_drop_item() -> void:

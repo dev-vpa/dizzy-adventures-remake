@@ -50,6 +50,14 @@ func select_next() -> void:
 	selection_changed.emit()
 
 
+func select_index(index: int) -> bool:
+	if index < 0 or index >= _items.size():
+		return false
+	selected_index = index
+	selection_changed.emit()
+	return true
+
+
 func try_pick_up(item_id: String) -> bool:
 	if item_id.is_empty() or has_item(item_id):
 		return false
