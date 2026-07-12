@@ -187,17 +187,6 @@ layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="MarginContainer/VBox/ActionsRow"]
-custom_minimum_size = Vector2(168, 36)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.96, 0.9, 0.78, 1)
-theme_override_colors/font_hover_color = Color(1, 0.96, 0.86, 1)
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_play")
-theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_play_hover")
-text = "Play"
-
 [node name="BackButton" type="Button" parent="MarginContainer/VBox/ActionsRow"]
 custom_minimum_size = Vector2(168, 36)
 layout_mode = 2
@@ -208,6 +197,17 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_back")
 theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_back_hover")
 text = "Back"
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBox/ActionsRow"]
+custom_minimum_size = Vector2(168, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.9, 0.78, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.86, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_play")
+theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_play_hover")
+text = "Play"
 
 [connection signal="pressed" from="MarginContainer/VBox/ActionsRow/PlayButton" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBox/ActionsRow/BackButton" to="." method="_on_back_pressed"]
