@@ -1,21 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://loading001"]
+[gd_scene load_steps=6 format=3 uid="uid://loading001"]
 
 [ext_resource type="Script" path="res://scenes/loading_screen.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_continue"]
-bg_color = Color(0.82, 0.28, 0.1, 1)
+bg_color = Color(0.42, 0.24, 0.12, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.88, 0.35, 1)
+border_color = Color(0.92, 0.76, 0.32, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+content_margin_left = 24.0
+content_margin_top = 8.0
+content_margin_right = 24.0
+content_margin_bottom = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_continue_disabled"]
-bg_color = Color(0.35, 0.28, 0.24, 1)
+bg_color = Color(0.28, 0.22, 0.2, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -25,18 +29,42 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+content_margin_left = 24.0
+content_margin_top = 8.0
+content_margin_right = 24.0
+content_margin_bottom = 8.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_disclaimer_panel"]
-bg_color = Color(0.12, 0.1, 0.2, 0.88)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_continue_hover"]
+bg_color = Color(0.52, 0.3, 0.14, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.55, 0.48, 0.38, 0.9)
+border_color = Color(1, 0.88, 0.45, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+content_margin_left = 24.0
+content_margin_top = 8.0
+content_margin_right = 24.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_disclaimer_panel"]
+bg_color = Color(0.1, 0.08, 0.18, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.48, 0.38, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 18.0
+content_margin_top = 16.0
+content_margin_right = 18.0
+content_margin_bottom = 16.0
 
 [node name="LoadingScreen" type="Control"]
 layout_mode = 3
@@ -75,23 +103,25 @@ grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.55, 0.42, 0.24, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="ContentMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 68
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 12
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="ContentMargin"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
+alignment = 1
 
-[node name="Title" type="Label" parent="MarginContainer/VBox"]
+[node name="Title" type="Label" parent="ContentMargin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_colors/font_shadow_color = Color(0.45, 0.12, 0.05, 0.8)
@@ -101,44 +131,63 @@ theme_override_font_sizes/font_size = 22
 text = "Legal Notice"
 horizontal_alignment = 1
 
-[node name="DisclaimerPanel" type="PanelContainer" parent="MarginContainer/VBox"]
+[node name="DisclaimerPanel" type="PanelContainer" parent="ContentMargin/VBox"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_disclaimer_panel")
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/DisclaimerPanel"]
+[node name="TextVBox" type="VBoxContainer" parent="ContentMargin/VBox/DisclaimerPanel"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
+theme_override_constants/separation = 10
 
-[node name="DisclaimerLabel" type="Label" parent="MarginContainer/VBox/DisclaimerPanel/Margin"]
-custom_minimum_size = Vector2(392, 0)
+[node name="ProjectName" type="Label" parent="ContentMargin/VBox/DisclaimerPanel/TextVBox"]
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 0.92, 0.62, 1)
+theme_override_font_sizes/font_size = 15
+text = "Dizzy Adventures Remake"
+horizontal_alignment = 1
+
+[node name="Summary" type="Label" parent="ContentMargin/VBox/DisclaimerPanel/TextVBox"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.84, 0.68, 1)
 theme_override_font_sizes/font_size = 13
-text = "Disclaimer"
+text = "Summary"
 autowrap_mode = 3
 horizontal_alignment = 1
-vertical_alignment = 0
 
-[node name="ContinueButton" type="Button" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(200, 40)
+[node name="Trademark" type="Label" parent="ContentMargin/VBox/DisclaimerPanel/TextVBox"]
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.78, 0.72, 0.58, 1)
+theme_override_font_sizes/font_size = 11
+text = "Trademark"
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -104.0
+offset_top = -60.0
+offset_right = 104.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
 disabled = true
 focus_mode = 2
-theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_colors/font_color = Color(0.96, 0.9, 0.78, 1)
 theme_override_colors/font_disabled_color = Color(0.55, 0.5, 0.44, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 0.75, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.86, 1)
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_continue")
-theme_override_styles/hover = SubResource("StyleBoxFlat_continue")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_continue")
+theme_override_styles/hover = SubResource("StyleBoxFlat_continue_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_continue_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_continue_disabled")
 text = "Continue"
 
@@ -146,5 +195,5 @@ text = "Continue"
 wait_time = 2.0
 one_shot = true
 
-[connection signal="pressed" from="MarginContainer/VBox/ContinueButton" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_pressed"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
