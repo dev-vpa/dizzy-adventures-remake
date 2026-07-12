@@ -46,10 +46,21 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func try_interact() -> bool:
+	var player := _get_player_at_door()
+	if player == null:
+		return false
+	return _try_enter(player)
+
+
+func _get_player_at_door() -> Node2D:
 	for body in get_overlapping_bodies():
 		if body.is_in_group("player"):
-			return _try_enter(body)
-	return false
+			return body
+	if _player_near:
+		var players := get_tree().get_nodes_in_group("player")
+		if not players.is_empty():
+			return players[0] as Node2D
+	return null
 
 
 func _try_enter(body: Node2D) -> bool:

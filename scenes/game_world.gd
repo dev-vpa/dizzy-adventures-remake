@@ -37,7 +37,6 @@ func request_door_transition(
 	spawn_position: Vector2,
 	block_edge: String = ""
 ) -> void:
-	if _transition_cooldown > 0.0:
-		return
+	# Door use is deliberate — do not block on the horizontal edge cooldown.
 	ScreenManager.transition_to(target_id, spawn_position, screen_container, body, block_edge)
-	_transition_cooldown = 0.6
+	_transition_cooldown = 0.35
