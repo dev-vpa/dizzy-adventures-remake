@@ -13,6 +13,10 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu"]
 bg_color = Color(0.22, 0.17, 0.28, 1)
@@ -55,44 +59,53 @@ mouse_filter = 2
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 268.0
-offset_bottom = 156.0
+offset_right = 8.0
+offset_bottom = 8.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="Margin" type="MarginContainer" parent="Root/HudPanel"]
+[node name="VBox" type="VBoxContainer" parent="Root/HudPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 6
+theme_override_constants/separation = 5
 
-[node name="VBox" type="VBoxContainer" parent="Root/HudPanel/Margin"]
+[node name="HeaderRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 8
 
-[node name="TitleLabel" type="Label" parent="Root/HudPanel/Margin/VBox"]
+[node name="TitleLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_font_sizes/font_size = 11
 text = "Treasure Island Dizzy"
 text_overrun_behavior = 3
 
-[node name="LivesLabel" type="Label" parent="Root/HudPanel/Margin/VBox"]
+[node name="LivesLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.45, 0.42, 1)
 theme_override_font_sizes/font_size = 11
-text = "Lives: ♥"
+text = "♥"
+horizontal_alignment = 2
 
-[node name="Slots" type="HBoxContainer" parent="Root/HudPanel/Margin/VBox"]
+[node name="InventoryRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="InventoryTag" type="Label" parent="Root/HudPanel/VBox/InventoryRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.66, 0.52, 1)
+theme_override_font_sizes/font_size = 10
+text = "Items"
+
+[node name="Slots" type="HBoxContainer" parent="Root/HudPanel/VBox/InventoryRow"]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="ActionsHBox" type="HBoxContainer" parent="Root/HudPanel/Margin/VBox"]
+[node name="ActionsHBox" type="HBoxContainer" parent="Root/HudPanel/VBox"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="DropButton" type="Button" parent="Root/HudPanel/Margin/VBox/ActionsHBox"]
+[node name="DropButton" type="Button" parent="Root/HudPanel/VBox/ActionsHBox"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -104,7 +117,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_menu")
 text = "Drop"
 
-[node name="UseButton" type="Button" parent="Root/HudPanel/Margin/VBox/ActionsHBox"]
+[node name="UseButton" type="Button" parent="Root/HudPanel/VBox/ActionsHBox"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -116,14 +129,15 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_menu")
 text = "Use"
 
-[node name="InventoryLabel" type="Label" parent="Root/HudPanel/Margin/VBox"]
+[node name="InventoryLabel" type="Label" parent="Root/HudPanel/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.78, 0.72, 0.58, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
+theme_override_font_sizes/font_size = 9
 text = "Tab — select  ·  R — drop  ·  U — use"
+autowrap_mode = 2
 
-[node name="MenuButton" type="Button" parent="Root/HudPanel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 24)
+[node name="MenuButton" type="Button" parent="Root/HudPanel/VBox"]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
 theme_override_colors/font_hover_color = Color(1, 0.95, 0.78, 1)
@@ -133,6 +147,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
 text = "Menu"
 
-[connection signal="pressed" from="Root/HudPanel/Margin/VBox/ActionsHBox/DropButton" to="." method="_on_drop_pressed"]
-[connection signal="pressed" from="Root/HudPanel/Margin/VBox/ActionsHBox/UseButton" to="." method="_on_use_pressed"]
-[connection signal="pressed" from="Root/HudPanel/Margin/VBox/MenuButton" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="Root/HudPanel/VBox/ActionsHBox/DropButton" to="." method="_on_drop_pressed"]
+[connection signal="pressed" from="Root/HudPanel/VBox/ActionsHBox/UseButton" to="." method="_on_use_pressed"]
+[connection signal="pressed" from="Root/HudPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
