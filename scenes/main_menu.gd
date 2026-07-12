@@ -2,6 +2,7 @@ extends Control
 
 
 func _ready() -> void:
+	$MarginContainer/VBox/QuitButton.visible = PlatformUI.show_desktop_quit()
 	$MarginContainer/VBox/NewGameButton.grab_focus()
 
 

@@ -8,7 +8,7 @@ var _held: Array[String] = []
 
 
 func _ready() -> void:
-	visible = DisplayServer.is_touchscreen_available()
+	visible = PlatformUI.is_touch_device()
 	if not visible:
 		set_process(false)
 

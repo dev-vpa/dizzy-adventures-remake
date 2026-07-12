@@ -8,7 +8,7 @@ var _is_touch: bool = false
 
 
 func _ready() -> void:
-	_is_touch = DisplayServer.is_touchscreen_available()
+	_is_touch = PlatformUI.is_touch_device()
 	if GameManager.active_config:
 		$Root/HudPanel/Margin/VBox/TitleLabel.text = GameManager.active_config.title
 	$Root/HudPanel/Margin/VBox/ActionsHBox.visible = _is_touch
@@ -31,7 +31,12 @@ func _build_slots() -> void:
 		var slot_btn := Button.new()
 		slot_btn.flat = true
 		slot_btn.focus_mode = Control.FOCUS_NONE
-		slot_btn.custom_minimum_size = Vector2(30, 30)
+		if _is_touch:
+			slot_btn.custom_minimum_size = Vector2(
+				PlatformUI.MIN_TOUCH_SIZE, PlatformUI.MIN_TOUCH_SIZE
+			)
+		else:
+			slot_btn.custom_minimum_size = Vector2(30, 30)
 		slot_btn.add_theme_stylebox_override("normal", _make_slot_style(false))
 		slot_btn.add_theme_stylebox_override("hover", _make_slot_style(true))
 		slot_btn.add_theme_stylebox_override("pressed", _make_slot_style(true))

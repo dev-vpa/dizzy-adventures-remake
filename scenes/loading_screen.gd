@@ -15,6 +15,8 @@ var _can_continue := false
 func _ready() -> void:
 	$MarginContainer/VBox/DisclaimerPanel/ScrollContainer/DisclaimerLabel.text = DISCLAIMER
 	$MarginContainer/VBox/ContinueButton.disabled = true
+	if PlatformUI.is_touch_device():
+		$MarginContainer/VBox/ContinueButton.custom_minimum_size = Vector2(200, 48)
 	$StartTimer.start(2.0)
 
 

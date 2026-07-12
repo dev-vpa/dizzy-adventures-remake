@@ -8,6 +8,7 @@ var _style_card_hover: StyleBoxFlat
 var _info_icon: GameSelectIcon
 var _title: Label
 var _description: Label
+var _hint: Label
 var _ui_tween: Tween
 
 
@@ -15,10 +16,20 @@ func _ready() -> void:
 	modulate = Color.WHITE
 	_title = $MarginContainer/VBox/Title
 	_description = $MarginContainer/VBox/InfoPanel/Margin/HBox/VBox/Description
+	_hint = $MarginContainer/VBox/InfoPanel/Margin/HBox/VBox/Hint
 	_info_icon = $MarginContainer/VBox/InfoPanel/Margin/HBox/InfoIcon
 	_build_card_styles()
 	_populate_cards()
+	_apply_touch_layout()
+	_update_hints()
 	set_process(true)
+
+
+func _apply_touch_layout() -> void:
+	if not PlatformUI.is_touch_device():
+		return
+	var back: Button = $MarginContainer/VBox/BackButton
+	back.custom_minimum_size = Vector2(180, PlatformUI.MIN_TOUCH_SIZE)
 
 
 func _process(delta: float) -> void:
@@ -151,6 +162,7 @@ func _update_info_panel(config: GameConfig, animate: bool) -> void:
 	_info_icon.configure(config)
 	_info_icon.set_active(true)
 	_description.text = config.description if not config.description.is_empty() else "Adventure awaits!"
+	_update_hints()
 
 	if not animate:
 		_description.modulate = Color.WHITE
@@ -164,6 +176,15 @@ func _update_info_panel(config: GameConfig, animate: bool) -> void:
 	_ui_tween = create_tween().set_parallel(true)
 	_ui_tween.tween_property(_description, "modulate:a", 1.0, 0.28).set_ease(Tween.EASE_OUT)
 	_ui_tween.tween_property(_info_icon, "modulate:a", 1.0, 0.28).set_ease(Tween.EASE_OUT)
+
+
+func _update_hints() -> void:
+	if _hint == null:
+		return
+	_hint.text = PlatformUI.hint_text(
+		"Click to play  ·  Enter — play  ·  Esc — back",
+		"Tap card to play  ·  Back below"
+	)
 
 
 func _animate_title() -> void:
@@ -194,9 +215,7 @@ func _on_card_gui_input(event: InputEvent, config: GameConfig, card: PanelContai
 		var mouse := event as InputEventMouseButton
 		if mouse.button_index == MOUSE_BUTTON_LEFT and mouse.pressed:
 			card.grab_focus()
-			_select_card(config, card)
-			if mouse.double_click:
-				_start_game(config)
+			_start_game(config)
 	elif event.is_action_pressed("ui_accept"):
 		_start_game(config)
 

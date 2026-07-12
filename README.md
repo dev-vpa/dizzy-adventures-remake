@@ -35,6 +35,8 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 
 **Touch (Android / mobile):** on-screen **◀ ▶ Pick Jump** buttons; tap inventory slots to select; **Drop** / **Use** buttons in the HUD. The Tab/R/U hints are hidden on touch devices.
 
+All UI screens must provide tap/button paths — see `core/ui/platform_ui.gd`. **Quit** is hidden on mobile and web builds.
+
 Releases (Windows, Linux, Web, Android) will be published on [GitHub Releases](https://github.com/Slider540/dizzy-adventures-remake/releases) when available.  
 The game is and will remain **free** — no purchases, no ads, no royalties.
 
