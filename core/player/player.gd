@@ -17,11 +17,16 @@ const PICKUP_SCENE := preload("res://core/items/pickup_item.tscn")
 var _somersault_rotation: float = 0.0
 var _facing: int = 1
 var _spawn_position: Vector2
+var _action_queued := false
 
 
 func _ready() -> void:
 	add_to_group("player")
 	_spawn_position = global_position
+
+
+func request_action() -> void:
+	_action_queued = true
 
 
 func _physics_process(delta: float) -> void:
@@ -62,8 +67,10 @@ func _handle_inventory_input() -> void:
 
 
 func _try_pickup_nearby() -> void:
-	if not Input.is_action_just_pressed("action"):
+	var wants_action := _action_queued or Input.is_action_just_pressed("action")
+	if not wants_action:
 		return
+	_action_queued = false
 
 	for area in pickup_area.get_overlapping_areas():
 		if area.is_in_group("pickup") and area.has_method("try_pick_up"):

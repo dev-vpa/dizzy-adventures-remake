@@ -61,4 +61,7 @@ func _on_jump_pressed() -> void:
 
 
 func _on_action_pressed() -> void:
+	for node in get_tree().get_nodes_in_group("player"):
+		if node.has_method("request_action"):
+			node.call("request_action")
 	_tap_action("action")

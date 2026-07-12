@@ -1,17 +1,46 @@
 extends Area2D
 
-## World pickup. Player presses action (E / Enter) while overlapping.
+## World pickup. Player presses action (E / Enter / Pick) while overlapping.
 
 @export var item_id: String = "placeholder_item"
 @export var display_name: String = "Item"
 
 @onready var item_sprite: ItemSprite = $ItemSprite
+@onready var _hint: Label = $HintLabel
+
+var _player_near := false
 
 
 func _ready() -> void:
 	add_to_group("pickup")
 	if item_sprite:
-		item_sprite.configure(item_id)
+		item_sprite.configure_for_world(item_id)
+	_update_hint()
+
+
+func _process(_delta: float) -> void:
+	_update_hint()
+
+
+func _update_hint() -> void:
+	if _hint == null:
+		return
+	var show := _player_near and not Inventory.is_full()
+	if PlatformUI.is_touch_device():
+		_hint.text = "Pick"
+	else:
+		_hint.text = "E"
+	_hint.visible = show
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		_player_near = true
+
+
+func _on_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		_player_near = false
 
 
 func try_pick_up() -> bool:

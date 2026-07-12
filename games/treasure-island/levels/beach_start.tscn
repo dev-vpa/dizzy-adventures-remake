@@ -31,7 +31,7 @@ offset_bottom = 16.0
 color = Color(0.78, 0.64, 0.36, 1)
 
 [node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(160, 280)
+position = Vector2(300, 310)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 shape = SubResource("RectangleShape2D_platform")
@@ -44,4 +44,4 @@ offset_bottom = 8.0
 color = Color(0.72, 0.58, 0.32, 1)
 
 [node name="Snorkel" parent="." instance=ExtResource("2")]
-position = Vector2(160, 256)
+position = Vector2(140, 339)
