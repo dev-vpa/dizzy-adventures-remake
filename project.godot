@@ -22,6 +22,7 @@ config/icon="res://assets/icons/app_icon_512.png"
 
 [autoload]
 
+DisplayManager="*res://core/autoload/display_manager.gd"
 GameManager="*res://core/autoload/game_manager.gd"
 ScreenManager="*res://core/screens/screen_manager.gd"
 Inventory="*res://core/inventory/inventory.gd"
@@ -30,8 +31,7 @@ Inventory="*res://core/inventory/inventory.gd"
 
 window/size/viewport_width=512
 window/size/viewport_height=384
-window/size/window_width_override=1920
-window/size/window_height_override=1080
+window/size/resizable=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 window/stretch/scale="integer"
