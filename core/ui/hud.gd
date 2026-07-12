@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 ## In-game HUD: inventory slots and back-to-menu.
 
