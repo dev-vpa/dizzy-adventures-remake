@@ -202,5 +202,12 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_play_hover")
 text = "Play"
 
+[node name="KeyboardHint" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.52, 0.48, 0.4, 1)
+theme_override_font_sizes/font_size = 9
+text = "Enter — Play · Esc — Back"
+horizontal_alignment = 1
+
 [connection signal="pressed" from="MarginContainer/VBox/ActionsRow/PlayButton" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBox/ActionsRow/BackButton" to="." method="_on_back_pressed"]

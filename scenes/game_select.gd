@@ -8,6 +8,7 @@ var _style_card_selected: StyleBoxFlat
 var _style_card_hover: StyleBoxFlat
 var _title: Label
 var _description: Label
+var _keyboard_hint: Label
 var _play_button: Button
 var _ui_tween: Tween
 
@@ -16,10 +17,12 @@ func _ready() -> void:
 	modulate = Color.WHITE
 	_title = $MarginContainer/VBox/Title
 	_description = $MarginContainer/VBox/DetailSection/Description
+	_keyboard_hint = $MarginContainer/VBox/KeyboardHint
 	_play_button = $MarginContainer/VBox/ActionsRow/PlayButton
 	_build_card_styles()
 	_populate_cards()
 	_apply_touch_layout()
+	_apply_keyboard_hint()
 	set_process(true)
 
 
@@ -29,6 +32,12 @@ func _apply_touch_layout() -> void:
 	var back: Button = $MarginContainer/VBox/ActionsRow/BackButton
 	back.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
 	_play_button.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
+
+
+func _apply_keyboard_hint() -> void:
+	if _keyboard_hint == null:
+		return
+	_keyboard_hint.visible = not PlatformUI.is_touch_device()
 
 
 func _process(delta: float) -> void:
