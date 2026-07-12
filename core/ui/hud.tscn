@@ -42,6 +42,46 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_panel"]
+bg_color = Color(0.1, 0.08, 0.18, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.62, 0.42, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_primary"]
+bg_color = Color(0.28, 0.22, 0.36, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.82, 0.38, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_danger"]
+bg_color = Color(0.38, 0.16, 0.12, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.42, 0.32, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="HUD" type="CanvasLayer"]
 layer = 10
 script = ExtResource("1")
@@ -87,8 +127,6 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.45, 0.42, 1)
 theme_override_font_sizes/font_size = 11
 text = "♥"
-horizontal_alignment = 2
-
 horizontal_alignment = 2
 
 [node name="CoinsLabel" type="Label" parent="Root/HudPanel/VBox"]
@@ -158,6 +196,91 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
 text = "Menu"
 
+[node name="QuitOverlay" type="Control" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Dim" type="ColorRect" parent="Root/QuitOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.05, 0.04, 0.1, 0.62)
+
+[node name="Center" type="CenterContainer" parent="Root/QuitOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/QuitOverlay/Center"]
+custom_minimum_size = Vector2(292, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_quit_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/QuitOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="Root/QuitOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0.35, 0.1, 0.05, 0.75)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "Leave game?"
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="Root/QuitOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 11
+text = "Return to the main menu? Progress on this run will be lost."
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Root/QuitOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="KeepPlayingButton" type="Button" parent="Root/QuitOverlay/Center/Panel/VBox/Buttons"]
+custom_minimum_size = Vector2(128, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.78, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_quit_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_quit_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_quit_primary")
+text = "Keep Playing"
+
+[node name="MainMenuButton" type="Button" parent="Root/QuitOverlay/Center/Panel/VBox/Buttons"]
+custom_minimum_size = Vector2(128, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.82, 0.76, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_quit_danger")
+theme_override_styles/hover = SubResource("StyleBoxFlat_quit_danger")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_quit_danger")
+theme_override_styles/focus = SubResource("StyleBoxFlat_quit_danger")
+text = "Main Menu"
+
 [connection signal="pressed" from="Root/HudPanel/VBox/ActionsHBox/DropButton" to="." method="_on_drop_pressed"]
 [connection signal="pressed" from="Root/HudPanel/VBox/ActionsHBox/UseButton" to="." method="_on_use_pressed"]
 [connection signal="pressed" from="Root/HudPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="Root/QuitOverlay/Center/Panel/VBox/Buttons/KeepPlayingButton" to="." method="_on_quit_keep_playing"]
+[connection signal="pressed" from="Root/QuitOverlay/Center/Panel/VBox/Buttons/MainMenuButton" to="." method="_on_quit_main_menu"]

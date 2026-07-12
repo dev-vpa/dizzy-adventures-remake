@@ -8,11 +8,15 @@ var _slot_panels: Array[PanelContainer] = []
 var _slot_icons: Array[HudItemIcon] = []
 var _is_touch: bool = false
 var _hud_panel: PanelContainer
+var _quit_overlay: Control
+var _keep_playing_button: Button
 
 
 func _ready() -> void:
 	_is_touch = PlatformUI.is_touch_device()
 	_hud_panel = $Root/HudPanel
+	_quit_overlay = $Root/QuitOverlay
+	_keep_playing_button = $Root/QuitOverlay/Center/Panel/VBox/Buttons/KeepPlayingButton
 	_hud_panel.clip_contents = true
 	_hud_panel.custom_minimum_size.x = MIN_PANEL_WIDTH
 	if GameManager.active_config:
@@ -180,16 +184,27 @@ func _on_use_pressed() -> void:
 		player.use_item()
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not _quit_overlay.visible:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		_hide_quit_overlay()
+		get_viewport().set_input_as_handled()
+
+
 func _on_menu_pressed() -> void:
-	# Avoid accidental quit while moving near the HUD (1-life runs end here).
-	var dialog := ConfirmationDialog.new()
-	dialog.title = "Leave game?"
-	dialog.dialog_text = "Return to the main menu?\nProgress on this run will be lost."
-	dialog.dialog_autowrap = true
-	dialog.ok_button_text = "Main Menu"
-	dialog.cancel_button_text = "Keep Playing"
-	dialog.confirmed.connect(func() -> void:
-		GameManager.quit_to_main_menu()
-	)
-	add_child(dialog)
-	dialog.popup_centered(Vector2i(380, 0))
+	_quit_overlay.visible = true
+	_keep_playing_button.grab_focus()
+
+
+func _on_quit_keep_playing() -> void:
+	_hide_quit_overlay()
+
+
+func _on_quit_main_menu() -> void:
+	_hide_quit_overlay()
+	GameManager.quit_to_main_menu()
+
+
+func _hide_quit_overlay() -> void:
+	_quit_overlay.visible = false
