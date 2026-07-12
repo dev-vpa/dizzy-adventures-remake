@@ -2,7 +2,9 @@ extends CanvasLayer
 
 ## In-game HUD: title, lives, inventory slots, menu.
 
-var _slot_buttons: Array[Button] = []
+const MIN_PANEL_WIDTH := 192.0
+
+var _slot_panels: Array[PanelContainer] = []
 var _slot_icons: Array[HudItemIcon] = []
 var _is_touch: bool = false
 var _hud_panel: PanelContainer
@@ -12,6 +14,7 @@ func _ready() -> void:
 	_is_touch = PlatformUI.is_touch_device()
 	_hud_panel = $Root/HudPanel
 	_hud_panel.clip_contents = true
+	_hud_panel.custom_minimum_size.x = MIN_PANEL_WIDTH
 	if GameManager.active_config:
 		$Root/HudPanel/VBox/HeaderRow/TitleLabel.text = GameManager.active_config.title
 	$Root/HudPanel/VBox/ActionsHBox.visible = _is_touch
@@ -28,46 +31,57 @@ func _fit_panel_size() -> void:
 	if _hud_panel == null:
 		return
 	var min_size := _hud_panel.get_combined_minimum_size()
-	if min_size.x > 4.0 and min_size.y > 4.0:
-		_hud_panel.size = min_size
-		_hud_panel.position = Vector2(8.0, 8.0)
+	min_size.x = maxf(min_size.x, MIN_PANEL_WIDTH)
+	_hud_panel.size = min_size
+	_hud_panel.position = Vector2(8.0, 8.0)
+	_sync_slot_icon_sizes()
+
+
+func _slot_size() -> Vector2:
+	var side := 28.0
+	if _is_touch:
+		side = PlatformUI.MIN_TOUCH_SIZE
+	return Vector2(side, side)
 
 
 func _build_slots() -> void:
 	var container: HBoxContainer = $Root/HudPanel/VBox/InventoryRow/Slots
 	for child in container.get_children():
 		child.queue_free()
-	_slot_buttons.clear()
+	_slot_panels.clear()
 	_slot_icons.clear()
 
-	var slot_size := Vector2(28, 28)
-	if _is_touch:
-		slot_size = Vector2(PlatformUI.MIN_TOUCH_SIZE, PlatformUI.MIN_TOUCH_SIZE)
+	var slot_size := _slot_size()
 
 	for i in Inventory.max_slots:
-		var slot_btn := Button.new()
-		slot_btn.flat = true
-		slot_btn.focus_mode = Control.FOCUS_NONE
-		slot_btn.clip_contents = true
-		slot_btn.custom_minimum_size = slot_size
-		slot_btn.add_theme_stylebox_override("normal", _make_slot_style(false))
-		slot_btn.add_theme_stylebox_override("hover", _make_slot_style(true))
-		slot_btn.add_theme_stylebox_override("pressed", _make_slot_style(true))
-		slot_btn.pressed.connect(_on_slot_pressed.bind(i))
+		var slot := PanelContainer.new()
+		slot.custom_minimum_size = slot_size
+		slot.mouse_filter = Control.MOUSE_FILTER_STOP
+		slot.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		slot.add_theme_stylebox_override("panel", _make_slot_style(false))
+		slot.gui_input.connect(_on_slot_gui_input.bind(i))
 
 		var icon := HudItemIcon.new()
+		icon.custom_minimum_size = slot_size
+		icon.size = slot_size
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		icon.custom_minimum_size = slot_size - Vector2(2, 2)
-		icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		icon.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		icon.set_empty_label(str(i + 1))
-		slot_btn.add_child(icon)
+		slot.add_child(icon)
 
-		container.add_child(slot_btn)
-		_slot_buttons.append(slot_btn)
+		container.add_child(slot)
+		_slot_panels.append(slot)
 		_slot_icons.append(icon)
 
 	call_deferred("_fit_panel_size")
+
+
+func _sync_slot_icon_sizes() -> void:
+	var slot_size := _slot_size()
+	for i in _slot_icons.size():
+		_slot_panels[i].custom_minimum_size = slot_size
+		_slot_icons[i].custom_minimum_size = slot_size
+		_slot_icons[i].size = slot_size
+		_slot_icons[i].queue_redraw()
 
 
 func _make_slot_style(selected: bool) -> StyleBoxFlat:
@@ -75,7 +89,11 @@ func _make_slot_style(selected: bool) -> StyleBoxFlat:
 	style.bg_color = Color(0.1, 0.08, 0.16, 0.98)
 	style.border_color = Color(0.62, 0.54, 0.4, 1.0) if not selected else Color(1.0, 0.88, 0.35, 1.0)
 	style.set_border_width_all(2 if selected else 1)
-	style.set_corner_radius_all(3)
+	style.set_corner_radius_all(4)
+	style.content_margin_left = 2.0
+	style.content_margin_top = 2.0
+	style.content_margin_right = 2.0
+	style.content_margin_bottom = 2.0
 	return style
 
 
@@ -84,9 +102,9 @@ func _refresh() -> void:
 	var selected := Inventory.selected_index
 	for i in _slot_icons.size():
 		var icon := _slot_icons[i]
-		var btn := _slot_buttons[i]
+		var slot := _slot_panels[i]
 		var is_selected := i == selected and not items.is_empty()
-		btn.add_theme_stylebox_override("normal", _make_slot_style(is_selected))
+		slot.add_theme_stylebox_override("panel", _make_slot_style(is_selected))
 		if i < items.size():
 			icon.configure(items[i])
 		else:
@@ -108,10 +126,7 @@ func _update_action_buttons() -> void:
 func _update_hint(items: Array[String]) -> void:
 	var summary: Label = $Root/HudPanel/VBox/InventoryLabel
 	if _is_touch:
-		if items.is_empty():
-			summary.text = "Tap slot · Drop / Use"
-		else:
-			summary.text = "Held: %s" % ItemCatalog.get_display_name(Inventory.get_selected_item())
+		summary.text = "Tap slot · Drop / Use" if items.is_empty() else "Held: %s" % ItemCatalog.get_display_name(Inventory.get_selected_item())
 	elif items.is_empty():
 		summary.text = "Tab · R drop · U use"
 	else:
@@ -129,8 +144,11 @@ func _get_player() -> CharacterBody2D:
 	return nodes[0] as CharacterBody2D
 
 
-func _on_slot_pressed(index: int) -> void:
-	Inventory.select_index(index)
+func _on_slot_gui_input(event: InputEvent, index: int) -> void:
+	if event is InputEventMouseButton:
+		var mouse := event as InputEventMouseButton
+		if mouse.button_index == MOUSE_BUTTON_LEFT and mouse.pressed:
+			Inventory.select_index(index)
 
 
 func _on_drop_pressed() -> void:

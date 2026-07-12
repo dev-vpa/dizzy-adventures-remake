@@ -74,21 +74,24 @@ theme_override_constants/separation = 8
 [node name="TitleLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_font_sizes/font_size = 11
 text = "Treasure Island Dizzy"
-text_overrun_behavior = 3
+clip_text = false
+text_overrun_behavior = 0
 
 [node name="LivesLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
+custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.45, 0.42, 1)
 theme_override_font_sizes/font_size = 11
 text = "♥"
 horizontal_alignment = 2
 
-[node name="InventoryRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
+[node name="InventoryRow" type="VBoxContainer" parent="Root/HudPanel/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 3
 
 [node name="InventoryTag" type="Label" parent="Root/HudPanel/VBox/InventoryRow"]
 layout_mode = 2
@@ -98,7 +101,7 @@ text = "Items"
 
 [node name="Slots" type="HBoxContainer" parent="Root/HudPanel/VBox/InventoryRow"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 6
 
 [node name="ActionsHBox" type="HBoxContainer" parent="Root/HudPanel/VBox"]
 visible = false
