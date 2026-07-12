@@ -13,7 +13,7 @@ var _can_continue := false
 
 
 func _ready() -> void:
-	$MarginContainer/VBox/DisclaimerPanel/Margin/DisclaimerLabel.text = DISCLAIMER
+	$MarginContainer/VBox/DisclaimerPanel/ScrollContainer/Margin/DisclaimerLabel.text = DISCLAIMER
 	$MarginContainer/VBox/ContinueButton.disabled = true
 	if PlatformUI.is_touch_device():
 		$MarginContainer/VBox/ContinueButton.custom_minimum_size = Vector2(200, 48)
