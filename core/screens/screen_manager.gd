@@ -8,7 +8,7 @@ const SCREEN_WIDTH := 512
 const SCREEN_HEIGHT := 384
 const EDGE_MARGIN := 8.0
 const SPAWN_INSET := 24.0
-const REENTRY_BLOCK_TIME := 0.75
+const REENTRY_BLOCK_TIME := 1.0
 
 var _config: GameConfig
 var _screens: Dictionary = {}
@@ -33,7 +33,12 @@ func get_start_screen_id() -> String:
 	return ""
 
 
-func load_screen(screen_id: String, container: Node2D, player: Node2D) -> void:
+func load_screen(
+	screen_id: String,
+	container: Node2D,
+	player: Node2D,
+	defer_player_entered: bool = false
+) -> void:
 	if not _screens.has(screen_id):
 		push_error("ScreenManager: unknown screen '%s'." % screen_id)
 		return
@@ -47,10 +52,33 @@ func load_screen(screen_id: String, container: Node2D, player: Node2D) -> void:
 	var instance: Node2D = packed.instantiate()
 	container.add_child(instance)
 
-	if is_instance_valid(player) and player.has_method("on_screen_entered"):
+	if (
+		not defer_player_entered
+		and is_instance_valid(player)
+		and player.has_method("on_screen_entered")
+	):
 		player.call("on_screen_entered", screen_id)
 
 	screen_changed.emit(screen_id)
+
+
+func transition_to(
+	target_id: String,
+	spawn_position: Vector2,
+	container: Node2D,
+	player: Node2D,
+	block_edge: String = ""
+) -> void:
+	if not _screens.has(target_id):
+		push_error("ScreenManager: unknown screen '%s'." % target_id)
+		return
+
+	load_screen(target_id, container, player, true)
+	player.global_position = spawn_position
+	if not block_edge.is_empty():
+		_block_reentry(player, block_edge)
+	if player.has_method("on_screen_entered"):
+		player.call("on_screen_entered", target_id)
 
 
 func try_edge_transition(player: Node2D, container: Node2D) -> void:
@@ -78,20 +106,45 @@ func try_edge_transition(player: Node2D, container: Node2D) -> void:
 
 
 func _transition(direction: String, target_id: String, player: Node2D, container: Node2D) -> void:
-	load_screen(target_id, container, player)
+	var entry_x := player.global_position.x
+	var entry_y := player.global_position.y
+	load_screen(target_id, container, player, true)
+
+	var spawn := Vector2(-1.0, -1.0)
+	if container.get_child_count() > 0:
+		var screen_node := container.get_child(0)
+		if screen_node.has_method("get_spawn_for_entry"):
+			spawn = screen_node.call("get_spawn_for_entry", direction, entry_y)
+
+	if spawn.x >= 0.0:
+		player.global_position = spawn
+	else:
+		match direction:
+			"left":
+				player.global_position.x = SCREEN_WIDTH - EDGE_MARGIN - SPAWN_INSET
+				player.global_position.y = entry_y
+			"right":
+				player.global_position.x = EDGE_MARGIN + SPAWN_INSET
+				player.global_position.y = entry_y
+			"up":
+				player.global_position.y = SCREEN_HEIGHT - EDGE_MARGIN - SPAWN_INSET
+				player.global_position.x = entry_x
+			"down":
+				player.global_position.y = EDGE_MARGIN + SPAWN_INSET
+				player.global_position.x = entry_x
+
 	match direction:
 		"left":
-			player.global_position.x = SCREEN_WIDTH - EDGE_MARGIN - SPAWN_INSET
 			_block_reentry(player, "right")
 		"right":
-			player.global_position.x = EDGE_MARGIN + SPAWN_INSET
 			_block_reentry(player, "left")
 		"up":
-			player.global_position.y = SCREEN_HEIGHT - EDGE_MARGIN - SPAWN_INSET
 			_block_reentry(player, "down")
 		"down":
-			player.global_position.y = EDGE_MARGIN + SPAWN_INSET
 			_block_reentry(player, "up")
+
+	if player.has_method("on_screen_entered"):
+		player.call("on_screen_entered", target_id)
 
 
 func _edge_blocked(player: Node2D, edge: String) -> bool:

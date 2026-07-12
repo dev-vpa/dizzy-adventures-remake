@@ -26,3 +26,15 @@ func request_edge_transition(body: CharacterBody2D) -> void:
 		return
 	ScreenManager.try_edge_transition(body, screen_container)
 	_transition_cooldown = 0.6
+
+
+func request_door_transition(
+	body: CharacterBody2D,
+	target_id: String,
+	spawn_position: Vector2,
+	block_edge: String = ""
+) -> void:
+	if _transition_cooldown > 0.0:
+		return
+	ScreenManager.transition_to(target_id, spawn_position, screen_container, body, block_edge)
+	_transition_cooldown = 0.6
