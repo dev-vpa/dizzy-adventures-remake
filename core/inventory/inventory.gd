@@ -3,8 +3,11 @@ extends Node
 ## Inventory with configurable slot count per game.
 
 signal inventory_changed
+signal selection_changed
+signal item_used(item_id: String)
 
 var max_slots: int = 1
+var selected_index: int = 0
 var _items: Array[String] = []
 
 
@@ -15,7 +18,9 @@ func configure(slots: int) -> void:
 
 func clear() -> void:
 	_items.clear()
+	selected_index = 0
 	inventory_changed.emit()
+	selection_changed.emit()
 
 
 func has_item(item_id: String) -> bool:
@@ -30,20 +35,51 @@ func get_items() -> Array[String]:
 	return _items.duplicate()
 
 
+func get_selected_item() -> String:
+	if _items.is_empty():
+		return ""
+	selected_index = clampi(selected_index, 0, _items.size() - 1)
+	return _items[selected_index]
+
+
+func select_next() -> void:
+	if _items.is_empty():
+		selected_index = 0
+	else:
+		selected_index = (selected_index + 1) % _items.size()
+	selection_changed.emit()
+
+
 func try_pick_up(item_id: String) -> bool:
 	if item_id.is_empty() or has_item(item_id):
 		return false
 	if is_full():
 		return false
 	_items.append(item_id)
+	if _items.size() == 1:
+		selected_index = 0
 	inventory_changed.emit()
 	return true
 
 
-func try_drop(item_id: String) -> bool:
-	var index := _items.find(item_id)
-	if index == -1:
-		return false
-	_items.remove_at(index)
+func try_drop_selected() -> String:
+	if _items.is_empty():
+		return ""
+	selected_index = clampi(selected_index, 0, _items.size() - 1)
+	var item_id := _items[selected_index]
+	_items.remove_at(selected_index)
+	if _items.is_empty():
+		selected_index = 0
+	elif selected_index >= _items.size():
+		selected_index = _items.size() - 1
 	inventory_changed.emit()
+	selection_changed.emit()
+	return item_id
+
+
+func try_use_selected() -> bool:
+	var item_id := get_selected_item()
+	if item_id.is_empty():
+		return false
+	item_used.emit(item_id)
 	return true

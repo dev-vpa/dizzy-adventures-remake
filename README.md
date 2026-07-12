@@ -19,9 +19,19 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 | Treasure Island Dizzy | In development (prototype) |
 | Other adventure games | Planned |
 
-**Current milestone:** prototype loop with polished HUD (inventory panel, no level debug text).
+**Current milestone:** Phase 1 complete — pixel Dizzy, beach backdrop, inventory slots with drop/use, lives (TI: 1 life, fall = game over).
 
-## Download
+## Controls
+
+| Action | Keys |
+|--------|------|
+| Move | A/D or ←/→ |
+| Jump | Space or ↑ |
+| Pick up | E or Enter |
+| Cycle inventory | Tab |
+| Drop item | R |
+| Use item | U |
+| Menu | HUD **Menu** button or Esc (menus) |
 
 Releases (Windows, Linux, Web, Android) will be published on [GitHub Releases](https://github.com/Slider540/dizzy-adventures-remake/releases) when available.  
 The game is and will remain **free** — no purchases, no ads, no royalties.

@@ -6,6 +6,7 @@ extends Resource
 @export var id: String = ""
 @export var title: String = ""
 @export var description: String = ""
+@export var icon: Texture2D
 @export var inventory_slots: int = 1
 @export var starting_lives: int = 3
 @export var starting_screen_id: String = "start"

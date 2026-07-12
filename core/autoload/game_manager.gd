@@ -43,6 +43,7 @@ func start_game(config: GameConfig) -> void:
 	active_config = config
 	state = State.LOADING
 	Inventory.configure(config.inventory_slots)
+	Lives.configure(config.starting_lives)
 	_change_scene(LOADING_SCENE)
 
 
@@ -59,6 +60,7 @@ func enter_gameplay() -> void:
 func quit_to_main_menu() -> void:
 	ScreenManager.reset()
 	Inventory.clear()
+	Lives.reset()
 	_show_main_menu()
 
 

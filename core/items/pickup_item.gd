@@ -5,13 +5,13 @@ extends Area2D
 @export var item_id: String = "placeholder_item"
 @export var display_name: String = "Item"
 
-@onready var label: Label = $Label
+@onready var item_sprite: ItemSprite = $ItemSprite
 
 
 func _ready() -> void:
 	add_to_group("pickup")
-	if label:
-		label.text = display_name
+	if item_sprite:
+		item_sprite.configure(item_id)
 
 
 func try_pick_up() -> bool:
