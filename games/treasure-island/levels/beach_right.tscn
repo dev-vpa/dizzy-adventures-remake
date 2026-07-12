@@ -42,10 +42,3 @@ offset_top = -24.0
 offset_right = 32.0
 offset_bottom = 24.0
 color = Color(0.5, 0.5, 0.55, 1)
-
-[node name="Hint" type="Label" parent="."]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 496.0
-offset_bottom = 40.0
-text = "Screen 2 — walk left to return"

@@ -19,7 +19,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 | Treasure Island Dizzy | In development (prototype) |
 | Other adventure games | Planned |
 
-**Current milestone:** one screen, jump, one inventory item, transition to an adjacent screen.
+**Current milestone:** prototype loop with polished HUD (inventory panel, no level debug text).
 
 ## Download
 
