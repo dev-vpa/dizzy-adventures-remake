@@ -48,6 +48,7 @@ func start_game(config: GameConfig) -> void:
 	Inventory.configure(config.inventory_slots)
 	Lives.configure(config.starting_lives)
 	Collectibles.configure(config.collectible_name, config.collectible_total)
+	WorldState.reset()
 	_change_scene(LOADING_SCENE)
 
 
@@ -66,6 +67,7 @@ func quit_to_main_menu() -> void:
 	Inventory.clear()
 	Lives.reset()
 	Collectibles.reset()
+	WorldState.reset()
 	_show_main_menu()
 
 

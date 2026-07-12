@@ -28,6 +28,7 @@ ScreenManager="*res://core/screens/screen_manager.gd"
 Inventory="*res://core/inventory/inventory.gd"
 Lives="*res://core/autoload/lives.gd"
 Collectibles="*res://core/autoload/collectibles.gd"
+WorldState="*res://core/autoload/world_state.gd"
 
 [display]
 

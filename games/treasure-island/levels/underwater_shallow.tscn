@@ -36,12 +36,14 @@ position = Vector2(180, 320)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
+world_id = "underwater_shallow/coin1"
 
 [node name="Coin2" parent="." instance=ExtResource("3")]
 position = Vector2(360, 300)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
+world_id = "underwater_shallow/coin2"
 
 [node name="SurfaceHint" type="Label" parent="."]
 offset_left = 200.0

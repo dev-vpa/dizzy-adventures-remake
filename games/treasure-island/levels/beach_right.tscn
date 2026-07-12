@@ -49,3 +49,4 @@ position = Vector2(220, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
+world_id = "beach_right/coin"

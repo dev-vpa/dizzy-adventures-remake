@@ -5,6 +5,7 @@ extends Area2D
 @export var item_id: String = "placeholder_item"
 @export var display_name: String = "Item"
 @export var is_collectible: bool = false
+@export var world_id: String = ""
 
 @onready var item_sprite: ItemSprite = $ItemSprite
 @onready var _hint: Label = $HintLabel
@@ -14,7 +15,11 @@ var _player_near := false
 
 func _ready() -> void:
 	add_to_group("pickup")
-	if Inventory.has_item(item_id):
+	var id := _get_world_id()
+	if WorldState.is_collected(id):
+		queue_free()
+		return
+	if not is_collectible and Inventory.has_item(item_id):
 		queue_free()
 		return
 	if item_sprite:
@@ -54,10 +59,20 @@ func _on_body_exited(body: Node2D) -> void:
 func try_pick_up() -> bool:
 	if is_collectible:
 		if Collectibles.try_collect(item_id):
+			WorldState.mark_collected(_get_world_id())
 			queue_free()
 			return true
 		return false
 	if Inventory.try_pick_up(item_id):
+		WorldState.mark_collected(_get_world_id())
 		queue_free()
 		return true
 	return false
+
+
+func _get_world_id() -> String:
+	if not world_id.is_empty():
+		return world_id
+	if ScreenManager.current_screen_id.is_empty():
+		return ""
+	return "%s/%s" % [ScreenManager.current_screen_id, name]

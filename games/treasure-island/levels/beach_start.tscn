@@ -45,3 +45,4 @@ color = Color(0.72, 0.58, 0.32, 1)
 
 [node name="Snorkel" parent="." instance=ExtResource("2")]
 position = Vector2(140, 339)
+world_id = "beach_start/snorkel"

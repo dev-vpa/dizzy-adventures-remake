@@ -50,8 +50,7 @@ position = Vector2(280, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
-
-[node name="UpHint" type="Label" parent="."]
+world_id = "village_path/coin"
 offset_left = 220.0
 offset_top = 8.0
 offset_right = 292.0
