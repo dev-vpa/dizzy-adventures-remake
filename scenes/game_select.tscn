@@ -2,23 +2,30 @@
 
 [ext_resource type="Script" path="res://scenes/game_select.gd" id="1"]
 [ext_resource type="Script" path="res://scenes/game_select_decor.gd" id="2"]
-[ext_resource type="Script" path="res://core/ui/game_select_icon.gd" id="3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
-bg_color = Color(0.1, 0.08, 0.18, 0.88)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play"]
+bg_color = Color(0.82, 0.28, 0.1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.55, 0.48, 0.38, 0.85)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-content_margin_left = 14.0
-content_margin_top = 10.0
-content_margin_right = 14.0
-content_margin_bottom = 10.0
+border_color = Color(1, 0.88, 0.35, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_hover"]
+bg_color = Color(0.92, 0.36, 0.14, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.55, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back"]
 bg_color = Color(0.22, 0.17, 0.28, 1)
@@ -122,7 +129,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.82, 0.74, 0.58, 1)
 theme_override_font_sizes/font_size = 11
-text = "Choose where Dizzy washes ashore next"
+text = "Pick an adventure, then press Play"
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBox"]
@@ -133,47 +140,43 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="InfoPanel" type="PanelContainer" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(0, 80)
+[node name="DetailSection" type="VBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_info")
-
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/InfoPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/InfoPanel/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="InfoIcon" type="Control" parent="MarginContainer/VBox/InfoPanel/Margin/HBox"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("3")
-
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/InfoPanel/Margin/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="Description" type="Label" parent="MarginContainer/VBox/InfoPanel/Margin/HBox/VBox"]
+[node name="AboutLabel" type="Label" parent="MarginContainer/VBox/DetailSection"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.62, 0.56, 0.44, 1)
+theme_override_font_sizes/font_size = 10
+text = "About this adventure"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="MarginContainer/VBox/DetailSection"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.84, 0.68, 1)
 theme_override_font_sizes/font_size = 12
 text = "..."
 autowrap_mode = 2
+horizontal_alignment = 1
 
-[node name="Hint" type="Label" parent="MarginContainer/VBox/InfoPanel/Margin/HBox/VBox"]
+[node name="Hint" type="Label" parent="MarginContainer/VBox/DetailSection"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.62, 0.58, 0.48, 1)
+theme_override_colors/font_color = Color(0.58, 0.54, 0.44, 1)
 theme_override_font_sizes/font_size = 10
-text = "Click to play  ·  Enter — play  ·  Esc — back"
-horizontal_alignment = 0
+text = "Select an adventure above, then press Play"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBox"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.98, 0.92, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.95, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_play")
+theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_play_hover")
+text = "Play"
 
 [node name="BackButton" type="Button" parent="MarginContainer/VBox"]
 custom_minimum_size = Vector2(160, 36)
@@ -187,4 +190,5 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_back_hover")
 text = "Back"
 
+[connection signal="pressed" from="MarginContainer/VBox/PlayButton" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBox/BackButton" to="." method="_on_back_pressed"]

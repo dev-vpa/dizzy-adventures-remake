@@ -2,22 +2,23 @@ extends Control
 
 var _time: float = 0.0
 var _selected_card: PanelContainer
+var _selected_config: GameConfig
 var _style_card_normal: StyleBoxFlat
 var _style_card_selected: StyleBoxFlat
 var _style_card_hover: StyleBoxFlat
-var _info_icon: GameSelectIcon
 var _title: Label
 var _description: Label
 var _hint: Label
+var _play_button: Button
 var _ui_tween: Tween
 
 
 func _ready() -> void:
 	modulate = Color.WHITE
 	_title = $MarginContainer/VBox/Title
-	_description = $MarginContainer/VBox/InfoPanel/Margin/HBox/VBox/Description
-	_hint = $MarginContainer/VBox/InfoPanel/Margin/HBox/VBox/Hint
-	_info_icon = $MarginContainer/VBox/InfoPanel/Margin/HBox/InfoIcon
+	_description = $MarginContainer/VBox/DetailSection/Description
+	_hint = $MarginContainer/VBox/DetailSection/Hint
+	_play_button = $MarginContainer/VBox/PlayButton
 	_build_card_styles()
 	_populate_cards()
 	_apply_touch_layout()
@@ -30,6 +31,7 @@ func _apply_touch_layout() -> void:
 		return
 	var back: Button = $MarginContainer/VBox/BackButton
 	back.custom_minimum_size = Vector2(180, PlatformUI.MIN_TOUCH_SIZE)
+	_play_button.custom_minimum_size = Vector2(220, PlatformUI.MIN_TOUCH_SIZE)
 
 
 func _process(delta: float) -> void:
@@ -142,9 +144,11 @@ func _select_card(config: GameConfig, card: PanelContainer, animate: bool = true
 		_selected_card.scale = Vector2.ONE
 
 	_selected_card = card
+	_selected_config = config
 	card.add_theme_stylebox_override("panel", _style_card_selected.duplicate())
 	_set_card_icon_active(card, true)
-	_update_info_panel(config, animate)
+	_update_detail_panel(animate)
+	_update_play_button()
 
 	if animate:
 		_bounce_card(card)
@@ -158,32 +162,45 @@ func _bounce_card(card: PanelContainer) -> void:
 	tween.tween_property(card, "scale", Vector2.ONE, 0.18)
 
 
-func _update_info_panel(config: GameConfig, animate: bool) -> void:
-	_info_icon.configure(config)
-	_info_icon.set_active(true)
-	_description.text = config.description if not config.description.is_empty() else "Adventure awaits!"
+func _update_detail_panel(animate: bool) -> void:
+	if _selected_config == null:
+		_description.text = "No adventures available yet."
+		_play_button.disabled = true
+		return
+
+	_description.text = (
+		_selected_config.description
+		if not _selected_config.description.is_empty()
+		else "Adventure awaits!"
+	)
 	_update_hints()
 
 	if not animate:
 		_description.modulate = Color.WHITE
-		_info_icon.modulate = Color.WHITE
 		return
 
 	if _ui_tween and _ui_tween.is_valid():
 		_ui_tween.kill()
 	_description.modulate = Color(1, 1, 1, 0)
-	_info_icon.modulate = Color(1, 1, 1, 0)
-	_ui_tween = create_tween().set_parallel(true)
-	_ui_tween.tween_property(_description, "modulate:a", 1.0, 0.28).set_ease(Tween.EASE_OUT)
-	_ui_tween.tween_property(_info_icon, "modulate:a", 1.0, 0.28).set_ease(Tween.EASE_OUT)
+	_ui_tween = create_tween()
+	_ui_tween.tween_property(_description, "modulate:a", 1.0, 0.22).set_ease(Tween.EASE_OUT)
+
+
+func _update_play_button() -> void:
+	var has_selection := _selected_config != null
+	_play_button.disabled = not has_selection
+	if has_selection:
+		_play_button.text = "Play — %s" % _selected_config.title
+	else:
+		_play_button.text = "Play"
 
 
 func _update_hints() -> void:
 	if _hint == null:
 		return
 	_hint.text = PlatformUI.hint_text(
-		"Click to play  ·  Enter — play  ·  Esc — back",
-		"Tap card to play  ·  Back below"
+		"Click a card to select  ·  Enter — play  ·  Esc — back",
+		"Tap a card, then Play below"
 	)
 
 
@@ -204,6 +221,8 @@ func _pulse_selected_card() -> void:
 
 
 func _start_game(config: GameConfig) -> void:
+	if config == null:
+		return
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.22)
 	await tween.finished
@@ -215,9 +234,7 @@ func _on_card_gui_input(event: InputEvent, config: GameConfig, card: PanelContai
 		var mouse := event as InputEventMouseButton
 		if mouse.button_index == MOUSE_BUTTON_LEFT and mouse.pressed:
 			card.grab_focus()
-			_start_game(config)
-	elif event.is_action_pressed("ui_accept"):
-		_start_game(config)
+			_select_card(config, card)
 
 
 func _on_card_focused(config: GameConfig, card: PanelContainer) -> void:
@@ -236,8 +253,16 @@ func _on_card_unhovered(card: PanelContainer) -> void:
 	card.add_theme_stylebox_override("panel", _style_card_normal.duplicate())
 
 
+func _on_play_pressed() -> void:
+	if _selected_config:
+		_start_game(_selected_config)
+
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_accept") and _selected_config and not _play_button.disabled:
+		_on_play_pressed()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_cancel"):
 		_on_back_pressed()
 		get_viewport().set_input_as_handled()
 
