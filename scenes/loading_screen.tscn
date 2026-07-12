@@ -106,29 +106,25 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_disclaimer_panel")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBox/DisclaimerPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/DisclaimerPanel"]
 layout_mode = 2
 size_flags_vertical = 3
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 3
-
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/DisclaimerPanel/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 12
 
-[node name="DisclaimerLabel" type="Label" parent="MarginContainer/VBox/DisclaimerPanel/ScrollContainer/Margin"]
+[node name="DisclaimerLabel" type="Label" parent="MarginContainer/VBox/DisclaimerPanel/Margin"]
 custom_minimum_size = Vector2(392, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.9, 0.84, 0.68, 1)
 theme_override_font_sizes/font_size = 13
 text = "Disclaimer"
 autowrap_mode = 3
 horizontal_alignment = 1
+vertical_alignment = 0
 
 [node name="ContinueButton" type="Button" parent="MarginContainer/VBox"]
 custom_minimum_size = Vector2(200, 40)

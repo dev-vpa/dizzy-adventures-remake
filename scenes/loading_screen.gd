@@ -10,14 +10,23 @@ trademarks of Oliver Twins Limited and The Codemasters Software Company
 Limited. All rights reserved."""
 
 var _can_continue := false
+@onready var _disclaimer_label: Label = (
+	$MarginContainer/VBox/DisclaimerPanel/Margin/DisclaimerLabel
+)
 
 
 func _ready() -> void:
-	$MarginContainer/VBox/DisclaimerPanel/ScrollContainer/Margin/DisclaimerLabel.text = DISCLAIMER
+	_disclaimer_label.text = DISCLAIMER
+	call_deferred("_fit_disclaimer_label")
 	$MarginContainer/VBox/ContinueButton.disabled = true
 	if PlatformUI.is_touch_device():
 		$MarginContainer/VBox/ContinueButton.custom_minimum_size = Vector2(200, 48)
 	$StartTimer.start(2.0)
+
+
+func _fit_disclaimer_label() -> void:
+	var min_size := _disclaimer_label.get_minimum_size()
+	_disclaimer_label.custom_minimum_size = Vector2(392, min_size.y)
 
 
 func _unhandled_input(event: InputEvent) -> void:
