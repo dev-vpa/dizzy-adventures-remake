@@ -1,13 +1,20 @@
 extends Node
 
-## Window setup: maximize to current screen; stretch settings handle scaling + letterbox.
+## Window setup for standalone runs. Skips resize when embedded in Godot editor.
 
 
 func _ready() -> void:
-	call_deferred("_setup_window")
+	await get_tree().process_frame
+	_setup_window()
 
 
 func _setup_window() -> void:
-	var screen_index := DisplayServer.window_get_current_screen()
-	DisplayServer.window_set_current_screen(screen_index)
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
+	var root: Window = get_tree().root
+	if root.is_embedded():
+		return
+
+	var screen_index := root.current_screen
+	var usable := DisplayServer.screen_get_usable_rect(screen_index)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	DisplayServer.window_set_size(usable.size)
+	DisplayServer.window_set_position(usable.position)
