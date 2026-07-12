@@ -7,7 +7,6 @@ var _style_card_normal: StyleBoxFlat
 var _style_card_selected: StyleBoxFlat
 var _style_card_hover: StyleBoxFlat
 var _title: Label
-var _description: Label
 var _keyboard_hint: Label
 var _play_button: Button
 var _ui_tween: Tween
@@ -16,7 +15,6 @@ var _ui_tween: Tween
 func _ready() -> void:
 	modulate = Color.WHITE
 	_title = $MarginContainer/VBox/Title
-	_description = $MarginContainer/VBox/DetailSection/Description
 	_keyboard_hint = $ActionsFooter/Margin/VBox/KeyboardHint
 	_play_button = $ActionsFooter/Margin/VBox/ActionsRow/PlayButton
 	_build_card_styles()
@@ -52,10 +50,10 @@ func _build_card_styles() -> void:
 	_style_card_normal.border_color = Color(0.45, 0.4, 0.32, 1.0)
 	_style_card_normal.set_border_width_all(2)
 	_style_card_normal.set_corner_radius_all(6)
-	_style_card_normal.content_margin_left = 10.0
-	_style_card_normal.content_margin_top = 8.0
+	_style_card_normal.content_margin_left = 12.0
+	_style_card_normal.content_margin_top = 10.0
 	_style_card_normal.content_margin_right = 12.0
-	_style_card_normal.content_margin_bottom = 8.0
+	_style_card_normal.content_margin_bottom = 10.0
 
 	_style_card_selected = _style_card_normal.duplicate() as StyleBoxFlat
 	_style_card_selected.bg_color = Color(0.22, 0.16, 0.32, 0.98)
@@ -87,9 +85,13 @@ func _create_game_card(config: GameConfig) -> PanelContainer:
 	card.add_theme_stylebox_override("panel", _style_card_normal.duplicate())
 	card.set_meta("config", config)
 
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 8)
+	card.add_child(content)
+
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
-	card.add_child(row)
+	content.add_child(row)
 
 	var icon := GameSelectIcon.new()
 	icon.custom_minimum_size = Vector2(52, 52)
@@ -114,6 +116,17 @@ func _create_game_card(config: GameConfig) -> PanelContainer:
 	stats.add_theme_color_override("font_color", Color(0.78, 0.72, 0.58, 1.0))
 	stats.add_theme_font_size_override("font_size", 11)
 	text_col.add_child(stats)
+
+	var description := Label.new()
+	description.text = (
+		config.description if not config.description.is_empty() else "Adventure awaits!"
+	)
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	description.add_theme_color_override("font_color", Color(0.84, 0.78, 0.64, 1.0))
+	description.add_theme_font_size_override("font_size", 11)
+	description.visible = false
+	content.add_child(description)
+	card.set_meta("description", description)
 
 	card.gui_input.connect(_on_card_gui_input.bind(config, card))
 	card.focus_entered.connect(_on_card_focused.bind(config, card))
@@ -143,17 +156,27 @@ func _set_card_icon_active(card: PanelContainer, active: bool) -> void:
 	icon.set_active(active)
 
 
+func _set_card_description_visible(card: PanelContainer, visible: bool) -> void:
+	if not card.has_meta("description"):
+		return
+	var description: Label = card.get_meta("description")
+	description.visible = visible
+	if visible:
+		description.modulate = Color.WHITE
+
+
 func _select_card(config: GameConfig, card: PanelContainer, animate: bool = true) -> void:
 	if _selected_card and is_instance_valid(_selected_card):
 		_selected_card.add_theme_stylebox_override("panel", _style_card_normal.duplicate())
 		_set_card_icon_active(_selected_card, false)
+		_set_card_description_visible(_selected_card, false)
 		_selected_card.scale = Vector2.ONE
 
 	_selected_card = card
 	_selected_config = config
 	card.add_theme_stylebox_override("panel", _style_card_selected.duplicate())
 	_set_card_icon_active(card, true)
-	_update_detail_panel(animate)
+	_show_card_description(card, animate)
 	_update_play_button()
 
 	if animate:
@@ -168,27 +191,26 @@ func _bounce_card(card: PanelContainer) -> void:
 	tween.tween_property(card, "scale", Vector2.ONE, 0.18)
 
 
-func _update_detail_panel(animate: bool) -> void:
+func _show_card_description(card: PanelContainer, animate: bool) -> void:
 	if _selected_config == null:
-		_description.text = "No adventures available yet."
 		_play_button.disabled = true
 		return
 
-	_description.text = (
-		_selected_config.description
-		if not _selected_config.description.is_empty()
-		else "Adventure awaits!"
-	)
+	if not card.has_meta("description"):
+		return
+
+	var description: Label = card.get_meta("description")
+	description.visible = true
 
 	if not animate:
-		_description.modulate = Color.WHITE
+		description.modulate = Color.WHITE
 		return
 
 	if _ui_tween and _ui_tween.is_valid():
 		_ui_tween.kill()
-	_description.modulate = Color(1, 1, 1, 0)
+	description.modulate = Color(1, 1, 1, 0)
 	_ui_tween = create_tween()
-	_ui_tween.tween_property(_description, "modulate:a", 1.0, 0.22).set_ease(Tween.EASE_OUT)
+	_ui_tween.tween_property(description, "modulate:a", 1.0, 0.22).set_ease(Tween.EASE_OUT)
 
 
 func _update_play_button() -> void:
