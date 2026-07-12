@@ -57,7 +57,7 @@ Each adventure game lives under `games/<slug>/` with its own levels and config. 
 
 ## Display
 
-Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). The window opens at **1920×1080 (FHD)** with **3× integer scaling** (1536×1152 game area) — crisp pixels, no blur. Narrow pillarbox bars on left/right are normal for 4:3 on 16:9. Game logic and flick-screens stay in 512×384 coordinates.
+Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). The window opens at **1920×1080 (FHD)** with **integer scaling** — Godot picks the largest whole scale that fits (**×2** → **1024×768** game area), so pixels stay crisp. Black bars around the 4:3 image on a 16:9 screen are normal (×3 would be 1536×**1152**, which exceeds 1080p height). Game logic and flick-screens stay in 512×384 coordinates.
 
 ## Export targets
 
