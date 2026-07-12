@@ -1,10 +1,9 @@
 extends CanvasLayer
 
-## In-game HUD: title, lives, inventory slots, menu. Touch-friendly slot taps + Drop/Use on mobile.
+## In-game HUD: title, lives, inventory slots, menu.
 
 var _slot_buttons: Array[Button] = []
-var _slot_icons: Array[ItemSprite] = []
-var _slot_empty_labels: Array[Label] = []
+var _slot_icons: Array[HudItemIcon] = []
 var _is_touch: bool = false
 var _hud_panel: PanelContainer
 
@@ -12,6 +11,7 @@ var _hud_panel: PanelContainer
 func _ready() -> void:
 	_is_touch = PlatformUI.is_touch_device()
 	_hud_panel = $Root/HudPanel
+	_hud_panel.clip_contents = true
 	if GameManager.active_config:
 		$Root/HudPanel/VBox/HeaderRow/TitleLabel.text = GameManager.active_config.title
 	$Root/HudPanel/VBox/ActionsHBox.visible = _is_touch
@@ -28,8 +28,9 @@ func _fit_panel_size() -> void:
 	if _hud_panel == null:
 		return
 	var min_size := _hud_panel.get_combined_minimum_size()
-	_hud_panel.size = min_size
-	_hud_panel.position = Vector2(8.0, 8.0)
+	if min_size.x > 4.0 and min_size.y > 4.0:
+		_hud_panel.size = min_size
+		_hud_panel.position = Vector2(8.0, 8.0)
 
 
 func _build_slots() -> void:
@@ -38,9 +39,8 @@ func _build_slots() -> void:
 		child.queue_free()
 	_slot_buttons.clear()
 	_slot_icons.clear()
-	_slot_empty_labels.clear()
 
-	var slot_size := Vector2(30, 30)
+	var slot_size := Vector2(28, 28)
 	if _is_touch:
 		slot_size = Vector2(PlatformUI.MIN_TOUCH_SIZE, PlatformUI.MIN_TOUCH_SIZE)
 
@@ -48,36 +48,24 @@ func _build_slots() -> void:
 		var slot_btn := Button.new()
 		slot_btn.flat = true
 		slot_btn.focus_mode = Control.FOCUS_NONE
+		slot_btn.clip_contents = true
 		slot_btn.custom_minimum_size = slot_size
 		slot_btn.add_theme_stylebox_override("normal", _make_slot_style(false))
 		slot_btn.add_theme_stylebox_override("hover", _make_slot_style(true))
 		slot_btn.add_theme_stylebox_override("pressed", _make_slot_style(true))
 		slot_btn.pressed.connect(_on_slot_pressed.bind(i))
 
-		var center := CenterContainer.new()
-		center.custom_minimum_size = slot_size - Vector2(4, 4)
-		center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		slot_btn.add_child(center)
-
-		var icon := ItemSprite.new()
-		icon.bob_enabled = false
-		icon.scale = Vector2(0.85, 0.85)
-		icon.visible = false
-		center.add_child(icon)
-
-		var empty_mark := Label.new()
-		empty_mark.text = str(i + 1)
-		empty_mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		empty_mark.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		empty_mark.add_theme_color_override("font_color", Color(0.42, 0.38, 0.32, 1.0))
-		empty_mark.add_theme_font_size_override("font_size", 10)
-		empty_mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		center.add_child(empty_mark)
+		var icon := HudItemIcon.new()
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon.custom_minimum_size = slot_size - Vector2(2, 2)
+		icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		icon.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		icon.set_empty_label(str(i + 1))
+		slot_btn.add_child(icon)
 
 		container.add_child(slot_btn)
 		_slot_buttons.append(slot_btn)
 		_slot_icons.append(icon)
-		_slot_empty_labels.append(empty_mark)
 
 	call_deferred("_fit_panel_size")
 
@@ -97,16 +85,12 @@ func _refresh() -> void:
 	for i in _slot_icons.size():
 		var icon := _slot_icons[i]
 		var btn := _slot_buttons[i]
-		var empty_mark := _slot_empty_labels[i]
 		var is_selected := i == selected and not items.is_empty()
 		btn.add_theme_stylebox_override("normal", _make_slot_style(is_selected))
 		if i < items.size():
 			icon.configure(items[i])
-			icon.visible = true
-			empty_mark.visible = false
 		else:
-			icon.visible = false
-			empty_mark.visible = true
+			icon.configure("")
 
 	_update_action_buttons()
 	_update_hint(items)
@@ -127,19 +111,15 @@ func _update_hint(items: Array[String]) -> void:
 		if items.is_empty():
 			summary.text = "Tap slot · Drop / Use"
 		else:
-			var name := ItemCatalog.get_display_name(Inventory.get_selected_item())
-			summary.text = "Held: %s" % name
+			summary.text = "Held: %s" % ItemCatalog.get_display_name(Inventory.get_selected_item())
 	elif items.is_empty():
 		summary.text = "Tab · R drop · U use"
 	else:
-		var name := ItemCatalog.get_display_name(Inventory.get_selected_item())
-		summary.text = "Held: %s · Tab/R/U" % name
+		summary.text = "Held: %s · Tab/R/U" % ItemCatalog.get_display_name(Inventory.get_selected_item())
 
 
 func _refresh_lives() -> void:
-	var label: Label = $Root/HudPanel/VBox/HeaderRow/LivesLabel
-	var heart := "♥" if Lives.current_lives == 1 else "♥".repeat(Lives.current_lives)
-	label.text = heart
+	$Root/HudPanel/VBox/HeaderRow/LivesLabel.text = "♥"
 
 
 func _get_player() -> CharacterBody2D:
