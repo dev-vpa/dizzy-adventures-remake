@@ -16,30 +16,32 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 
 | Part | Status |
 |------|--------|
-| Treasure Island Dizzy | In development (Phase 2 vertical slice — 8 screens) |
+| Treasure Island Dizzy | **Phase 2 complete** — 8-screen vertical slice (playtested) |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 2 complete** — 8-screen vertical slice: snorkel + water hazards, 5 collectible coins, shopkeeper NPC, screen map in `games/treasure-island/data/screen_map.md`. Next: Phase 3 (full TI).
+**Current milestone:** **Phase 2 closed** — playable loop across 8 screens (snorkel, water, 5 coins, shopkeeper NPC). **Next: Phase 3** — full Treasure Island map, all 30 coins, puzzles, win condition.
 
 ### Phase 2 gameplay (Treasure Island)
 
-- **8 screens:** beach_start → beach_right → beach_jetty → village_path → shop → underwater_shallow, cave_entrance
+- **8 screens:** beach_start → beach_right → beach_jetty → village_path → shop_exterior / shop_interior → underwater_shallow, cave_entrance
 - **Snorkel:** pick up on starting beach; required to survive water (Dizzy shows mask when held)
-- **Coins:** 5 coins on the slice map; HUD shows `Coins: N/30`
-- **Shopkeeper:** talk with E / Pick in shop_interior
-- **Water:** shallow water on jetty and underwater screen — instant death without snorkel (1 life)
+- **Coins:** 5 coins on the slice map; HUD shows `Coins: N/30`; collected coins stay collected when revisiting screens
+- **Shop:** enter with **E** at the door on shop_exterior; talk to shopkeeper with **E** inside
+- **Vertical exits:** **↑ / W** — cave (village stump), surface (underwater); **↓ / S** — dive at jetty (left water, snorkel equipped)
+- **Water:** shallow water on jetty — death without snorkel (1 life)
 
 ## Controls
 
 | Action | Keys |
 |--------|------|
 | Move | A/D or ←/→ |
-| Jump | Space or ↑ |
-| Pick up / talk | E or Enter |
+| Jump | Space |
+| Screen up / down | ↑↓ or W/S (cave, dive, surface — stand in marked zone) |
+| Pick up / talk / enter | E or Enter |
 | Cycle inventory | Tab |
 | Drop item | R |
 | Use item | U |
-| Menu | HUD **Menu** button or Esc (menus) |
+| Menu | HUD **Menu** button (Esc closes quit prompt) |
 
 **Touch (Android / mobile):** on-screen **◀ ▶ Pick Jump** buttons; tap inventory slots to select; **Drop** / **Use** buttons in the HUD. The Tab/R/U hints are hidden on touch devices.
 
