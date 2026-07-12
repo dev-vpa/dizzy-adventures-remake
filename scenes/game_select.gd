@@ -8,7 +8,6 @@ var _style_card_selected: StyleBoxFlat
 var _style_card_hover: StyleBoxFlat
 var _title: Label
 var _description: Label
-var _hint: Label
 var _play_button: Button
 var _ui_tween: Tween
 
@@ -17,12 +16,10 @@ func _ready() -> void:
 	modulate = Color.WHITE
 	_title = $MarginContainer/VBox/Title
 	_description = $MarginContainer/VBox/DetailSection/Description
-	_hint = $MarginContainer/VBox/DetailSection/Hint
 	_play_button = $MarginContainer/VBox/ActionsRow/PlayButton
 	_build_card_styles()
 	_populate_cards()
 	_apply_touch_layout()
-	_update_hints()
 	set_process(true)
 
 
@@ -173,7 +170,6 @@ func _update_detail_panel(animate: bool) -> void:
 		if not _selected_config.description.is_empty()
 		else "Adventure awaits!"
 	)
-	_update_hints()
 
 	if not animate:
 		_description.modulate = Color.WHITE
@@ -188,15 +184,6 @@ func _update_detail_panel(animate: bool) -> void:
 
 func _update_play_button() -> void:
 	_play_button.disabled = _selected_config == null
-
-
-func _update_hints() -> void:
-	if _hint == null:
-		return
-	_hint.text = PlatformUI.hint_text(
-		"Click a card to select  ·  Enter — play  ·  Esc — back",
-		"Tap a card, then Play below"
-	)
 
 
 func _animate_title() -> void:

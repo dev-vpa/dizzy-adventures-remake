@@ -175,13 +175,6 @@ text = "..."
 autowrap_mode = 2
 horizontal_alignment = 1
 
-[node name="Hint" type="Label" parent="MarginContainer/VBox/DetailSection"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.58, 0.54, 0.44, 1)
-theme_override_font_sizes/font_size = 10
-text = "Select an adventure above, then press Play"
-horizontal_alignment = 1
-
 [node name="ActionsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 12
