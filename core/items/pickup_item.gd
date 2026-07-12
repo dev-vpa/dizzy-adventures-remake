@@ -13,6 +13,9 @@ var _player_near := false
 
 func _ready() -> void:
 	add_to_group("pickup")
+	if Inventory.has_item(item_id):
+		queue_free()
+		return
 	if item_sprite:
 		item_sprite.configure_for_world(item_id)
 	_update_hint()

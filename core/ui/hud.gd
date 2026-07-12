@@ -56,6 +56,7 @@ func _build_slots() -> void:
 	for i in Inventory.max_slots:
 		var slot := PanelContainer.new()
 		slot.custom_minimum_size = slot_size
+		slot.clip_contents = true
 		slot.mouse_filter = Control.MOUSE_FILTER_STOP
 		slot.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		slot.add_theme_stylebox_override("panel", _make_slot_style(false))
@@ -90,10 +91,6 @@ func _make_slot_style(selected: bool) -> StyleBoxFlat:
 	style.border_color = Color(0.62, 0.54, 0.4, 1.0) if not selected else Color(1.0, 0.88, 0.35, 1.0)
 	style.set_border_width_all(2 if selected else 1)
 	style.set_corner_radius_all(4)
-	style.content_margin_left = 2.0
-	style.content_margin_top = 2.0
-	style.content_margin_right = 2.0
-	style.content_margin_bottom = 2.0
 	return style
 
 
@@ -125,16 +122,23 @@ func _update_action_buttons() -> void:
 
 func _update_hint(items: Array[String]) -> void:
 	var summary: Label = $Root/HudPanel/VBox/InventoryLabel
-	if _is_touch:
-		summary.text = "Tap slot · Drop / Use" if items.is_empty() else "Held: %s" % ItemCatalog.get_display_name(Inventory.get_selected_item())
-	elif items.is_empty():
-		summary.text = "Tab · R drop · U use"
+	if items.is_empty():
+		summary.text = PlatformUI.hint_text("Tab · R drop · U use", "Tap slot · Drop / Use")
 	else:
-		summary.text = "Held: %s · Tab/R/U" % ItemCatalog.get_display_name(Inventory.get_selected_item())
+		var held := ItemCatalog.get_display_name(Inventory.get_selected_item())
+		summary.text = PlatformUI.hint_text(
+			"Held: %s · Tab/R/U" % held,
+			"Held: %s" % held
+		)
 
 
 func _refresh_lives() -> void:
-	$Root/HudPanel/VBox/HeaderRow/LivesLabel.text = "♥"
+	var hearts := ""
+	for i in Lives.current_lives:
+		hearts += "♥"
+	if hearts.is_empty():
+		hearts = "♡"
+	$Root/HudPanel/VBox/HeaderRow/LivesLabel.text = hearts
 
 
 func _get_player() -> CharacterBody2D:

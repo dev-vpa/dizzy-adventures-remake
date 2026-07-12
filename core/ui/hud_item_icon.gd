@@ -16,6 +16,7 @@ func configure(item_id: String) -> void:
 		icon_id = ""
 	else:
 		icon_id = ItemCatalog.get_icon_id(item_id)
+		empty_label = ""
 	queue_redraw()
 
 
@@ -38,11 +39,11 @@ func _draw() -> void:
 			return
 		var font := ThemeDB.fallback_font
 		var font_size := 11
-		var text_size := font.get_string_size(empty_label, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
-		var pos := (size - text_size) * 0.5 + Vector2(0, 1)
+		var color := Color(0.5, 0.45, 0.36, 1.0)
+		var baseline_y := (size.y + font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5
 		draw_string(
-			font, pos, empty_label, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,
-			Color(0.5, 0.45, 0.36, 1.0)
+			font, Vector2(0.0, baseline_y), empty_label,
+			HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, color
 		)
 		return
 
