@@ -31,6 +31,9 @@ func request_action() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not is_inside_tree():
+		return
+
 	if not is_on_floor():
 		velocity.y += GRAVITY * delta
 	else:
@@ -121,6 +124,8 @@ func die_from_hazard() -> void:
 
 
 func _handle_death() -> void:
+	if not is_inside_tree():
+		return
 	var game_over := Lives.lose_life()
 	if game_over:
 		GameManager.quit_to_main_menu()
@@ -131,10 +136,16 @@ func _handle_death() -> void:
 
 
 func _check_screen_edge() -> void:
-	var world := get_tree().get_first_node_in_group("game_world")
+	if not is_inside_tree():
+		return
+	var tree := get_tree()
+	if tree == null:
+		return
+	var world := tree.get_first_node_in_group("game_world")
 	if world and world.has_method("request_edge_transition"):
 		world.call("request_edge_transition", self)
 
 
 func on_screen_entered(_screen_id: String) -> void:
 	_spawn_position = global_position
+	_hazard_cooldown = 0.8

@@ -37,6 +37,7 @@ func load_screen(screen_id: String, container: Node2D, player: Node2D) -> void:
 		return
 
 	for child in container.get_children():
+		container.remove_child(child)
 		child.queue_free()
 
 	current_screen_id = screen_id
@@ -44,7 +45,7 @@ func load_screen(screen_id: String, container: Node2D, player: Node2D) -> void:
 	var instance: Node2D = packed.instantiate()
 	container.add_child(instance)
 
-	if player.has_method("on_screen_entered"):
+	if is_instance_valid(player) and player.has_method("on_screen_entered"):
 		player.call("on_screen_entered", screen_id)
 
 	screen_changed.emit(screen_id)
