@@ -10,6 +10,9 @@ var _cooldown := 0.0
 
 
 func _ready() -> void:
+	collision_layer = 0
+	collision_mask = 2
+	monitoring = true
 	add_to_group("screen_door")
 	body_entered.connect(_on_body_entered)
 
