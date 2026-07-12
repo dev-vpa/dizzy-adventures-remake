@@ -35,8 +35,11 @@ dizzy-adventures-remake/
 ├── games/
 │   └── treasure-island/    # First game: levels, config, game-specific assets
 ├── scenes/                 # Main menu, loading screen, game shell
-├── assets/                 # Legal info for game assets
+├── assets/                 # Legal info and app icons
+│   ├── icons/              # 512×512 pixel-art icons for project & export
+│   └── LICENSE.md          # CC BY-NC 4.0 for game assets
 ├── project.godot
+├── export_presets.cfg      # Windows, Linux, Web, Android export config
 └── LICENSE                 # MIT — source code
 ```
 
@@ -61,7 +64,13 @@ Each adventure game lives under `games/<slug>/` with its own levels and config. 
 | Web | HTML5 |
 | Android | `.apk` |
 
-Export presets are configured in Godot (**Project → Export**). Build artifacts go to `export/` (gitignored).
+Export presets are in `export_presets.cfg` (**Project → Export**). Build artifacts go to `export/` (gitignored).
+
+| Platform | Icon source |
+|----------|-------------|
+| Windows | `assets/icons/app_icon_512.png` (nearest-neighbor scaling) |
+| Linux / Web | Project icon |
+| Android | Main + adaptive foreground: `app_icon_512.png`; adaptive background: `android_background_512.png` |
 
 ## License
 

@@ -6,7 +6,6 @@
 
 # Export
 export/
-export_presets.cfg
 export_credentials.cfg
 *.apk
 *.aab

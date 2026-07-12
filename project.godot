@@ -18,7 +18,7 @@ config/name="Dizzy Adventures Remake"
 config/description="Unofficial fan remake of classic Dizzy adventure games."
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/icons/app_icon_512.png"
 
 [autoload]
 
