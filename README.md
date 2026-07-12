@@ -16,10 +16,18 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 
 | Part | Status |
 |------|--------|
-| Treasure Island Dizzy | In development (prototype) |
+| Treasure Island Dizzy | In development (Phase 2 vertical slice — 8 screens) |
 | Other adventure games | Planned |
 
-**Current milestone:** Phase 1 complete. **Phase 2 in progress** — vertical slice (screen map, 5–10 screens, snorkel + water, coins, NPC stub). See `.cursor/plans/dizzy_adventures_remake.plan.md` (local).
+**Current milestone:** **Phase 2 complete** — 8-screen vertical slice: snorkel + water hazards, 5 collectible coins, shopkeeper NPC, screen map in `games/treasure-island/data/screen_map.md`. Next: Phase 3 (full TI).
+
+### Phase 2 gameplay (Treasure Island)
+
+- **8 screens:** beach_start → beach_right → beach_jetty → village_path → shop → underwater_shallow, cave_entrance
+- **Snorkel:** pick up on starting beach; required to survive water (Dizzy shows mask when held)
+- **Coins:** 5 coins on the slice map; HUD shows `Coins: N/30`
+- **Shopkeeper:** talk with E / Pick in shop_interior
+- **Water:** shallow water on jetty and underwater screen — instant death without snorkel (1 life)
 
 ## Controls
 
@@ -27,7 +35,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 |--------|------|
 | Move | A/D or ←/→ |
 | Jump | Space or ↑ |
-| Pick up | E or Enter |
+| Pick up / talk | E or Enter |
 | Cycle inventory | Tab |
 | Drop item | R |
 | Use item | U |

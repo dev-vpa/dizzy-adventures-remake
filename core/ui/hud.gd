@@ -22,8 +22,10 @@ func _ready() -> void:
 	Inventory.inventory_changed.connect(_refresh)
 	Inventory.selection_changed.connect(_refresh)
 	Lives.lives_changed.connect(_refresh_lives)
+	Collectibles.collectibles_changed.connect(_refresh_coins)
 	_refresh()
 	_refresh_lives()
+	_refresh_coins()
 	call_deferred("_fit_panel_size")
 
 
@@ -140,6 +142,16 @@ func _refresh_lives() -> void:
 	if hearts.is_empty():
 		hearts = "♡"
 	$Root/HudPanel/VBox/HeaderRow/LivesLabel.text = hearts
+
+
+func _refresh_coins() -> void:
+	var coins_label: Label = $Root/HudPanel/VBox/CoinsLabel
+	if Collectibles.total <= 0:
+		coins_label.visible = false
+		return
+	coins_label.visible = true
+	coins_label.text = Collectibles.get_label()
+	call_deferred("_fit_panel_size")
 
 
 func _get_player() -> CharacterBody2D:

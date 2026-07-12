@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://beachright"]
+[gd_scene load_steps=6 format=3 uid="uid://villagepath"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
@@ -7,13 +7,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rock"]
-size = Vector2(64, 48)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hut"]
+size = Vector2(48, 64)
 
-[node name="BeachRight" type="Node2D"]
+[node name="VillagePath" type="Node2D"]
 script = ExtResource("1")
-exit_left = "beach_start"
-exit_right = "beach_jetty"
+exit_left = "beach_jetty"
+exit_right = "shop_exterior"
+exit_up = "cave_entrance"
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -29,23 +30,23 @@ offset_left = -256.0
 offset_top = -16.0
 offset_right = 256.0
 offset_bottom = 16.0
-color = Color(0.78, 0.64, 0.36, 1)
+color = Color(0.72, 0.62, 0.38, 1)
 
-[node name="Rock" type="StaticBody2D" parent="."]
-position = Vector2(320, 328)
+[node name="TreeStump" type="StaticBody2D" parent="."]
+position = Vector2(120, 330)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock"]
-shape = SubResource("RectangleShape2D_rock")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TreeStump"]
+shape = SubResource("RectangleShape2D_hut")
 
-[node name="Visual" type="ColorRect" parent="Rock"]
-offset_left = -32.0
-offset_top = -24.0
-offset_right = 32.0
-offset_bottom = 24.0
-color = Color(0.52, 0.48, 0.42, 1)
+[node name="Visual" type="ColorRect" parent="TreeStump"]
+offset_left = -24.0
+offset_top = -32.0
+offset_right = 24.0
+offset_bottom = 32.0
+color = Color(0.42, 0.32, 0.22, 1)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(220, 339)
+position = Vector2(280, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

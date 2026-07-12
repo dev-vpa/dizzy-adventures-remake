@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://shopexterior"]
+
+[ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(512, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shop"]
+size = Vector2(96, 80)
+
+[node name="ShopExterior" type="Node2D"]
+script = ExtResource("1")
+exit_left = "village_path"
+exit_right = "shop_interior"
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(256, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="ColorRect" parent="Ground"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.74, 0.6, 0.36, 1)
+
+[node name="ShopBuilding" type="StaticBody2D" parent="."]
+position = Vector2(380, 308)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShopBuilding"]
+shape = SubResource("RectangleShape2D_shop")
+
+[node name="Visual" type="ColorRect" parent="ShopBuilding"]
+offset_left = -48.0
+offset_top = -40.0
+offset_right = 48.0
+offset_bottom = 40.0
+color = Color(0.58, 0.38, 0.28, 1)
+
+[node name="DoorHint" type="Label" parent="."]
+offset_left = 340.0
+offset_top = 268.0
+offset_right = 420.0
+offset_bottom = 284.0
+theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 10
+text = "Shop →"
+horizontal_alignment = 1

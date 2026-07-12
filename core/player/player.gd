@@ -18,6 +18,7 @@ var _somersault_rotation: float = 0.0
 var _facing: int = 1
 var _spawn_position: Vector2
 var _action_queued := false
+var _hazard_cooldown := 0.0
 
 
 func _ready() -> void:
@@ -51,8 +52,10 @@ func _physics_process(delta: float) -> void:
 		sprite.rotation += _somersault_rotation * delta
 
 	move_and_slide()
+	if _hazard_cooldown > 0.0:
+		_hazard_cooldown -= delta
 	_handle_inventory_input()
-	_try_pickup_nearby()
+	_try_action_nearby()
 	_check_fall_death()
 	_check_screen_edge()
 
@@ -66,7 +69,7 @@ func _handle_inventory_input() -> void:
 		Inventory.try_use_selected()
 
 
-func _try_pickup_nearby() -> void:
+func _try_action_nearby() -> void:
 	var wants_action := _action_queued or Input.is_action_just_pressed("action")
 	if not wants_action:
 		return
@@ -75,6 +78,9 @@ func _try_pickup_nearby() -> void:
 	for area in pickup_area.get_overlapping_areas():
 		if area.is_in_group("pickup") and area.has_method("try_pick_up"):
 			if area.call("try_pick_up"):
+				return
+		if area.is_in_group("interactable") and area.has_method("try_interact"):
+			if area.call("try_interact"):
 				return
 
 
@@ -105,6 +111,13 @@ func _try_drop_item() -> void:
 func _check_fall_death() -> void:
 	if global_position.y >= FALL_DEATH_Y:
 		_handle_death()
+
+
+func die_from_hazard() -> void:
+	if _hazard_cooldown > 0.0:
+		return
+	_hazard_cooldown = 0.6
+	_handle_death()
 
 
 func _handle_death() -> void:

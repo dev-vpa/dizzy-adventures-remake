@@ -27,6 +27,7 @@ GameManager="*res://core/autoload/game_manager.gd"
 ScreenManager="*res://core/screens/screen_manager.gd"
 Inventory="*res://core/inventory/inventory.gd"
 Lives="*res://core/autoload/lives.gd"
+Collectibles="*res://core/autoload/collectibles.gd"
 
 [display]
 

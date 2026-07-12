@@ -4,6 +4,7 @@ extends Area2D
 
 @export var item_id: String = "placeholder_item"
 @export var display_name: String = "Item"
+@export var is_collectible: bool = false
 
 @onready var item_sprite: ItemSprite = $ItemSprite
 @onready var _hint: Label = $HintLabel
@@ -28,7 +29,11 @@ func _process(_delta: float) -> void:
 func _update_hint() -> void:
 	if _hint == null:
 		return
-	var show := _player_near and not Inventory.is_full()
+	var show := _player_near
+	if not is_collectible:
+		show = show and not Inventory.is_full()
+	elif Collectibles.total > 0 and Collectibles.collected >= Collectibles.total:
+		show = false
 	if PlatformUI.is_touch_device():
 		_hint.text = "Pick"
 	else:
@@ -47,6 +52,11 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func try_pick_up() -> bool:
+	if is_collectible:
+		if Collectibles.try_collect(item_id):
+			queue_free()
+			return true
+		return false
 	if Inventory.try_pick_up(item_id):
 		queue_free()
 		return true

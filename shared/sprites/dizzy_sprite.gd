@@ -12,6 +12,11 @@ var _walk_phase: float = 0.0
 
 
 func _ready() -> void:
+	Inventory.inventory_changed.connect(_on_inventory_changed)
+	queue_redraw()
+
+
+func _on_inventory_changed() -> void:
 	queue_redraw()
 
 
@@ -53,6 +58,9 @@ func _draw() -> void:
 				var draw_x := x if facing > 0 else GRID_W - 1 - x
 				_px(draw_x, y + bob, color)
 
+	if Inventory.has_item("snorkel"):
+		_draw_snorkel_mask(bob)
+
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
@@ -90,6 +98,20 @@ func _body_pixel(
 	if x in range(9, 12) and _y in range(17, 20):
 		return shoe
 	return Color.TRANSPARENT
+
+
+func _draw_snorkel_mask(bob: int) -> void:
+	var mask := Color(0.18, 0.42, 0.72, 1.0)
+	var tube := Color(0.22, 0.58, 0.88, 1.0)
+	var strap := Color(0.82, 0.22, 0.18, 1.0)
+	var y_off := bob
+	for x in range(4, 12):
+		_px(x if facing > 0 else GRID_W - 1 - x, 2 + y_off, mask)
+	for y in range(3, 6):
+		var draw_x := 7 if facing > 0 else GRID_W - 1 - 7
+		_px(draw_x, y + y_off, tube)
+	for x in range(3, 13):
+		_px(x if facing > 0 else GRID_W - 1 - x, 5 + y_off, strap)
 
 
 func _px(x: int, y: int, color: Color) -> void:

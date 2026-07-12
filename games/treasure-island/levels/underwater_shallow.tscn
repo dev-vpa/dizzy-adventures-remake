@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://underwatershallow"]
+
+[ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://waterzone001" path="res://core/world/water_zone.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(512, 32)
+
+[node name="UnderwaterShallow" type="Node2D"]
+script = ExtResource("1")
+exit_up = "beach_jetty"
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(256, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Visual" type="ColorRect" parent="Floor"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.68, 0.54, 0.3, 1)
+
+[node name="FullWater" parent="." instance=ExtResource("4")]
+position = Vector2(0, -48)
+
+[node name="Coin1" parent="." instance=ExtResource("3")]
+position = Vector2(180, 320)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+
+[node name="Coin2" parent="." instance=ExtResource("3")]
+position = Vector2(360, 300)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+
+[node name="SurfaceHint" type="Label" parent="."]
+offset_left = 200.0
+offset_top = 8.0
+offset_right = 312.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0.72, 0.88, 1, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "↑ Surface"
+horizontal_alignment = 1

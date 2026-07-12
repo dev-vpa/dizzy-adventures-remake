@@ -44,6 +44,7 @@ func start_game(config: GameConfig) -> void:
 	state = State.LOADING
 	Inventory.configure(config.inventory_slots)
 	Lives.configure(config.starting_lives)
+	Collectibles.configure(config.collectible_name, config.collectible_total)
 	_change_scene(LOADING_SCENE)
 
 
@@ -61,6 +62,7 @@ func quit_to_main_menu() -> void:
 	ScreenManager.reset()
 	Inventory.clear()
 	Lives.reset()
+	Collectibles.reset()
 	_show_main_menu()
 
 
