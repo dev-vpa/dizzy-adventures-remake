@@ -106,6 +106,7 @@ func _refresh() -> void:
 			icon.configure(items[i])
 		else:
 			icon.configure("")
+			icon.set_empty_label(str(i + 1))
 
 	_update_action_buttons()
 	_update_hint(items)

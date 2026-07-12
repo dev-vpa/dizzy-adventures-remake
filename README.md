@@ -19,7 +19,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 | Treasure Island Dizzy | In development (prototype) |
 | Other adventure games | Planned |
 
-**Current milestone:** Phase 1 complete — pixel Dizzy, beach backdrop, inventory slots with drop/use, lives (TI: 1 life, fall = game over).
+**Current milestone:** Phase 1 complete. **Phase 2 in progress** — vertical slice (screen map, 5–10 screens, snorkel + water, coins, NPC stub). See `.cursor/plans/dizzy_adventures_remake.plan.md` (local).
 
 ## Controls
 
