@@ -18,7 +18,7 @@ func _ready() -> void:
 	_title = $MarginContainer/VBox/Title
 	_description = $MarginContainer/VBox/DetailSection/Description
 	_hint = $MarginContainer/VBox/DetailSection/Hint
-	_play_button = $MarginContainer/VBox/PlayButton
+	_play_button = $MarginContainer/VBox/ActionsRow/PlayButton
 	_build_card_styles()
 	_populate_cards()
 	_apply_touch_layout()
@@ -29,9 +29,9 @@ func _ready() -> void:
 func _apply_touch_layout() -> void:
 	if not PlatformUI.is_touch_device():
 		return
-	var back: Button = $MarginContainer/VBox/BackButton
-	back.custom_minimum_size = Vector2(180, PlatformUI.MIN_TOUCH_SIZE)
-	_play_button.custom_minimum_size = Vector2(220, PlatformUI.MIN_TOUCH_SIZE)
+	var back: Button = $MarginContainer/VBox/ActionsRow/BackButton
+	back.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
+	_play_button.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
 
 
 func _process(delta: float) -> void:
@@ -187,12 +187,7 @@ func _update_detail_panel(animate: bool) -> void:
 
 
 func _update_play_button() -> void:
-	var has_selection := _selected_config != null
-	_play_button.disabled = not has_selection
-	if has_selection:
-		_play_button.text = "Play — %s" % _selected_config.title
-	else:
-		_play_button.text = "Play"
+	_play_button.disabled = _selected_config == null
 
 
 func _update_hints() -> void:
