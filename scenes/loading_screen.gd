@@ -15,7 +15,7 @@ var _can_continue := false
 
 
 func _ready() -> void:
-	$MarginContainer/VBox/DisclaimerLabel.text = DISCLAIMER
+	$MarginContainer/VBox/DisclaimerPanel/DisclaimerLabel.text = DISCLAIMER
 	$MarginContainer/VBox/ContinueButton.disabled = true
 	$StartTimer.start(2.0)
 

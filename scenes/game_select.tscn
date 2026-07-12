@@ -1,6 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://gameselect001"]
+[gd_scene load_steps=5 format=3 uid="uid://gameselect001"]
 
 [ext_resource type="Script" path="res://scenes/game_select.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_list"]
+bg_color = Color(0.12, 0.1, 0.2, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.48, 0.38, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back"]
+bg_color = Color(0.22, 0.17, 0.28, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.48, 0.38, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="GameSelect" type="Control"]
 layout_mode = 3
@@ -18,7 +42,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.08, 0.1, 0.18, 1)
+color = Color(0.14, 0.11, 0.24, 1)
+
+[node name="SkyGlow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 220.0
+grow_horizontal = 2
+color = Color(0.2, 0.28, 0.48, 0.55)
+
+[node name="SandBar" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.55, 0.42, 0.24, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -38,6 +81,10 @@ theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0.45, 0.12, 0.05, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 22
 text = "Select Adventure"
 horizontal_alignment = 1
@@ -46,11 +93,20 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.62, 1)
+theme_override_colors/font_selected_color = Color(1, 0.95, 0.55, 1)
+theme_override_colors/font_hovered_color = Color(1, 0.92, 0.7, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_list")
 
 [node name="BackButton" type="Button" parent="MarginContainer/VBox"]
 custom_minimum_size = Vector2(160, 36)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_back")
+theme_override_styles/hover = SubResource("StyleBoxFlat_back")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_back")
 text = "Back"
 
 [connection signal="item_activated" from="MarginContainer/VBox/GameList" to="." method="_on_game_list_item_activated"]
