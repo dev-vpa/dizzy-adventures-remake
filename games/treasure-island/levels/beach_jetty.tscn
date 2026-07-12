@@ -18,6 +18,8 @@ exit_right = "village_path"
 exit_down = "underwater_shallow"
 use_exit_down_zone = true
 exit_down_zone = Rect2(4, 328, 176, 56)
+override_spawn_from_south = true
+spawn_from_south = Vector2(90, 350)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")

@@ -117,7 +117,7 @@ func try_directional_transition(player: CharacterBody2D, container: Node2D) -> b
 
 	if Input.is_action_just_pressed("move_up") and exits.has("up") and not _edge_blocked(player, "up"):
 		if screen_node.has_method("point_in_up_exit_zone") and screen_node.call("point_in_up_exit_zone", pos):
-			_transition("up", exits["up"], player, container)
+			_transition("up", exits["up"], player, container, false)
 			return true
 
 	if Input.is_action_just_pressed("move_down") and exits.has("down") and not _edge_blocked(player, "down"):
@@ -126,7 +126,7 @@ func try_directional_transition(player: CharacterBody2D, container: Node2D) -> b
 		if screen_node.has_method("point_in_down_exit_zone") and screen_node.call("point_in_down_exit_zone", pos):
 			if not _can_use_down_exit(exits["down"], player):
 				return false
-			_transition("down", exits["down"], player, container)
+			_transition("down", exits["down"], player, container, false)
 			return true
 
 	return false
@@ -169,7 +169,13 @@ func clamp_player_to_bounds(player: Node2D, container: Node2D) -> void:
 			player.velocity.x = 0.0
 
 
-func _transition(direction: String, target_id: String, player: Node2D, container: Node2D) -> void:
+func _transition(
+	direction: String,
+	target_id: String,
+	player: Node2D,
+	container: Node2D,
+	block_reentry: bool = true
+) -> void:
 	var entry_x := player.global_position.x
 	var entry_y := player.global_position.y
 	load_screen(target_id, container, player, true)
@@ -184,6 +190,8 @@ func _transition(direction: String, target_id: String, player: Node2D, container
 		player.global_position = spawn
 		if direction == "left" or direction == "right":
 			player.global_position.y = SPAWN_FLOOR_Y
+		elif direction == "up" or direction == "down":
+			player.global_position.y = spawn.y if spawn.y >= 0.0 else SPAWN_FLOOR_Y
 	else:
 		match direction:
 			"left":
@@ -201,15 +209,16 @@ func _transition(direction: String, target_id: String, player: Node2D, container
 
 	_reset_player_motion(player)
 
-	match direction:
-		"left":
-			_block_reentry(player, "right")
-		"right":
-			_block_reentry(player, "left")
-		"up":
-			_block_reentry(player, "down")
-		"down":
-			_block_reentry(player, "up")
+	if block_reentry:
+		match direction:
+			"left":
+				_block_reentry(player, "right")
+			"right":
+				_block_reentry(player, "left")
+			"up":
+				_block_reentry(player, "down")
+			"down":
+				_block_reentry(player, "up")
 
 	if player.has_method("on_screen_entered"):
 		player.call("on_screen_entered", target_id)

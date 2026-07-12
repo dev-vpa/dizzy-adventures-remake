@@ -162,6 +162,8 @@ func on_screen_entered(_screen_id: String) -> void:
 	velocity = Vector2.ZERO
 	_spawn_position = global_position
 	_hazard_cooldown = 1.0
+	_blocked_edges.erase("up")
+	_blocked_edges.erase("down")
 
 
 func is_edge_blocked(edge: String) -> bool:

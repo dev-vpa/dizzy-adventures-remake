@@ -13,6 +13,8 @@ script = ExtResource("1")
 exit_up = "beach_jetty"
 use_exit_up_zone = true
 exit_up_zone = Rect2(0, 280, 512, 96)
+override_spawn_from_north = true
+spawn_from_north = Vector2(90, 350)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
