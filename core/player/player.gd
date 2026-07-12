@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 		sprite.rotation += _somersault_rotation * delta
 
 	move_and_slide()
+	ScreenManager.clamp_player_to_bounds(self, _screen_container)
 	if _hazard_cooldown > 0.0:
 		_hazard_cooldown -= delta
 	_tick_edge_blocks(delta)
