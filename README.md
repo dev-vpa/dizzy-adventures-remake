@@ -55,6 +55,10 @@ Each adventure game lives under `games/<slug>/` with its own levels and config. 
 2. Open the project folder in Godot 4.
 3. Press **F5** (main scene: `scenes/main.tscn`).
 
+## Display
+
+Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). The window opens at **1024×768** with **integer scaling** — crisp pixels, no blur. Game logic and flick-screens stay in 512×384 coordinates.
+
 ## Export targets
 
 | Platform | Format |
