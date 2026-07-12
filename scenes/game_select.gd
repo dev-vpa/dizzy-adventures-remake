@@ -17,8 +17,8 @@ func _ready() -> void:
 	modulate = Color.WHITE
 	_title = $MarginContainer/VBox/Title
 	_description = $MarginContainer/VBox/DetailSection/Description
-	_keyboard_hint = $MarginContainer/VBox/KeyboardHint
-	_play_button = $MarginContainer/VBox/ActionsRow/PlayButton
+	_keyboard_hint = $ActionsFooter/Margin/VBox/KeyboardHint
+	_play_button = $ActionsFooter/Margin/VBox/ActionsRow/PlayButton
 	_build_card_styles()
 	_populate_cards()
 	_apply_touch_layout()
@@ -29,7 +29,7 @@ func _ready() -> void:
 func _apply_touch_layout() -> void:
 	if not PlatformUI.is_touch_device():
 		return
-	var back: Button = $MarginContainer/VBox/ActionsRow/BackButton
+	var back: Button = $ActionsFooter/Margin/VBox/ActionsRow/BackButton
 	back.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
 	_play_button.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
 
