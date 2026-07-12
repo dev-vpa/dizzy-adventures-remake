@@ -89,7 +89,8 @@ theme_override_constants/margin_bottom = 16
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 14
+alignment = 1
 
 [node name="Title" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
@@ -97,31 +98,27 @@ theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_colors/font_shadow_color = Color(0.45, 0.12, 0.05, 0.8)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 text = "Legal Notice"
 horizontal_alignment = 1
 
 [node name="DisclaimerPanel" type="PanelContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_disclaimer_panel")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBox/DisclaimerPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/DisclaimerPanel"]
 layout_mode = 2
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
 
-[node name="DisclaimerLabel" type="Label" parent="MarginContainer/VBox/DisclaimerPanel/ScrollContainer"]
-custom_minimum_size = Vector2(420, 0)
+[node name="DisclaimerLabel" type="Label" parent="MarginContainer/VBox/DisclaimerPanel/Margin"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.62, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(0.9, 0.84, 0.68, 1)
+theme_override_font_sizes/font_size = 14
 text = "Disclaimer"
 autowrap_mode = 3
 horizontal_alignment = 1
