@@ -1,13 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://shopexterior"]
+[gd_scene load_steps=4 format=3 uid="uid://shopexterior"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_shop"]
-size = Vector2(96, 80)
 
 [node name="ShopExterior" type="Node2D"]
 script = ExtResource("1")
@@ -30,25 +27,41 @@ offset_right = 256.0
 offset_bottom = 16.0
 color = Color(0.74, 0.6, 0.36, 1)
 
-[node name="ShopBuilding" type="StaticBody2D" parent="."]
-position = Vector2(380, 308)
+[node name="ShopFacade" type="Node2D" parent="."]
+position = Vector2(400, 268)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ShopBuilding"]
-shape = SubResource("RectangleShape2D_shop")
-
-[node name="Visual" type="ColorRect" parent="ShopBuilding"]
-offset_left = -48.0
-offset_top = -40.0
-offset_right = 48.0
-offset_bottom = 40.0
+[node name="Visual" type="ColorRect" parent="ShopFacade"]
+offset_left = -56.0
+offset_top = -56.0
+offset_right = 56.0
+offset_bottom = 20.0
 color = Color(0.58, 0.38, 0.28, 1)
 
+[node name="DoorVisual" type="ColorRect" parent="ShopFacade"]
+offset_left = -16.0
+offset_top = 4.0
+offset_right = 16.0
+offset_bottom = 20.0
+color = Color(0.32, 0.22, 0.16, 1)
+
 [node name="DoorHint" type="Label" parent="."]
-offset_left = 340.0
-offset_top = 268.0
-offset_right = 420.0
-offset_bottom = 284.0
-theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 10
-text = "Shop →"
-horizontal_alignment = 1
+offset_left = 280.0
+offset_top = 318.0
+offset_right = 504.0
+offset_bottom = 348.0
+theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0.15, 0.08, 0.05, 0.85)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
+text = "Shop →  walk to the right edge"
+horizontal_alignment = 2
+
+[node name="PathHint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 352.0
+offset_right = 200.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
+theme_override_font_sizes/font_size = 9
+text = "← Village"
