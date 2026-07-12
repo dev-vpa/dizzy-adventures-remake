@@ -114,6 +114,8 @@ func _try_drop_item() -> void:
 
 
 func _check_fall_death() -> void:
+	if _hazard_cooldown > 0.0:
+		return
 	if global_position.y >= FALL_DEATH_Y:
 		_handle_death()
 
@@ -149,8 +151,9 @@ func _check_screen_edge() -> void:
 
 
 func on_screen_entered(_screen_id: String) -> void:
+	velocity = Vector2.ZERO
 	_spawn_position = global_position
-	_hazard_cooldown = 0.8
+	_hazard_cooldown = 1.0
 
 
 func is_edge_blocked(edge: String) -> bool:

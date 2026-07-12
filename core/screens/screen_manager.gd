@@ -9,6 +9,7 @@ const SCREEN_HEIGHT := 384
 const EDGE_MARGIN := 8.0
 const SPAWN_INSET := 24.0
 const REENTRY_BLOCK_TIME := 1.0
+const SPAWN_FLOOR_Y := 350.0
 
 var _config: GameConfig
 var _screens: Dictionary = {}
@@ -74,7 +75,8 @@ func transition_to(
 		return
 
 	load_screen(target_id, container, player, true)
-	player.global_position = spawn_position
+	player.global_position = Vector2(spawn_position.x, SPAWN_FLOOR_Y)
+	_reset_player_motion(player)
 	if not block_edge.is_empty():
 		_block_reentry(player, block_edge)
 	if player.has_method("on_screen_entered"):
@@ -118,20 +120,24 @@ func _transition(direction: String, target_id: String, player: Node2D, container
 
 	if spawn.x >= 0.0:
 		player.global_position = spawn
+		if direction == "left" or direction == "right":
+			player.global_position.y = SPAWN_FLOOR_Y
 	else:
 		match direction:
 			"left":
 				player.global_position.x = SCREEN_WIDTH - EDGE_MARGIN - SPAWN_INSET
-				player.global_position.y = entry_y
+				player.global_position.y = SPAWN_FLOOR_Y
 			"right":
 				player.global_position.x = EDGE_MARGIN + SPAWN_INSET
-				player.global_position.y = entry_y
+				player.global_position.y = SPAWN_FLOOR_Y
 			"up":
 				player.global_position.y = SCREEN_HEIGHT - EDGE_MARGIN - SPAWN_INSET
 				player.global_position.x = entry_x
 			"down":
 				player.global_position.y = EDGE_MARGIN + SPAWN_INSET
 				player.global_position.x = entry_x
+
+	_reset_player_motion(player)
 
 	match direction:
 		"left":
@@ -154,6 +160,11 @@ func _edge_blocked(player: Node2D, edge: String) -> bool:
 func _block_reentry(player: Node2D, edge: String) -> void:
 	if player.has_method("block_edge"):
 		player.call("block_edge", edge, REENTRY_BLOCK_TIME)
+
+
+func _reset_player_motion(player: Node2D) -> void:
+	if player is CharacterBody2D:
+		player.velocity = Vector2.ZERO
 
 
 func _load_screen_registry(levels_path: String) -> void:
