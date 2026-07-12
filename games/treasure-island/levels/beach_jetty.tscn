@@ -16,6 +16,8 @@ script = ExtResource("1")
 exit_left = "beach_right"
 exit_right = "village_path"
 exit_down = "underwater_shallow"
+use_exit_down_zone = true
+exit_down_zone = Rect2(4, 328, 176, 56)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -56,11 +58,15 @@ item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "beach_jetty/coin"
-offset_left = 200.0
+
+[node name="DownHint" type="Label" parent="."]
+offset_left = 8.0
 offset_top = 352.0
-offset_right = 312.0
+offset_right = 192.0
 offset_bottom = 368.0
-theme_override_colors/font_color = Color(0.68, 0.78, 0.92, 1)
+theme_override_colors/font_color = Color(0.12, 0.22, 0.42, 1)
+theme_override_colors/font_shadow_color = Color(0.82, 0.92, 1, 0.55)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 10
-text = "↓ Dive (need snorkel)"
-horizontal_alignment = 1
+text = "↓ Dive here (snorkel equipped)"

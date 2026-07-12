@@ -24,6 +24,9 @@ func _process(delta: float) -> void:
 func request_edge_transition(body: CharacterBody2D) -> void:
 	if _transition_cooldown > 0.0:
 		return
+	if ScreenManager.try_directional_transition(body, screen_container):
+		_transition_cooldown = 0.6
+		return
 	ScreenManager.try_edge_transition(body, screen_container)
 	_transition_cooldown = 0.6
 

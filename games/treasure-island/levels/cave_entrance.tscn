@@ -12,6 +12,8 @@ size = Vector2(80, 56)
 [node name="CaveEntrance" type="Node2D"]
 script = ExtResource("1")
 exit_down = "village_path"
+use_exit_down_zone = true
+exit_down_zone = Rect2(176, 296, 160, 72)
 
 [node name="Sky" type="ColorRect" parent="."]
 offset_right = 512.0
@@ -56,11 +58,13 @@ item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "cave_entrance/coin"
-offset_left = 220.0
-offset_top = 352.0
-offset_right = 292.0
-offset_bottom = 368.0
-theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
+
+[node name="DownHint" type="Label" parent="."]
+offset_left = 196.0
+offset_top = 304.0
+offset_right = 316.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.72, 0.66, 0.52, 1)
 theme_override_font_sizes/font_size = 10
-text = "↓ Path"
+text = "↓ Path (Down arrow)"
 horizontal_alignment = 1

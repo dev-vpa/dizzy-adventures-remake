@@ -102,10 +102,40 @@ func try_edge_transition(player: Node2D, container: Node2D) -> void:
 		_transition("left", exits["left"], player, container)
 	elif pos.x >= SCREEN_WIDTH - EDGE_MARGIN and exits.has("right") and not _edge_blocked(player, "right"):
 		_transition("right", exits["right"], player, container)
-	elif pos.y <= EDGE_MARGIN and exits.has("up") and not _edge_blocked(player, "up"):
-		_transition("up", exits["up"], player, container)
-	elif pos.y >= SCREEN_HEIGHT - EDGE_MARGIN and exits.has("down") and not _edge_blocked(player, "down"):
-		_transition("down", exits["down"], player, container)
+
+
+func try_directional_transition(player: CharacterBody2D, container: Node2D) -> bool:
+	if current_screen_id.is_empty() or container.get_child_count() == 0:
+		return false
+
+	var screen_node := container.get_child(0)
+	if not screen_node.has_method("get_exits"):
+		return false
+
+	var exits: Dictionary = screen_node.call("get_exits")
+	var pos := player.global_position
+
+	if Input.is_action_just_pressed("move_up") and exits.has("up") and not _edge_blocked(player, "up"):
+		if screen_node.has_method("point_in_up_exit_zone") and screen_node.call("point_in_up_exit_zone", pos):
+			_transition("up", exits["up"], player, container)
+			return true
+
+	if Input.is_action_just_pressed("move_down") and exits.has("down") and not _edge_blocked(player, "down"):
+		if not player.is_on_floor():
+			return false
+		if screen_node.has_method("point_in_down_exit_zone") and screen_node.call("point_in_down_exit_zone", pos):
+			if not _can_use_down_exit(exits["down"], player):
+				return false
+			_transition("down", exits["down"], player, container)
+			return true
+
+	return false
+
+
+func _can_use_down_exit(target_id: String, _player: CharacterBody2D) -> bool:
+	if target_id == "underwater_shallow" and not Inventory.has_item("snorkel"):
+		return false
+	return true
 
 
 func clamp_player_to_bounds(player: Node2D, container: Node2D) -> void:

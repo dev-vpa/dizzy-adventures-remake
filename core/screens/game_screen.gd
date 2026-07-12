@@ -18,6 +18,12 @@ extends Node2D
 @export var override_spawn_from_south: bool = false
 @export var spawn_from_south: Vector2 = Vector2(256, 320)
 
+@export_group("Exit Zones")
+@export var use_exit_up_zone: bool = false
+@export var exit_up_zone: Rect2 = Rect2(176, 0, 160, 96)
+@export var use_exit_down_zone: bool = false
+@export var exit_down_zone: Rect2 = Rect2(8, 328, 176, 56)
+
 
 func get_exits() -> Dictionary:
 	var exits := {}
@@ -58,3 +64,15 @@ func get_spawn_for_entry(entry_direction: String, fallback_y: float) -> Vector2:
 	if spawn.y < 0.0:
 		spawn.y = fallback_y
 	return spawn
+
+
+func point_in_up_exit_zone(point: Vector2) -> bool:
+	if use_exit_up_zone:
+		return exit_up_zone.has_point(point)
+	return point.y <= 120.0
+
+
+func point_in_down_exit_zone(point: Vector2) -> bool:
+	if use_exit_down_zone:
+		return exit_down_zone.has_point(point)
+	return point.y >= 336.0
