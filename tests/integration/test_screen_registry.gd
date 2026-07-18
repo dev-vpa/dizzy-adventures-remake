@@ -10,7 +10,7 @@ const TI_CONFIG := preload("res://games/treasure-island/treasure_island_config.t
 static func run() -> void:
 	var levels_path: String = TI_CONFIG.levels_path
 	var ids := LevelRegistryHelper.list_screen_ids(levels_path)
-	TestAssert.true_(ids.size() >= 27, "at least 27 TI level scenes (got %d)" % ids.size())
+	TestAssert.true_(ids.size() >= 40, "at least 40 TI level scenes (got %d)" % ids.size())
 	TestAssert.true_("beach_start" in ids, "beach_start exists")
 	TestAssert.eq(TI_CONFIG.starting_screen_id, "beach_start", "config start screen")
 	for screen_id in ids:
@@ -33,9 +33,11 @@ static func run() -> void:
 		instance.free()
 	var reachable := LevelRegistryHelper.reachable_from("beach_start", levels_path)
 	TestAssert.true_(
-		reachable.size() >= 20,
+		reachable.size() >= 30,
 		"beach_start reaches most of map (got %d screens)" % reachable.size()
 	)
 	TestAssert.true_("tree_snorkel_hut" in reachable, "snorkel hut reachable from start")
 	TestAssert.true_("shop_exterior" in reachable, "shop exterior reachable from start")
+	TestAssert.true_("ocean_entry" in reachable, "ocean reachable from start")
+	TestAssert.true_("taxman_dock" in reachable, "taxman dock reachable from start")
 	TestAssert.true_("shop_interior" in ids, "shop interior scene exists")
