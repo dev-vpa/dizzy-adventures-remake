@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dfle6b3f265aa"]
+
+[ext_resource type="Script" path="res://core/world/hazard_zone.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hazard"]
+size = Vector2(64, 32)
+
+[node name="HazardZone" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+monitorable = false
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(256, 340)
+shape = SubResource("RectangleShape2D_hazard")
+
+[node name="Visual" type="ColorRect" parent="."]
+offset_left = 224.0
+offset_top = 324.0
+offset_right = 288.0
+offset_bottom = 356.0
+color = Color(0.82, 0.18, 0.12, 0.45)
+mouse_filter = 2
