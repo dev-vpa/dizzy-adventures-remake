@@ -1,0 +1,318 @@
+{
+  "game": "treasure-island",
+  "inventory_slots": 3,
+  "items": [
+    {
+      "id": "plant_1",
+      "display_name": "Protected Species",
+      "screen": "beach_start",
+      "purpose": "Hides coin; drop after pickup",
+      "coin_reveals": 1,
+      "essential": false
+    },
+    {
+      "id": "empty_chest",
+      "display_name": "Empty Solid Chest",
+      "screen": "beach_wreck",
+      "purpose": "Stepping stone up cliff",
+      "essential": true,
+      "use_on": "cliff_ascent"
+    },
+    {
+      "id": "plant_2",
+      "display_name": "Protected Species",
+      "screen": "bridge_approach",
+      "purpose": "Hides coin",
+      "coin_reveals": 3,
+      "essential": false
+    },
+    {
+      "id": "toothpaste",
+      "display_name": "Tube of Toothpaste",
+      "screen": "hookjaw_grave",
+      "purpose": "No known use",
+      "essential": false
+    },
+    {
+      "id": "misty_window",
+      "display_name": "Misty Glass Window",
+      "screen": "tree_village_gate",
+      "purpose": "Hides coin",
+      "coin_reveals": 5,
+      "essential": false
+    },
+    {
+      "id": "mushrooms",
+      "display_name": "Clump of Mushrooms",
+      "screen": "tree_lower_mushroom",
+      "purpose": "Hides coin",
+      "coin_reveals": 6,
+      "essential": false
+    },
+    {
+      "id": "wooden_rail_1",
+      "display_name": "Wooden Safety Rail",
+      "screen": "tree_balcony_east",
+      "purpose": "Hides coin",
+      "coin_reveals": 8,
+      "essential": false
+    },
+    {
+      "id": "tree_trunk_1",
+      "display_name": "Bit of Tree Trunk",
+      "screen": "tree_upper_west_trunk",
+      "purpose": "Hides coin",
+      "coin_reveals": 11,
+      "essential": false
+    },
+    {
+      "id": "snorkel",
+      "display_name": "Rubber Snorkel",
+      "screen": "tree_snorkel_hut",
+      "purpose": "Survive underwater — keep in inventory when diving",
+      "essential": true,
+      "blocks": ["ocean_entry", "ocean_fish_run", "ocean_wreck", "ocean_spade_bay", "ocean_bubble_cave", "cavern_grave_entry"]
+    },
+    {
+      "id": "plant_3",
+      "display_name": "Protected Species",
+      "screen": "tree_above_mine",
+      "purpose": "Hides coin",
+      "coin_reveals": 15,
+      "essential": false
+    },
+    {
+      "id": "tree_trunk_2",
+      "display_name": "Bit of Tree Trunk",
+      "screen": "tree_lower_dip",
+      "purpose": "Hides coin",
+      "coin_reveals": 13,
+      "essential": false
+    },
+    {
+      "id": "detonator",
+      "display_name": "Infra Red Detonator",
+      "screen": "tree_detonator",
+      "purpose": "Blow dynamite in mine",
+      "essential": true,
+      "use_with": "dynamite",
+      "use_on": "mine_blast"
+    },
+    {
+      "id": "wooden_rail_2",
+      "display_name": "Wooden Safety Rail",
+      "screen": "tree_rail_coin",
+      "purpose": "Hides coin",
+      "coin_reveals": 29,
+      "essential": false
+    },
+    {
+      "id": "glass_sword",
+      "display_name": "Sharp Glass Sword",
+      "screen": "tree_sword_hut",
+      "purpose": "Open passage under grave",
+      "essential": true,
+      "use_on": "grave_hill"
+    },
+    {
+      "id": "video_camera",
+      "display_name": "Small Video Camera",
+      "screen": "tree_camera_ledge",
+      "purpose": "Trade to shopkeeper",
+      "essential": true,
+      "trade_for": "dehydrated_boat"
+    },
+    {
+      "id": "skull_1",
+      "display_name": "Imitation Skull",
+      "screen": "ocean_wreck",
+      "purpose": "Hides coin",
+      "coin_reveals": 19,
+      "essential": false
+    },
+    {
+      "id": "salt_spade",
+      "display_name": "Salt Water Spade",
+      "screen": "ocean_spade_bay",
+      "purpose": "Dig bubble to float upward",
+      "essential": true,
+      "use_on": "ocean_bubble_cave"
+    },
+    {
+      "id": "heavy_rock",
+      "display_name": "Big Red Heavy Rock",
+      "screen": "totem_pole",
+      "purpose": "Hides coin",
+      "coin_reveals": 22,
+      "essential": false
+    },
+    {
+      "id": "dehydrated_boat",
+      "display_name": "Dehydrated Boat",
+      "screen": "shop_interior",
+      "purpose": "Boat part 1",
+      "essential": true,
+      "obtained_from": "video_camera",
+      "use_on": "pier_boat"
+    },
+    {
+      "id": "plant_4",
+      "display_name": "Protected Species",
+      "screen": "shop_east",
+      "purpose": "Hides coin",
+      "coin_reveals": 24,
+      "essential": false
+    },
+    {
+      "id": "empty_bucket",
+      "display_name": "Empty Old Bucket",
+      "screen": "shop_roof",
+      "purpose": "Bonus trade to shopkeeper",
+      "essential": false
+    },
+    {
+      "id": "holy_bible",
+      "display_name": "Old Holy Bible",
+      "screen": "totem_pole",
+      "purpose": "Carry cursed treasure safely",
+      "essential": true,
+      "required_for": "cursed_treasure"
+    },
+    {
+      "id": "woodcutters_axe",
+      "display_name": "Woodcutters Axe",
+      "screen": "grave_hill",
+      "purpose": "Cut bridge centre",
+      "essential": true,
+      "use_on": "bridge_approach"
+    },
+    {
+      "id": "cursed_treasure",
+      "display_name": "Cursed Treasure",
+      "screen": "bridge_cavern_treasure",
+      "purpose": "Trade to shopkeeper",
+      "essential": true,
+      "requires": ["holy_bible"],
+      "trade_for": "outboard_motor"
+    },
+    {
+      "id": "outboard_motor",
+      "display_name": "Outboard Motor",
+      "screen": "shop_interior",
+      "purpose": "Boat part 2",
+      "essential": true,
+      "obtained_from": "cursed_treasure",
+      "use_on": "pier_boat"
+    },
+    {
+      "id": "golden_key",
+      "display_name": "Large Golden Key",
+      "screen": "pier_key",
+      "purpose": "Unlock Blackbeard kitchen barrel",
+      "essential": true,
+      "use_on": "cavern_kitchen_door"
+    },
+    {
+      "id": "dynamite",
+      "display_name": "Sticks of Dynamite",
+      "screen": "cavern_dynamo_ledge",
+      "purpose": "Blow mine rocks",
+      "essential": true,
+      "use_with": "detonator",
+      "use_on": "mine_blast"
+    },
+    {
+      "id": "skull_2",
+      "display_name": "Imitation Skull",
+      "screen": "cavern_skull_room",
+      "purpose": "Hides coin",
+      "coin_reveals": 25,
+      "essential": false
+    },
+    {
+      "id": "microwave",
+      "display_name": "Microwave Oven",
+      "screen": "blackbeard_kitchen",
+      "purpose": "Trade to shopkeeper",
+      "essential": true,
+      "trade_for": "petrol"
+    },
+    {
+      "id": "petrol",
+      "display_name": "Gallon of Petrol",
+      "screen": "shop_interior",
+      "purpose": "Boat part 3",
+      "essential": true,
+      "obtained_from": "microwave",
+      "use_on": "pier_boat"
+    },
+    {
+      "id": "gold_bag",
+      "display_name": "Bag of Gold Coins",
+      "screen": "mine_gold_room",
+      "purpose": "Trade to shopkeeper",
+      "essential": true,
+      "trade_for": "ignition_key"
+    },
+    {
+      "id": "magazine",
+      "display_name": "Sinclair Abuser Magazine",
+      "screen": "tree_magazine",
+      "purpose": "Optional score — drop on pebble in water",
+      "essential": false
+    },
+    {
+      "id": "ignition_key",
+      "display_name": "Ignition Key",
+      "screen": "shop_interior",
+      "purpose": "Start boat — win",
+      "essential": true,
+      "obtained_from": "gold_bag",
+      "use_on": "pier_boat"
+    }
+  ],
+  "trade_order": [
+    "video_camera",
+    "cursed_treasure",
+    "microwave",
+    "gold_bag"
+  ],
+  "boat_parts": [
+    "dehydrated_boat",
+    "outboard_motor",
+    "petrol",
+    "ignition_key"
+  ],
+  "coin_map": {
+    "1": "beach_start",
+    "2": "cliff_ascent",
+    "3": "bridge_approach",
+    "4": "bridge_approach",
+    "5": "tree_village_gate",
+    "6": "tree_lower_mushroom",
+    "7": "tree_lower_west",
+    "8": "tree_balcony_east",
+    "9": "tree_upper_east",
+    "10": "tree_upper_central",
+    "11": "tree_upper_west_trunk",
+    "12": "tree_upper_far_west",
+    "13": "tree_lower_dip",
+    "14": "tree_trap_ledge",
+    "15": "tree_above_mine",
+    "16": "ocean_entry",
+    "17": "ocean_wreck",
+    "18": "ocean_wreck",
+    "19": "ocean_spade_bay",
+    "20": "ocean_bubble_ascend",
+    "21": "grave_hill",
+    "22": "totem_pole",
+    "23": "shop_roof",
+    "24": "shop_east",
+    "25": "cavern_skull_room",
+    "26": "cavern_barrels",
+    "27": "cavern_barrels",
+    "28": "blackbeard_kitchen",
+    "29": "tree_rail_coin",
+    "30": "taxman_dock"
+  }
+}

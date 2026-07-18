@@ -16,12 +16,20 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 
 | Part | Status |
 |------|--------|
-| Treasure Island Dizzy | **Phase 2 complete** — 8-screen vertical slice (playtested) |
+| Treasure Island Dizzy | **Phase 3 in progress** — ~27 screens (west chain + tree village + mine); full map in `screen_map.md` |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 2 closed** — playable loop across 8 screens (snorkel, water, 5 coins, shopkeeper NPC). **Next: Phase 3** — full Treasure Island map, all 30 coins, puzzles, win condition.
+**Current milestone:** **Phase 3 in progress** — full TI map documented; west/start + tree village + mine regions playable as placeholders. Slice east path (jetty → shop) still works.
 
-### Phase 2 gameplay (Treasure Island)
+### Phase 3 progress (Treasure Island)
+
+- **Full screen map:** `games/treasure-island/data/screen_map.md` (~48 target screens)
+- **Items database:** `games/treasure-island/data/items.json` (33 items, trade chain, coin map)
+- **New regions:** beach_wreck → bridge → tree village (16 screens) → mine (3 screens)
+- **Hazards:** `core/world/hazard_zone` — contact = instant death (traps on bridge, tree ledges)
+- **Still TODO:** ocean, east shore/pier, caverns, all 30 coins, puzzles, win condition
+
+### Phase 2 gameplay (still available on east path)
 
 - **8 screens:** beach_start → beach_right → beach_jetty → village_path → shop_exterior / shop_interior → underwater_shallow, cave_entrance
 - **Snorkel:** pick up on starting beach; required to survive water (Dizzy shows mask when held)
@@ -64,6 +72,8 @@ dizzy-adventures-remake/
 │   └── LICENSE.md          # CC BY-NC 4.0 for game assets
 ├── project.godot
 ├── export_presets.cfg      # Windows, Linux, Web, Android export config
+├── tests/                  # Headless autotests (see below)
+├── scripts/run_tests.sh    # Run tests (bash)
 └── LICENSE                 # MIT — source code
 ```
 
@@ -78,6 +88,22 @@ Each adventure game lives under `games/<slug>/` with its own levels and config. 
 1. Clone the repository.
 2. Open the project folder in Godot 4.
 3. Press **F5** (main scene: `scenes/main.tscn`).
+
+## Automated tests
+
+Headless unit/integration tests (no plugins — pure GDScript):
+
+```bash
+# Bash (Git Bash / Linux) — set GODOT if not in PATH
+GODOT="/path/to/Godot_v4.exe" ./scripts/run_tests.sh
+
+# Windows cmd
+scripts\run_tests.bat
+```
+
+Or in Godot: open `tests/test_runner.tscn` and run the scene (F6).
+
+**Coverage:** autoloads (`Inventory`, `Collectibles`, `WorldState`), `ItemCatalog`, `items.json`, `GameScreen` API, TI level registry (all `.tscn` load, exits resolve), `ScreenManager` transitions. Exit code `0` = pass, `1` = fail.
 
 ## Display
 

@@ -1,22 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://beachstart"]
+[gd_scene format=3 uid="uid://chmyr1lhs0ta2"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="2"]
-[ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="3"]
+[ext_resource type="Script" path="res://games/treasure-island/tree_backdrop.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
-size = Vector2(120, 16)
+size = Vector2(100, 16)
 
-[node name="BeachStart" type="Node2D"]
+[node name="TreeSnorkelHut" type="Node2D"]
 script = ExtResource("1")
-exit_left = "beach_wreck"
-exit_right = "beach_right"
+exit_left = "tree_above_mine"
+exit_right = "tree_trap_ledge"
 
 [node name="Backdrop" type="Node2D" parent="."]
-script = ExtResource("3")
+script = ExtResource("2")
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(256, 368)
@@ -29,45 +29,42 @@ offset_left = -256.0
 offset_top = -16.0
 offset_right = 256.0
 offset_bottom = 16.0
-color = Color(0.78, 0.64, 0.36, 1)
+color = Color(0.24, 0.16, 0.04, 1)
 
 [node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(300, 310)
+position = Vector2(120, 280)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 shape = SubResource("RectangleShape2D_platform")
 
 [node name="Visual" type="ColorRect" parent="Platform"]
-offset_left = -60.0
+offset_left = -50.0
 offset_top = -8.0
-offset_right = 60.0
+offset_right = 50.0
 offset_bottom = 8.0
-color = Color(0.72, 0.58, 0.32, 1)
+color = Color(0.48, 0.36, 0.22, 1)
 
-[node name="Snorkel" parent="." instance=ExtResource("2")]
-position = Vector2(140, 339)
+[node name="Snorkel" parent="." instance=ExtResource("3")]
+position = Vector2(100, 255)
 item_id = "snorkel"
 display_name = "Rubber Snorkel"
-world_id = "beach_start/snorkel"
+world_id = "tree_snorkel_hut/snorkel"
+
+[node name="RightHint" type="Label" parent="."]
+offset_left = 420.0
+offset_top = 352.0
+offset_right = 504.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
+theme_override_font_sizes/font_size = 10
+text = "→ Trap ledge"
+horizontal_alignment = 2
 
 [node name="LeftHint" type="Label" parent="."]
 offset_left = 8.0
 offset_top = 352.0
-offset_right = 120.0
+offset_right = 100.0
 offset_bottom = 368.0
-theme_override_colors/font_color = Color(0.12, 0.22, 0.42, 1)
+theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
 theme_override_font_sizes/font_size = 10
-text = "← Wreck / cliff"
-
-[node name="Plant1" parent="." instance=ExtResource("2")]
-position = Vector2(80, 339)
-item_id = "plant_1"
-display_name = "Protected Species"
-world_id = "beach_start/plant_1"
-
-[node name="CoinPlant1" parent="." instance=ExtResource("2")]
-position = Vector2(100, 339)
-item_id = "coin"
-display_name = "Coin"
-is_collectible = true
-world_id = "beach_start/coin_1"
+text = "← Mine"
