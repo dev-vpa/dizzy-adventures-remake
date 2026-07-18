@@ -117,6 +117,8 @@ func try_directional_transition(player: CharacterBody2D, container: Node2D) -> b
 
 	if Input.is_action_just_pressed("move_up") and exits.has("up") and not _edge_blocked(player, "up"):
 		if screen_node.has_method("point_in_up_exit_zone") and screen_node.call("point_in_up_exit_zone", pos):
+			if not _can_use_directional_exit("up", exits["up"]):
+				return false
 			_transition("up", exits["up"], player, container, false)
 			return true
 
@@ -124,7 +126,7 @@ func try_directional_transition(player: CharacterBody2D, container: Node2D) -> b
 		if not player.is_on_floor():
 			return false
 		if screen_node.has_method("point_in_down_exit_zone") and screen_node.call("point_in_down_exit_zone", pos):
-			if not _can_use_down_exit(exits["down"], player):
+			if not _can_use_directional_exit("down", exits["down"]):
 				return false
 			_transition("down", exits["down"], player, container, false)
 			return true
@@ -132,10 +134,23 @@ func try_directional_transition(player: CharacterBody2D, container: Node2D) -> b
 	return false
 
 
-func _can_use_down_exit(target_id: String, _player: CharacterBody2D) -> bool:
-	if target_id == "underwater_shallow" and not Inventory.has_item("snorkel"):
+func _can_use_directional_exit(_direction: String, target_id: String) -> bool:
+	if _requires_snorkel(target_id) and not Inventory.has_item("snorkel"):
+		return false
+	if target_id == "ocean_bubble_ascend" and not WorldState.get_flag("ocean_bubbles"):
+		return false
+	if target_id == "cavern_grave_entry" and not WorldState.get_flag("grave_open"):
+		return false
+	if target_id == "bridge_cavern_west" and not WorldState.get_flag("bridge_cut"):
 		return false
 	return true
+
+
+func _requires_snorkel(screen_id: String) -> bool:
+	return (
+		screen_id == "underwater_shallow"
+		or screen_id.begins_with("ocean_")
+	)
 
 
 func clamp_player_to_bounds(player: Node2D, container: Node2D) -> void:
