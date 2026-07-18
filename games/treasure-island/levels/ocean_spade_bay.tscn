@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://oceanspadebay"]
+
+[ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://waterzone001" path="res://core/world/water_zone.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(512, 32)
+
+[node name="OceanSpadeBay" type="Node2D"]
+script = ExtResource("1")
+exit_left = "ocean_wreck"
+exit_right = "ocean_bubble_cave"
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(256, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Visual" type="ColorRect" parent="Floor"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.55, 0.45, 0.28, 1)
+
+[node name="FullWater" parent="." instance=ExtResource("4")]
+zone_size = Vector2(512, 300)
+zone_center = Vector2(256, 220)
+
+[node name="Coin1" parent="." instance=ExtResource("3")]
+position = Vector2(200, 320)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+world_id = "ocean_spade_bay/coin19"
+
+[node name="Item1" parent="." instance=ExtResource("3")]
+position = Vector2(360, 330)
+item_id = "salt_spade"
+display_name = "Salt Water Spade"
+world_id = "ocean_spade_bay/salt_spade"

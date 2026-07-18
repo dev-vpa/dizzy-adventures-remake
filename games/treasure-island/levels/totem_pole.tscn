@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://totempole"]
+
+[ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(512, 32)
+
+[node name="TotemPole" type="Node2D"]
+script = ExtResource("1")
+exit_left = "shop_exterior"
+exit_right = "grave_hill"
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(256, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="ColorRect" parent="Ground"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.74, 0.6, 0.36, 1)
+
+[node name="Totem" type="ColorRect" parent="."]
+offset_left = 240.0
+offset_top = 180.0
+offset_right = 280.0
+offset_bottom = 352.0
+color = Color(0.55, 0.35, 0.22, 1)
+
+[node name="Hut" type="ColorRect" parent="."]
+offset_left = 360.0
+offset_top = 280.0
+offset_right = 460.0
+offset_bottom = 352.0
+color = Color(0.58, 0.42, 0.28, 1)
+
+[node name="Rock" parent="." instance=ExtResource("3")]
+position = Vector2(160, 339)
+item_id = "heavy_rock"
+display_name = "Big Red Heavy Rock"
+world_id = "totem_pole/heavy_rock"
+
+[node name="Bible" parent="." instance=ExtResource("3")]
+position = Vector2(340, 339)
+item_id = "holy_bible"
+display_name = "Old Holy Bible"
+world_id = "totem_pole/holy_bible"
+
+[node name="Coin" parent="." instance=ExtResource("3")]
+position = Vector2(180, 320)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+world_id = "totem_pole/coin22"
+
+[node name="LeftHint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 352.0
+offset_right = 100.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 10
+text = "← Shop"

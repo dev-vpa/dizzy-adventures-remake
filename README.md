@@ -16,18 +16,19 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 
 | Part | Status |
 |------|--------|
-| Treasure Island Dizzy | **Phase 3 in progress** — ~27 screens (west chain + tree village + mine); full map in `screen_map.md` |
+| Treasure Island Dizzy | **Phase 3 in progress** — ~45 screens (west + ocean + east + cavern stubs); puzzles stubbed |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 3 in progress** — full TI map documented; west/start + tree village + mine regions playable as placeholders. Slice east path (jetty → shop) still works.
+**Current milestone:** **Phase 3 in progress** — ocean + east shore + cavern/bridge stubs; puzzle flags in `ti_gameplay` / WorldState. Still TODO: full caverns, tree upper items (sword/camera/detonator), win condition polish, 30 coins placement.
 
 ### Phase 3 progress (Treasure Island)
 
 - **Full screen map:** `games/treasure-island/data/screen_map.md` (~48 target screens)
 - **Items database:** `games/treasure-island/data/items.json` (33 items, trade chain, coin map)
-- **New regions:** beach_wreck → bridge → tree village (16 screens) → mine (3 screens)
-- **Hazards:** `core/world/hazard_zone` — contact = instant death (traps on bridge, tree ledges)
-- **Still TODO:** ocean, east shore/pier, caverns, all 30 coins, puzzles, win condition
+- **Regions playable:** west/tree/mine, **ocean** (`ocean_*`), **east** (grave → taxman), cavern/bridge stubs
+- **Puzzles (stub):** spade→bubbles, sword→grave, axe→bridge, shop Use-trade, boat parts on pier
+- **Hazards:** `hazard_zone` + WaterZone (snorkel gate for `ocean_*`)
+- **Still TODO:** remaining cavern rooms, tree upper items, win with 30 coins, full coin layout
 
 ### Phase 2 gameplay (still available on east path)
 

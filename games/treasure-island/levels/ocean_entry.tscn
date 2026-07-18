@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://oceanentry"]
+
+[ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://waterzone001" path="res://core/world/water_zone.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(512, 32)
+
+[node name="OceanEntry" type="Node2D"]
+script = ExtResource("1")
+exit_left = "beach_start"
+exit_right = "ocean_fish_run"
+exit_up = "beach_start"
+use_exit_up_zone = true
+exit_up_zone = Rect2(0, 0, 160, 120)
+override_spawn_from_west = true
+spawn_from_west = Vector2(480, 320)
+override_spawn_from_north = true
+spawn_from_north = Vector2(400, 320)
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(256, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Visual" type="ColorRect" parent="Floor"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.55, 0.45, 0.28, 1)
+
+[node name="FullWater" parent="." instance=ExtResource("4")]
+zone_size = Vector2(512, 300)
+zone_center = Vector2(256, 220)
+
+[node name="Coin1" parent="." instance=ExtResource("3")]
+position = Vector2(220, 320)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+world_id = "ocean_entry/coin16"
+
+[node name="UpHint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 160.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.72, 0.88, 1, 0.95)
+theme_override_font_sizes/font_size = 10
+text = "↑ Beach (snorkel)"

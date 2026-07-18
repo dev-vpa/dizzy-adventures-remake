@@ -48,7 +48,7 @@ color = Color(0.62, 0.48, 0.32, 1)
 
 [node name="Shopkeeper" parent="." instance=ExtResource("2")]
 position = Vector2(340, 318)
-message = "Welcome! More stock coming later. Head back to the village — explore the cave to the north, or dive from the jetty with your snorkel."
+message = "Bring me valuables and Use (U) them here — camera, treasure, oven, or gold bag. I'll trade boat parts."
 
 [node name="ExitHint" type="Label" parent="."]
 offset_left = 8.0

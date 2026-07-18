@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://taxmandock"]
+
+[ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://npc001" path="res://core/interactables/npc.tscn" id="4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(512, 32)
+
+[node name="TaxmanDock" type="Node2D"]
+script = ExtResource("1")
+exit_left = "pier_boat"
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(256, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="ColorRect" parent="Ground"]
+offset_left = -256.0
+offset_top = -16.0
+offset_right = 256.0
+offset_bottom = 16.0
+color = Color(0.74, 0.6, 0.36, 1)
+
+[node name="Taxman" parent="." instance=ExtResource("4")]
+position = Vector2(320, 330)
+npc_name = "Taxman"
+message = "Pay me 30 gold coins to leave the island. (Win stub — needs all coins.)"
+
+[node name="Coin" parent="." instance=ExtResource("3")]
+position = Vector2(420, 339)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+world_id = "taxman_dock/coin30"
+
+[node name="EndHint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 280.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 10
+text = "End of the map — Taxman"

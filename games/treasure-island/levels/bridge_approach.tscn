@@ -16,8 +16,11 @@ script = ExtResource("1")
 exit_left = "hookjaw_grave"
 exit_right = "cliff_ascent"
 exit_up = "tree_upper_central"
+exit_down = "bridge_cavern_west"
 use_exit_up_zone = true
 exit_up_zone = Rect2(180, 280, 152, 88)
+use_exit_down_zone = true
+exit_down_zone = Rect2(200, 320, 112, 56)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")

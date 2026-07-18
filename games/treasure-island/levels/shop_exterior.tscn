@@ -12,7 +12,11 @@ size = Vector2(72, 72)
 
 [node name="ShopExterior" type="Node2D"]
 script = ExtResource("1")
-exit_left = "village_path"
+exit_left = "totem_pole"
+exit_right = "shop_east"
+exit_up = "shop_roof"
+use_exit_up_zone = true
+exit_up_zone = Rect2(360, 240, 120, 80)
 override_spawn_from_west = true
 spawn_from_west = Vector2(260, 320)
 
@@ -99,7 +103,7 @@ theme_override_colors/font_shadow_color = Color(1, 0.96, 0.82, 0.5)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 10
-text = "No path beyond shop →"
+text = "No path beyond shop → → Pier"
 horizontal_alignment = 2
 
 [node name="PathHint" type="Label" parent="."]
@@ -112,4 +116,4 @@ theme_override_colors/font_shadow_color = Color(1, 0.96, 0.82, 0.5)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 10
-text = "← Village  ·  ↑ cave / ↓ dive via jetty"
+text = "← Totem  ·  ↑ Roof"
