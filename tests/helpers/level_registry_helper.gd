@@ -32,8 +32,19 @@ static func get_exits(screen_id: String, levels_path: String) -> Dictionary:
 		instance.free()
 		return {}
 	var exits: Dictionary = instance.call("get_exits")
+	_collect_door_targets(instance, exits)
 	instance.free()
 	return exits
+
+
+static func _collect_door_targets(node: Node, exits: Dictionary) -> void:
+	if "target_screen_id" in node:
+		var target: String = str(node.get("target_screen_id"))
+		if not target.is_empty():
+			var key := "door_%s" % target
+			exits[key] = target
+	for child in node.get_children():
+		_collect_door_targets(child, exits)
 
 
 static func reachable_from(start_id: String, levels_path: String) -> Array[String]:

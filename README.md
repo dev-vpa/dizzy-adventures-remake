@@ -29,7 +29,8 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 - **Puzzles (stub):** spade→bubbles, sword→grave, axe→bridge, shop Use-trade, boat parts on pier
 - **Hazards:** `hazard_zone` + WaterZone (snorkel gate for `ocean_*`)
 - **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, dynamite+detonator→mine, bible→cursed treasure; `puzzle_barrier` + WorldState flags
-- **Still TODO:** remaining cavern rooms, tree upper items, win with 30 coins, full coin layout
+- **Still TODO:** kitchen key room, full 30-coin layout polish
+- **Win:** assemble boat on `pier_boat` (order), then Taxman on `taxman_dock` with 30 coins
 
 ### Phase 2 gameplay (still available on east path)
 

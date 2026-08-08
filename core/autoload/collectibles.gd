@@ -28,6 +28,11 @@ func try_collect(_item_id: String = "coin") -> bool:
 	return true
 
 
+func set_collected(amount: int) -> void:
+	collected = clampi(amount, 0, total) if total > 0 else maxi(amount, 0)
+	collectibles_changed.emit()
+
+
 func get_label() -> String:
 	if collectible_name.is_empty():
 		return "%d/%d" % [collected, total]

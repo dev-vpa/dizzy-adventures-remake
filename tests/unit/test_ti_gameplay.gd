@@ -32,6 +32,23 @@ static func run() -> void:
 	TestAssert.false_(Inventory.has_item("dynamite"), "dynamite consumed")
 	TestAssert.false_(Inventory.has_item("detonator"), "detonator consumed")
 
+	ScreenManager.current_screen_id = "pier_boat"
+	Inventory.clear()
+	Inventory.try_pick_up("outboard_motor")
+	hooks._on_item_used("outboard_motor")
+	TestAssert.false_(WorldState.get_flag("boat_outboard_motor"), "motor needs boat first")
+	Inventory.clear()
+	Inventory.try_pick_up("dehydrated_boat")
+	hooks._on_item_used("dehydrated_boat")
+	TestAssert.true_(WorldState.get_flag("boat_dehydrated_boat"), "boat hull fitted")
+	Inventory.try_pick_up("outboard_motor")
+	hooks._on_item_used("outboard_motor")
+	Inventory.try_pick_up("petrol")
+	hooks._on_item_used("petrol")
+	Inventory.try_pick_up("ignition_key")
+	hooks._on_item_used("ignition_key")
+	TestAssert.true_(WorldState.get_flag("boat_ready"), "full boat ready")
+
 	ScreenManager.current_screen_id = "shop_interior"
 	Inventory.clear()
 	Inventory.try_pick_up("video_camera")

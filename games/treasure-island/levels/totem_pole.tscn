@@ -3,13 +3,17 @@
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+[ext_resource type="Script" path="res://core/world/screen_door.gd" id="4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(64, 64)
+
 [node name="TotemPole" type="Node2D"]
 script = ExtResource("1")
-exit_left = "shop_exterior"
+exit_left = "village_path"
 exit_right = "grave_hill"
 
 [node name="Backdrop" type="Node2D" parent="."]
@@ -61,11 +65,45 @@ display_name = "Coin"
 is_collectible = true
 world_id = "totem_pole/coin22"
 
+[node name="ShopDoor" type="Area2D" parent="."]
+position = Vector2(400, 338)
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+script = ExtResource("4")
+target_screen_id = "shop_exterior"
+spawn_position = Vector2(80, 350)
+block_edge_on_arrival = "left"
+
+[node name="HintLabel" type="Label" parent="ShopDoor"]
+visible = false
+offset_left = -28.0
+offset_top = -52.0
+offset_right = 28.0
+offset_bottom = -34.0
+theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)
+theme_override_font_sizes/font_size = 11
+text = "E — Shop"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShopDoor"]
+shape = SubResource("RectangleShape2D_door")
+
 [node name="LeftHint" type="Label" parent="."]
 offset_left = 8.0
 offset_top = 352.0
-offset_right = 100.0
+offset_right = 120.0
 offset_bottom = 368.0
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
 theme_override_font_sizes/font_size = 10
-text = "← Shop"
+text = "← Beach path"
+
+[node name="DoorHint" type="Label" parent="."]
+offset_left = 360.0
+offset_top = 260.0
+offset_right = 500.0
+offset_bottom = 276.0
+theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 9
+text = "E hut → Shop"
+horizontal_alignment = 1

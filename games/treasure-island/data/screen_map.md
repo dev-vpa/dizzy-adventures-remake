@@ -90,7 +90,7 @@ Phase 2 slice — сжатый восточный маршрут. При рас�
 | id | Описание | Предметы / hazards | Exits | Coins |
 |----|----------|-------------------|-------|-------|
 | `grave_hill` | Могила (второй) | sword use → hole, woodcutters axe | **L** `totem_pole`, **R** `ocean_bubble_ascend`, **D** `cavern_grave_entry` | 21 |
-| `totem_pole` | Тотем, хижина | big red rock, holy bible | **L** `shop_exterior`, **R** `grave_hill` | 22 |
+| `totem_pole` | Тотем, хижина | big red rock, holy bible | **L** `village_path`, **R** `grave_hill`, **E** door → `shop_exterior` | 22 |
 | `shop_exterior` | Лавочник снаружи | — | **L** `totem_pole`, **R** `shop_interior`, **U** `shop_roof` | — |
 | `shop_interior` | Лавочник (NPC) | **Shopkeeper** — trade chain | **L** `shop_exterior` | 22 (crate) |
 | `shop_roof` | Крыша | empty bucket | **D** `shop_exterior` | 23 |

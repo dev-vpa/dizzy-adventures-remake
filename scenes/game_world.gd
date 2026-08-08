@@ -90,6 +90,11 @@ func _apply_debug_start_items(start_id: String) -> void:
 		"ocean_bubble_cave":
 			Inventory.try_pick_up("snorkel")
 			Inventory.try_pick_up("salt_spade")
+		"pier_boat":
+			Inventory.try_pick_up("dehydrated_boat")
+		"taxman_dock":
+			WorldState.set_flag("boat_ready")
+			Collectibles.set_collected(Collectibles.total)
 
 
 func _debug_reload_current_screen() -> void:

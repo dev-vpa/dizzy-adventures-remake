@@ -1,6 +1,6 @@
 extends Node
 
-## Treasure Island gameplay — item use and shop trades.
+## Treasure Island gameplay — item use, shop trades, boat win chain.
 
 const TRADE_REWARDS := {
 	"video_camera": "dehydrated_boat",
@@ -8,6 +8,13 @@ const TRADE_REWARDS := {
 	"microwave": "petrol",
 	"gold_bag": "ignition_key",
 }
+
+const BOAT_PARTS := [
+	"dehydrated_boat",
+	"outboard_motor",
+	"petrol",
+	"ignition_key",
+]
 
 
 func _ready() -> void:
@@ -76,7 +83,6 @@ func _drop_through_bridge_hole() -> void:
 	var world := tree.get_first_node_in_group("game_world")
 	if player == null or world == null:
 		return
-	# Only fall if standing over the bridge span.
 	if player.global_position.x < 180.0 or player.global_position.x > 340.0:
 		return
 	if world.has_method("request_door_transition"):
@@ -115,8 +121,30 @@ func _try_open_kitchen() -> void:
 func _try_assemble_boat(part_id: String) -> void:
 	if _current_screen_id() != "pier_boat":
 		return
+	var part_index := BOAT_PARTS.find(part_id)
+	if part_index < 0:
+		return
+	if WorldState.get_flag("boat_%s" % part_id):
+		return
+	for i in range(part_index):
+		if not WorldState.get_flag("boat_%s" % BOAT_PARTS[i]):
+			print("TI: fit boat parts in order (boat → motor → petrol → key)")
+			return
+	if not Inventory.has_item(part_id):
+		return
+	Inventory.remove_item(part_id)
 	WorldState.set_flag("boat_%s" % part_id)
 	print("TI: boat part fitted — %s" % part_id)
+	if _is_boat_complete():
+		WorldState.set_flag("boat_ready")
+		print("TI: boat ready — talk to Taxman with 30 coins")
+
+
+func _is_boat_complete() -> bool:
+	for part_id in BOAT_PARTS:
+		if not WorldState.get_flag("boat_%s" % part_id):
+			return false
+	return true
 
 
 func _try_shop_trade(item_id: String) -> void:

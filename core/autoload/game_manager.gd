@@ -8,6 +8,7 @@ const MAIN_MENU_SCENE := preload("res://scenes/main_menu.tscn")
 const GAME_SELECT_SCENE := preload("res://scenes/game_select.tscn")
 const LOADING_SCENE := preload("res://scenes/loading_screen.tscn")
 const GAME_WORLD_SCENE := preload("res://scenes/game_world.tscn")
+const WIN_SCENE := preload("res://scenes/win_screen.tscn")
 
 const GAME_REGISTRY: Array[GameConfig] = [
 	preload("res://games/treasure-island/treasure_island_config.tres"),
@@ -69,6 +70,14 @@ func quit_to_main_menu() -> void:
 	Collectibles.reset()
 	WorldState.reset()
 	_show_main_menu()
+
+
+func declare_win() -> void:
+	state = State.MAIN_MENU
+	ScreenManager.reset()
+	Inventory.clear()
+	Lives.reset()
+	_change_scene(WIN_SCENE)
 
 
 func get_available_games() -> Array[GameConfig]:
