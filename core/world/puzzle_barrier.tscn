@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://puzzlebarrier001"]
+[gd_scene format=3 uid="uid://rgxyutkqbcq"]
 
 [ext_resource type="Script" path="res://core/world/puzzle_barrier.gd" id="1"]
 

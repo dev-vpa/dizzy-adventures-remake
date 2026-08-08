@@ -71,6 +71,7 @@ world_id = "bridge_approach/coin_bridge"
 [node name="LowerTrap" parent="." instance=ExtResource("4")]
 zone_size = Vector2(36, 24)
 zone_center = Vector2(256, 358)
+clear_flag = "bridge_cut"
 
 [node name="AxeHint" type="Label" parent="."]
 offset_left = 180.0

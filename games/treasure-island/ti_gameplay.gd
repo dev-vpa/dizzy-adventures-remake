@@ -63,6 +63,30 @@ func _try_cut_bridge() -> void:
 		return
 	WorldState.set_flag("bridge_cut")
 	print("TI: bridge collapses — ↓ into cavern")
+	_drop_through_bridge_hole()
+
+
+func _drop_through_bridge_hole() -> void:
+	if not is_inside_tree():
+		return
+	var tree := get_tree()
+	if tree == null:
+		return
+	var player := tree.get_first_node_in_group("player") as Node2D
+	var world := tree.get_first_node_in_group("game_world")
+	if player == null or world == null:
+		return
+	# Only fall if standing over the bridge span.
+	if player.global_position.x < 180.0 or player.global_position.x > 340.0:
+		return
+	if world.has_method("request_door_transition"):
+		world.call(
+			"request_door_transition",
+			player,
+			"bridge_cavern_west",
+			Vector2(256.0, 350.0),
+			"up"
+		)
 
 
 func _try_blast_mine() -> void:

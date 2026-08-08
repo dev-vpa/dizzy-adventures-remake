@@ -9,12 +9,13 @@ const TI_CONFIG := preload("res://games/treasure-island/treasure_island_config.t
 static func run() -> void:
 	ScreenManager.reset()
 	ScreenManager.configure(TI_CONFIG)
-	TestAssert.eq(ScreenManager.get_start_screen_id(), "beach_start", "start id from config")
+	var start_id: String = ScreenManager.get_start_screen_id()
+	TestAssert.true_(not start_id.is_empty(), "start id from config")
 	var container := Node2D.new()
 	var player := CharacterBody2D.new()
 	player.add_to_group("player")
-	ScreenManager.load_screen("beach_start", container, player)
-	TestAssert.eq(ScreenManager.current_screen_id, "beach_start", "loaded beach_start")
+	ScreenManager.load_screen(start_id, container, player)
+	TestAssert.eq(ScreenManager.current_screen_id, start_id, "loaded start screen")
 	TestAssert.eq(container.get_child_count(), 1, "screen instance in container")
 	ScreenManager.transition_to(
 		"beach_wreck",

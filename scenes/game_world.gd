@@ -14,6 +14,7 @@ func _ready() -> void:
 	add_to_group("game_world")
 	var start_id := _resolve_start_screen_id()
 	ScreenManager.load_screen(start_id, screen_container, player)
+	_apply_debug_start_items(start_id)
 	if OS.is_debug_build() and start_id != ScreenManager.get_start_screen_id():
 		print("Debug start screen: %s" % start_id)
 
@@ -65,6 +66,30 @@ func _resolve_start_screen_id() -> String:
 		if not value.is_empty():
 			return value
 	return configured
+
+
+func _apply_debug_start_items(start_id: String) -> void:
+	if not OS.is_debug_build():
+		return
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--give="):
+			Inventory.try_pick_up(arg.trim_prefix("--give="))
+		elif arg.begins_with("give="):
+			Inventory.try_pick_up(arg.trim_prefix("give="))
+	# Playtest seeds when jumping straight to a puzzle screen.
+	match start_id:
+		"bridge_approach":
+			Inventory.try_pick_up("woodcutters_axe")
+		"bridge_cavern_treasure":
+			Inventory.try_pick_up("holy_bible")
+		"grave_hill":
+			Inventory.try_pick_up("glass_sword")
+		"mine_blast":
+			Inventory.try_pick_up("dynamite")
+			Inventory.try_pick_up("detonator")
+		"ocean_bubble_cave":
+			Inventory.try_pick_up("snorkel")
+			Inventory.try_pick_up("salt_spade")
 
 
 func _debug_reload_current_screen() -> void:

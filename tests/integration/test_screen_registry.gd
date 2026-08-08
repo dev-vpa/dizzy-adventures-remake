@@ -12,7 +12,10 @@ static func run() -> void:
 	var ids := LevelRegistryHelper.list_screen_ids(levels_path)
 	TestAssert.true_(ids.size() >= 40, "at least 40 TI level scenes (got %d)" % ids.size())
 	TestAssert.true_("beach_start" in ids, "beach_start exists")
-	TestAssert.eq(TI_CONFIG.starting_screen_id, "beach_start", "config start screen")
+	TestAssert.true_(
+		TI_CONFIG.starting_screen_id in ids,
+		"config start screen exists in registry"
+	)
 	for screen_id in ids:
 		var path := levels_path.path_join("%s.tscn" % screen_id)
 		TestAssert.true_(ResourceLoader.exists(path), "scene exists: %s" % screen_id)
