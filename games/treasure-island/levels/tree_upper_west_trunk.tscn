@@ -29,13 +29,13 @@ offset_bottom = 16.0
 color = Color(0.32, 0.24, 0.12, 1)
 
 [node name="TreeTrunk1" parent="." instance=ExtResource("3")]
-position = Vector2(200, 320)
+position = Vector2(200, 339)
 item_id = "tree_trunk_1"
 display_name = "Bit of Tree Trunk"
 world_id = "tree_upper_west_trunk/tree_trunk_1"
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(220, 320)
+position = Vector2(220, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

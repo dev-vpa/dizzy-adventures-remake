@@ -268,3 +268,19 @@ func _load_screen_registry(levels_path: String) -> void:
 			_screens[screen_id] = load(full_path) as PackedScene
 		file_name = dir.get_next()
 	dir.list_dir_end()
+
+
+## Debug: re-read .tscn from disk so F9 picks up editor edits without full restart.
+func reload_screen_resource(screen_id: String) -> bool:
+	if _config == null or screen_id.is_empty():
+		return false
+	var full_path := _config.levels_path.path_join("%s.tscn" % screen_id)
+	if not ResourceLoader.exists(full_path):
+		push_error("ScreenManager: cannot reload missing screen '%s'." % full_path)
+		return false
+	var packed := ResourceLoader.load(full_path, "", ResourceLoader.CACHE_MODE_IGNORE) as PackedScene
+	if packed == null:
+		push_error("ScreenManager: failed to reload '%s'." % full_path)
+		return false
+	_screens[screen_id] = packed
+	return true

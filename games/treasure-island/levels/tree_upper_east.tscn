@@ -29,7 +29,7 @@ offset_bottom = 16.0
 color = Color(0.36, 0.28, 0.16, 1)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(400, 280)
+position = Vector2(400, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

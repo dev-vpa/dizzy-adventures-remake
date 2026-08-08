@@ -35,7 +35,7 @@ offset_bottom = 16.0
 color = Color(0.68, 0.56, 0.32, 1)
 
 [node name="Ledge" type="StaticBody2D" parent="."]
-position = Vector2(120, 280)
+position = Vector2(120, 332)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ledge"]
 shape = SubResource("RectangleShape2D_ledge")
@@ -48,12 +48,11 @@ offset_bottom = 8.0
 color = Color(0.58, 0.48, 0.28, 1)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(120, 255)
+position = Vector2(120, 307)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "cliff_ascent/coin"
-
 [node name="LeftHint" type="Label" parent="."]
 offset_left = 8.0
 offset_top = 352.0

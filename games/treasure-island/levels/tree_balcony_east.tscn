@@ -32,7 +32,7 @@ offset_bottom = 16.0
 color = Color(0.38, 0.3, 0.18, 1)
 
 [node name="Balcony" type="StaticBody2D" parent="."]
-position = Vector2(80, 290)
+position = Vector2(80, 332)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Balcony"]
 shape = SubResource("RectangleShape2D_balcony")
@@ -45,13 +45,13 @@ offset_bottom = 8.0
 color = Color(0.52, 0.4, 0.26, 1)
 
 [node name="WoodenRail" parent="." instance=ExtResource("3")]
-position = Vector2(80, 275)
+position = Vector2(80, 307)
 item_id = "wooden_rail_1"
 display_name = "Wooden Safety Rail"
 world_id = "tree_balcony_east/wooden_rail_1"
 
 [node name="CoinRail" parent="." instance=ExtResource("3")]
-position = Vector2(110, 275)
+position = Vector2(110, 307)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

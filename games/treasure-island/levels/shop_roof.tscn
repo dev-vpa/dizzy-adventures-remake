@@ -33,7 +33,7 @@ offset_bottom = 16.0
 color = Color(0.74, 0.6, 0.36, 1)
 
 [node name="Roof" type="StaticBody2D" parent="."]
-position = Vector2(256, 300)
+position = Vector2(256, 332)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
 shape = SubResource("RectangleShape2D_roof")
@@ -46,13 +46,13 @@ offset_bottom = 8.0
 color = Color(0.55, 0.4, 0.28, 1)
 
 [node name="Bucket" parent="." instance=ExtResource("3")]
-position = Vector2(220, 275)
+position = Vector2(220, 307)
 item_id = "empty_bucket"
 display_name = "Empty Old Bucket"
 world_id = "shop_roof/empty_bucket"
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(300, 275)
+position = Vector2(300, 307)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

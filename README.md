@@ -112,6 +112,15 @@ Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). On la
 
 **Godot editor (F5):** embedded play mode controls window size — `DisplayManager` does not resize it. For full-screen scaling test: **Game → Embedding options → disable “Embed Game on Next Play”**, then F5 again. The debug toolbar always shows **512×384** (internal viewport — that is normal). Game logic and flick-screens stay in 512×384 coordinates.
 
+### Debug playtest shortcuts (debug builds / F5 only)
+
+| Action | How |
+|--------|-----|
+| Reload current screen from disk | **F9** (respawns at center; picks up `.tscn` edits) |
+| Start on a specific screen | Set `starting_screen_id` in `games/treasure-island/treasure_island_config.tres`, **or** Project → Project Settings → Application → Run → Main Run Args: `-- --screen=tree_upper_far_west` |
+
+Remember to set `starting_screen_id` back to `beach_start` when finished playtesting that area.
+
 ## Export targets
 
 | Platform | Format |

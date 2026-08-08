@@ -20,10 +20,14 @@ func _apply_zone_bounds() -> void:
 	var collision: CollisionShape2D = $CollisionShape2D
 	var shape := collision.shape as RectangleShape2D
 	if shape:
+		# Duplicate so per-instance size edits do not share one resource.
+		shape = shape.duplicate()
 		shape.size = zone_size
+		collision.shape = shape
 	collision.position = zone_center
 	if has_node("Visual"):
 		var visual: ColorRect = $Visual
+		visual.z_index = 10
 		visual.offset_left = zone_center.x - zone_size.x * 0.5
 		visual.offset_top = zone_center.y - zone_size.y * 0.5
 		visual.offset_right = zone_center.x + zone_size.x * 0.5

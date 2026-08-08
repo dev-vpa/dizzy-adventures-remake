@@ -11,7 +11,7 @@ script = ExtResource("1")
 exit_up = "grave_hill"
 exit_right = "cavern_skull_room"
 use_exit_up_zone = true
-exit_up_zone = Rect2(176, 0, 160, 96)
+exit_up_zone = Rect2(176, 300, 160, 68)
 
 [node name="Wall" type="ColorRect" parent="."]
 offset_right = 512.0

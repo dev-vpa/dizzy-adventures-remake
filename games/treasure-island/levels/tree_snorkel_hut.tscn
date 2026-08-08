@@ -32,7 +32,7 @@ offset_bottom = 16.0
 color = Color(0.24, 0.16, 0.04, 1)
 
 [node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(120, 280)
+position = Vector2(120, 332)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 shape = SubResource("RectangleShape2D_platform")
@@ -45,7 +45,7 @@ offset_bottom = 8.0
 color = Color(0.48, 0.36, 0.22, 1)
 
 [node name="Snorkel" parent="." instance=ExtResource("3")]
-position = Vector2(100, 255)
+position = Vector2(100, 307)
 item_id = "snorkel"
 display_name = "Rubber Snorkel"
 world_id = "tree_snorkel_hut/snorkel"

@@ -30,15 +30,34 @@ offset_bottom = 16.0
 color = Color(0.26, 0.18, 0.06, 1)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(80, 300)
+position = Vector2(80, 339)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "tree_trap_ledge/coin"
 
 [node name="FloorTrap" parent="." instance=ExtResource("4")]
-zone_size = Vector2(100, 28)
-zone_center = Vector2(180, 340)
+zone_size = Vector2(28, 24)
+zone_center = Vector2(180, 348)
+
+[node name="TrapHint" type="Label" parent="."]
+offset_left = 152.0
+offset_top = 320.0
+offset_right = 208.0
+offset_bottom = 336.0
+theme_override_colors/font_color = Color(0.95, 0.2, 0.12, 1)
+theme_override_font_sizes/font_size = 10
+text = "TRAP"
+horizontal_alignment = 1
+
+[node name="LeftHint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 352.0
+offset_right = 140.0
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
+theme_override_font_sizes/font_size = 10
+text = "← Snorkel hut"
 
 [node name="RightHint" type="Label" parent="."]
 offset_left = 420.0

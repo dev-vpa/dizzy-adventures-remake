@@ -32,7 +32,7 @@ offset_bottom = 16.0
 color = Color(0.28, 0.24, 0.2, 1)
 
 [node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(320, 280)
+position = Vector2(320, 332)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 shape = SubResource("RectangleShape2D_plat")
@@ -45,7 +45,7 @@ offset_bottom = 8.0
 color = Color(0.4, 0.34, 0.28, 1)
 
 [node name="Treasure" parent="." instance=ExtResource("2")]
-position = Vector2(320, 255)
+position = Vector2(320, 307)
 item_id = "cursed_treasure"
 display_name = "Cursed Treasure"
 world_id = "bridge_cavern_treasure/cursed_treasure"

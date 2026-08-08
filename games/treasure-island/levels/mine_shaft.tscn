@@ -9,6 +9,8 @@ size = Vector2(512, 32)
 script = ExtResource("1")
 exit_up = "tree_above_mine"
 exit_left = "mine_blast"
+use_exit_up_zone = true
+exit_up_zone = Rect2(200, 300, 112, 68)
 
 [node name="Wall" type="ColorRect" parent="."]
 offset_right = 512.0

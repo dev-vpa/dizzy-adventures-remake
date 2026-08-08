@@ -38,7 +38,7 @@ offset_bottom = 16.0
 color = Color(0.78, 0.64, 0.36, 1)
 
 [node name="Pier" type="StaticBody2D" parent="."]
-position = Vector2(256, 300)
+position = Vector2(256, 332)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pier"]
 shape = SubResource("RectangleShape2D_pier")
@@ -55,7 +55,7 @@ zone_size = Vector2(140, 52)
 zone_center = Vector2(90, 358)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(400, 285)
+position = Vector2(400, 307)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

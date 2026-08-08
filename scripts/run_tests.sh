@@ -8,10 +8,8 @@ GODOT="${GODOT:-godot}"
 if ! command -v "$GODOT" >/dev/null 2>&1; then
   for candidate in \
     "/d/Programming/Tools/Godot_v4.7/Godot_v4.7-stable_win64_console.exe" \
-    "/d/Programming/Tools/Godot_v4.7/Godot_v4.7-stable_win64.exe" \
-    "/c/Program Files/Godot/Godot_v4"*"/Godot_v4"*.exe" \
-    "$HOME/Godot/Godot"*; do
-    if [ -x "$candidate" ] 2>/dev/null; then
+    "/d/Programming/Tools/Godot_v4.7/Godot_v4.7-stable_win64.exe"; do
+    if [ -x "$candidate" ]; then
       GODOT="$candidate"
       break
     fi

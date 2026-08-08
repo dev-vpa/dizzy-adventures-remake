@@ -12,8 +12,18 @@ var _transition_cooldown := 0.0
 
 func _ready() -> void:
 	add_to_group("game_world")
-	var start_id := ScreenManager.get_start_screen_id()
+	var start_id := _resolve_start_screen_id()
 	ScreenManager.load_screen(start_id, screen_container, player)
+	if OS.is_debug_build() and start_id != ScreenManager.get_start_screen_id():
+		print("Debug start screen: %s" % start_id)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not OS.is_debug_build():
+		return
+	if event.is_action_pressed("debug_reload_screen"):
+		_debug_reload_current_screen()
+		get_viewport().set_input_as_handled()
 
 
 func _process(delta: float) -> void:
@@ -40,3 +50,28 @@ func request_door_transition(
 	# Door use is deliberate — do not block on the horizontal edge cooldown.
 	ScreenManager.transition_to(target_id, spawn_position, screen_container, body, block_edge)
 	_transition_cooldown = 0.35
+
+
+func _resolve_start_screen_id() -> String:
+	var configured := ScreenManager.get_start_screen_id()
+	if not OS.is_debug_build():
+		return configured
+	for arg in OS.get_cmdline_user_args():
+		var value := ""
+		if arg.begins_with("--screen="):
+			value = arg.trim_prefix("--screen=")
+		elif arg.begins_with("screen="):
+			value = arg.trim_prefix("screen=")
+		if not value.is_empty():
+			return value
+	return configured
+
+
+func _debug_reload_current_screen() -> void:
+	var screen_id := ScreenManager.current_screen_id
+	if screen_id.is_empty():
+		return
+	if not ScreenManager.reload_screen_resource(screen_id):
+		return
+	ScreenManager.transition_to(screen_id, Vector2(256.0, 350.0), screen_container, player)
+	print("Debug reload screen (from disk): %s" % screen_id)
