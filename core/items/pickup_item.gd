@@ -6,6 +6,10 @@ extends Area2D
 @export var display_name: String = "Item"
 @export var is_collectible: bool = false
 @export var world_id: String = ""
+## If set, player must hold this item to pick up safely.
+@export var requires_item_id: String = ""
+## Without required item: kill player instead of picking up (TI cursed treasure).
+@export var die_without_required: bool = false
 
 @onready var item_sprite: ItemSprite = $ItemSprite
 @onready var _hint: Label = $HintLabel
@@ -63,11 +67,24 @@ func try_pick_up() -> bool:
 			queue_free()
 			return true
 		return false
+	if not requires_item_id.is_empty() and not Inventory.has_item(requires_item_id):
+		if die_without_required:
+			_kill_nearby_player()
+		return false
 	if Inventory.try_pick_up(item_id):
 		WorldState.mark_collected(_get_world_id())
 		queue_free()
 		return true
 	return false
+
+
+func _kill_nearby_player() -> void:
+	var tree := get_tree()
+	if tree == null:
+		return
+	var player := tree.get_first_node_in_group("player")
+	if player != null and player.has_method("die_from_hazard"):
+		player.call("die_from_hazard")
 
 
 func _get_world_id() -> String:

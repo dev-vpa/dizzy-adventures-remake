@@ -49,6 +49,8 @@ position = Vector2(320, 307)
 item_id = "cursed_treasure"
 display_name = "Cursed Treasure"
 world_id = "bridge_cavern_treasure/cursed_treasure"
+requires_item_id = "holy_bible"
+die_without_required = true
 
 [node name="Hint" type="Label" parent="."]
 offset_left = 200.0

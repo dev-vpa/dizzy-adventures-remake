@@ -1,6 +1,6 @@
 extends Node
 
-## Treasure Island gameplay — item use and shop trade stubs.
+## Treasure Island gameplay — item use and shop trades.
 
 const TRADE_REWARDS := {
 	"video_camera": "dehydrated_boat",
@@ -24,6 +24,8 @@ func _on_item_used(item_id: String) -> void:
 			_try_open_grave()
 		"woodcutters_axe":
 			_try_cut_bridge()
+		"dynamite", "detonator":
+			_try_blast_mine()
 		"golden_key":
 			_try_open_kitchen()
 		"dehydrated_boat", "outboard_motor", "petrol", "ignition_key":
@@ -63,6 +65,20 @@ func _try_cut_bridge() -> void:
 	print("TI: bridge collapses — ↓ into cavern")
 
 
+func _try_blast_mine() -> void:
+	if _current_screen_id() != "mine_blast":
+		return
+	if WorldState.get_flag("mine_blasted"):
+		return
+	if not Inventory.has_item("dynamite") or not Inventory.has_item("detonator"):
+		print("TI: need dynamite and detonator")
+		return
+	Inventory.remove_item("dynamite")
+	Inventory.remove_item("detonator")
+	WorldState.set_flag("mine_blasted")
+	print("TI: rocks blasted — ← gold room open")
+
+
 func _try_open_kitchen() -> void:
 	if _current_screen_id() != "cavern_kitchen_door":
 		return
@@ -87,7 +103,6 @@ func _try_shop_trade(item_id: String) -> void:
 	if not Inventory.has_item(item_id):
 		return
 	var reward: String = TRADE_REWARDS[item_id]
-	# Drop traded item from inventory, then grant reward if space.
 	var selected := Inventory.get_selected_item()
 	if selected != item_id:
 		return
@@ -96,5 +111,4 @@ func _try_shop_trade(item_id: String) -> void:
 		WorldState.set_flag("traded_%s" % item_id)
 		print("TI: traded %s for %s" % [item_id, reward])
 	else:
-		# Restore if inventory full after drop (shouldn't happen with 3 slots).
 		Inventory.try_pick_up(item_id)

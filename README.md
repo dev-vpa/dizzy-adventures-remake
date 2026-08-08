@@ -28,6 +28,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 - **Regions playable:** west/tree/mine, **ocean** (`ocean_*`), **east** (grave → taxman), cavern/bridge stubs
 - **Puzzles (stub):** spade→bubbles, sword→grave, axe→bridge, shop Use-trade, boat parts on pier
 - **Hazards:** `hazard_zone` + WaterZone (snorkel gate for `ocean_*`)
+- **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, dynamite+detonator→mine, bible→cursed treasure; `puzzle_barrier` + WorldState flags
 - **Still TODO:** remaining cavern rooms, tree upper items, win with 30 coins, full coin layout
 
 ### Phase 2 gameplay (still available on east path)

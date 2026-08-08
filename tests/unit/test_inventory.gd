@@ -22,3 +22,6 @@ static func run() -> void:
 	var dropped := Inventory.try_drop_selected()
 	TestAssert.eq(dropped, "glass_sword", "drop selected item")
 	TestAssert.eq(Inventory.get_items().size(), 2, "two items after drop")
+	TestAssert.true_(Inventory.remove_item("snorkel"), "remove snorkel by id")
+	TestAssert.false_(Inventory.has_item("snorkel"), "snorkel gone")
+	TestAssert.false_(Inventory.remove_item("missing"), "remove missing fails")

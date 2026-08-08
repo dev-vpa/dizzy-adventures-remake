@@ -38,6 +38,12 @@ display_name = "Coin"
 is_collectible = true
 world_id = "tree_upper_central/coin"
 
+[node name="Detonator" parent="." instance=ExtResource("3")]
+position = Vector2(160, 339)
+item_id = "detonator"
+display_name = "Infra Red Detonator"
+world_id = "tree_upper_central/detonator"
+
 [node name="DownHint" type="Label" parent="."]
 offset_left = 220.0
 offset_top = 352.0

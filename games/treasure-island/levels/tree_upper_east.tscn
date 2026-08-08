@@ -35,6 +35,12 @@ display_name = "Coin"
 is_collectible = true
 world_id = "tree_upper_east/coin"
 
+[node name="GlassSword" parent="." instance=ExtResource("3")]
+position = Vector2(180, 339)
+item_id = "glass_sword"
+display_name = "Sharp Glass Sword"
+world_id = "tree_upper_east/glass_sword"
+
 [node name="RightHint" type="Label" parent="."]
 offset_left = 420.0
 offset_top = 352.0

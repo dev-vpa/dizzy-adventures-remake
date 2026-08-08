@@ -20,7 +20,20 @@ static func run() -> void:
 	ScreenManager.current_screen_id = "bridge_approach"
 	hooks._on_item_used("woodcutters_axe")
 	TestAssert.true_(WorldState.get_flag("bridge_cut"), "axe cuts bridge")
+
+	ScreenManager.current_screen_id = "mine_blast"
+	Inventory.clear()
+	Inventory.try_pick_up("dynamite")
+	hooks._on_item_used("dynamite")
+	TestAssert.false_(WorldState.get_flag("mine_blasted"), "mine needs both items")
+	Inventory.try_pick_up("detonator")
+	hooks._on_item_used("detonator")
+	TestAssert.true_(WorldState.get_flag("mine_blasted"), "mine blasted with both")
+	TestAssert.false_(Inventory.has_item("dynamite"), "dynamite consumed")
+	TestAssert.false_(Inventory.has_item("detonator"), "detonator consumed")
+
 	ScreenManager.current_screen_id = "shop_interior"
+	Inventory.clear()
 	Inventory.try_pick_up("video_camera")
 	hooks._on_item_used("video_camera")
 	TestAssert.true_(Inventory.has_item("dehydrated_boat"), "camera trades for boat")

@@ -99,8 +99,12 @@ func try_edge_transition(player: Node2D, container: Node2D) -> void:
 	var pos := player.global_position
 
 	if pos.x <= EDGE_MARGIN and exits.has("left") and not _edge_blocked(player, "left"):
+		if not _can_use_edge_exit(exits["left"]):
+			return
 		_transition("left", exits["left"], player, container)
 	elif pos.x >= SCREEN_WIDTH - EDGE_MARGIN and exits.has("right") and not _edge_blocked(player, "right"):
+		if not _can_use_edge_exit(exits["right"]):
+			return
 		_transition("right", exits["right"], player, container)
 
 
@@ -132,6 +136,12 @@ func try_directional_transition(player: CharacterBody2D, container: Node2D) -> b
 			return true
 
 	return false
+
+
+func _can_use_edge_exit(target_id: String) -> bool:
+	if target_id == "mine_gold_room" and not WorldState.get_flag("mine_blasted"):
+		return false
+	return true
 
 
 func _can_use_directional_exit(_direction: String, target_id: String) -> bool:

@@ -1,9 +1,14 @@
 [gd_scene format=3 uid="uid://mineblast"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="PackedScene" path="res://core/world/puzzle_barrier.tscn" id="2"]
+[ext_resource type="Script" path="res://core/world/flag_visibility.gd" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rock"]
+size = Vector2(72, 72)
 
 [node name="MineBlast" type="Node2D"]
 script = ExtResource("1")
@@ -28,21 +33,41 @@ offset_right = 256.0
 offset_bottom = 16.0
 color = Color(0.28, 0.22, 0.16, 1)
 
-[node name="RockBlock" type="ColorRect" parent="."]
-offset_left = 8.0
-offset_top = 280.0
-offset_right = 80.0
-offset_bottom = 352.0
+[node name="RockBlock" parent="." instance=ExtResource("2")]
+position = Vector2(44, 316)
+clear_flag = "mine_blasted"
+
+[node name="CollisionShape2D" parent="RockBlock"]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Visual" parent="RockBlock"]
+offset_left = -36.0
+offset_top = -36.0
+offset_right = 36.0
+offset_bottom = 36.0
 color = Color(0.42, 0.38, 0.34, 1)
 
 [node name="DynamiteSpot" type="Label" parent="."]
 offset_left = 8.0
-offset_top = 260.0
-offset_right = 120.0
+offset_top = 248.0
+offset_right = 200.0
 offset_bottom = 276.0
 theme_override_colors/font_color = Color(0.82, 0.72, 0.52, 1)
 theme_override_font_sizes/font_size = 9
-text = "Dynamite + detonator"
+text = "Use dynamite+detonator (U)"
+
+[node name="ClearedHint" type="Label" parent="."]
+visible = false
+offset_left = 8.0
+offset_top = 300.0
+offset_right = 120.0
+offset_bottom = 316.0
+theme_override_colors/font_color = Color(0.55, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 10
+text = "← Gold open"
+script = ExtResource("3")
+flag_id = "mine_blasted"
+visible_when_true = true
 
 [node name="RightHint" type="Label" parent="."]
 offset_left = 420.0

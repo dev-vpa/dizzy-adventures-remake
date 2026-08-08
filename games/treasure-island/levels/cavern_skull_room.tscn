@@ -40,3 +40,9 @@ item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "cavern_skull_room/coin25"
+
+[node name="Dynamite" parent="." instance=ExtResource("2")]
+position = Vector2(120, 339)
+item_id = "dynamite"
+display_name = "Sticks of Dynamite"
+world_id = "cavern_skull_room/dynamite"

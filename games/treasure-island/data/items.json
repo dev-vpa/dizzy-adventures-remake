@@ -92,7 +92,7 @@
     {
       "id": "detonator",
       "display_name": "Infra Red Detonator",
-      "screen": "tree_detonator",
+      "screen": "tree_upper_central",
       "purpose": "Blow dynamite in mine",
       "essential": true,
       "use_with": "dynamite",
@@ -109,7 +109,7 @@
     {
       "id": "glass_sword",
       "display_name": "Sharp Glass Sword",
-      "screen": "tree_sword_hut",
+      "screen": "tree_upper_east",
       "purpose": "Open passage under grave",
       "essential": true,
       "use_on": "grave_hill"
@@ -215,7 +215,7 @@
     {
       "id": "dynamite",
       "display_name": "Sticks of Dynamite",
-      "screen": "cavern_dynamo_ledge",
+      "screen": "cavern_skull_room",
       "purpose": "Blow mine rocks",
       "essential": true,
       "use_with": "detonator",

@@ -85,6 +85,20 @@ func try_drop_selected() -> String:
 	return item_id
 
 
+func remove_item(item_id: String) -> bool:
+	var idx := _items.find(item_id)
+	if idx < 0:
+		return false
+	_items.remove_at(idx)
+	if _items.is_empty():
+		selected_index = 0
+	elif selected_index >= _items.size():
+		selected_index = _items.size() - 1
+	inventory_changed.emit()
+	selection_changed.emit()
+	return true
+
+
 func try_use_selected() -> bool:
 	var item_id := get_selected_item()
 	if item_id.is_empty():

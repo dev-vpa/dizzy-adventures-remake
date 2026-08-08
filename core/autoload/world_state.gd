@@ -2,6 +2,8 @@ extends Node
 
 ## Tracks world pickups and puzzle flags for the current run.
 
+signal flag_changed(flag_id: String, value: bool)
+
 var _collected: Dictionary = {}
 var _flags: Dictionary = {}
 
@@ -27,6 +29,7 @@ func set_flag(flag_id: String, value: bool = true) -> void:
 	if flag_id.is_empty():
 		return
 	_flags[flag_id] = value
+	flag_changed.emit(flag_id, value)
 
 
 func get_flag(flag_id: String) -> bool:
@@ -36,4 +39,7 @@ func get_flag(flag_id: String) -> bool:
 
 
 func clear_flag(flag_id: String) -> void:
+	if not _flags.has(flag_id):
+		return
 	_flags.erase(flag_id)
+	flag_changed.emit(flag_id, false)
