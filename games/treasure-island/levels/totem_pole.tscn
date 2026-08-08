@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://totempole"]
+[gd_scene format=3 uid="uid://totempole"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://oceanbubblecave"]
+[gd_scene format=3 uid="uid://csuqu82xs2m1"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]
@@ -14,7 +14,7 @@ script = ExtResource("1")
 exit_left = "ocean_spade_bay"
 exit_up = "ocean_bubble_ascend"
 use_exit_up_zone = true
-exit_up_zone = Rect2(200, 80, 120, 100)
+exit_up_zone = Rect2(200, 280, 120, 88)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -43,11 +43,11 @@ zone_center = Vector2(120, 260)
 
 [node name="BubbleHint" type="Label" parent="."]
 offset_left = 160.0
-offset_top = 140.0
+offset_top = 240.0
 offset_right = 360.0
-offset_bottom = 172.0
+offset_bottom = 272.0
 theme_override_colors/font_color = Color(0.72, 0.88, 1, 0.95)
 theme_override_font_sizes/font_size = 10
-text = "Use Spade (U) on bubble
-then ↑ to ascend"
+text = "1) Tab → Spade  2) U
+3) Stand here ↑ ascend"
 horizontal_alignment = 1

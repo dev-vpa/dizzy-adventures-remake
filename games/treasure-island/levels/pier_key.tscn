@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://pierkey"]
+[gd_scene format=3 uid="uid://pierkey"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="2"]
@@ -32,7 +32,7 @@ offset_bottom = 16.0
 color = Color(0.74, 0.6, 0.36, 1)
 
 [node name="Pier" type="StaticBody2D" parent="."]
-position = Vector2(300, 300)
+position = Vector2(300, 330)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pier"]
 shape = SubResource("RectangleShape2D_pier")
@@ -45,7 +45,7 @@ offset_bottom = 8.0
 color = Color(0.5, 0.4, 0.28, 1)
 
 [node name="Key" parent="." instance=ExtResource("3")]
-position = Vector2(400, 285)
+position = Vector2(380, 315)
 item_id = "golden_key"
 display_name = "Large Golden Key"
 world_id = "pier_key/golden_key"

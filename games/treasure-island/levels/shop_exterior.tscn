@@ -16,7 +16,7 @@ exit_left = "totem_pole"
 exit_right = "shop_east"
 exit_up = "shop_roof"
 use_exit_up_zone = true
-exit_up_zone = Rect2(360, 240, 120, 80)
+exit_up_zone = Rect2(340, 300, 140, 68)
 override_spawn_from_west = true
 spawn_from_west = Vector2(260, 320)
 
@@ -116,4 +116,4 @@ theme_override_colors/font_shadow_color = Color(1, 0.96, 0.82, 0.5)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 10
-text = "← Totem  ·  ↑ Roof"
+text = "← Totem  ·  ↑ Roof (at facade)"

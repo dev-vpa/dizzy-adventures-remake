@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://oceanwreck"]
+[gd_scene format=3 uid="uid://oceanwreck"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]
@@ -58,5 +58,15 @@ world_id = "ocean_wreck/skull_1"
 
 [node name="Hazard1" parent="." instance=ExtResource("5")]
 hazard_label = "Crab"
-zone_size = Vector2(64, 28)
-zone_center = Vector2(320, 340)
+zone_size = Vector2(56, 32)
+zone_center = Vector2(320, 270)
+
+[node name="Warn" type="Label" parent="."]
+offset_left = 250.0
+offset_top = 220.0
+offset_right = 400.0
+offset_bottom = 236.0
+theme_override_colors/font_color = Color(1, 0.55, 0.4, 0.95)
+theme_override_font_sizes/font_size = 10
+text = "Crab — walk under / jump"
+horizontal_alignment = 1

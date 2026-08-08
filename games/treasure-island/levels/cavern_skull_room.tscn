@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cavernskullroom"]
+[gd_scene format=3 uid="uid://ctru3jlo1twqi"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="2"]
