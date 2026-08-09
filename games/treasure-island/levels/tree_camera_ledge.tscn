@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://treecameraledge"]
+[gd_scene format=3 uid="uid://b6quq47wau5au"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/tree_backdrop.gd" id="2"]

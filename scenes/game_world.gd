@@ -101,6 +101,7 @@ func _apply_debug_start_items(start_id: String) -> void:
 			Inventory.try_pick_up("salt_spade")
 		"cavern_kitchen_door", "blackbeard_kitchen":
 			Inventory.try_pick_up("golden_key")
+			WorldState.set_flag("kitchen_open")
 		"pier_boat":
 			Inventory.try_pick_up("dehydrated_boat")
 		"taxman_dock":

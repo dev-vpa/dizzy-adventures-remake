@@ -64,6 +64,23 @@ static func run() -> void:
 	hooks._on_item_used("video_camera")
 	TestAssert.true_(Inventory.has_item("dehydrated_boat"), "camera trades for boat")
 	TestAssert.false_(Inventory.has_item("video_camera"), "traded item removed")
+
+	Inventory.clear()
+	Inventory.try_pick_up("microwave")
+	hooks._on_item_used("microwave")
+	TestAssert.true_(Inventory.has_item("petrol"), "microwave trades for petrol")
+	TestAssert.false_(Inventory.has_item("microwave"), "microwave removed after trade")
+	TestAssert.true_(WorldState.get_flag("traded_microwave"), "microwave trade flagged")
+
+	Inventory.clear()
+	Inventory.try_pick_up("cursed_treasure")
+	hooks._on_item_used("cursed_treasure")
+	TestAssert.true_(Inventory.has_item("outboard_motor"), "treasure trades for motor")
+	Inventory.clear()
+	Inventory.try_pick_up("gold_bag")
+	hooks._on_item_used("gold_bag")
+	TestAssert.true_(Inventory.has_item("ignition_key"), "gold bag trades for key")
+
 	hooks.free()
 	WorldState.reset()
 	Inventory.clear()
