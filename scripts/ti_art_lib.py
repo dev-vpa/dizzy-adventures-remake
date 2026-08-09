@@ -1,162 +1,345 @@
 #!/usr/bin/env python3
-"""Shared pixel helpers for TI homage art (original, CC BY-NC — not a rip)."""
+"""Shared helpers and palette for original Treasure Island homage pixel art."""
 from __future__ import annotations
 
 import math
 import random
 from pathlib import Path
+from typing import Iterable, Sequence
 
 from PIL import Image, ImageDraw
 
-# Repo root (parent of scripts/), so generators work from any cwd.
+# Every generated path is rooted here so scripts are safe to run from any cwd.
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Warm CPC-ish palette (original homage, not a dump of Codemasters assets)
-SKY_TOP = (56, 120, 200)
-SKY_MID = (90, 160, 220)
-SKY_HORIZON = (140, 190, 230)
-SEA_DEEP = (28, 70, 140)
-SEA_MID = (40, 110, 170)
-SEA_FOAM = (180, 220, 240)
-SAND_DRY = (222, 188, 118)
-SAND_MID = (205, 168, 95)
-SAND_WET = (180, 145, 85)
-SAND_DARK = (160, 125, 70)
-LEAF = (40, 130, 55)
-LEAF_DK = (25, 95, 40)
-LEAF_HI = (70, 165, 70)
-TRUNK = (120, 75, 40)
-TRUNK_DK = (85, 50, 28)
-TRUNK_HI = (150, 100, 55)
-CLOUD = (245, 250, 255)
-CLOUD_SH = (200, 215, 235)
+# Deliberately compact warm CPC/Speccy-inspired palette. These are original
+# project colours, not sampled from or traced over any commercial game asset.
+INK = (28, 24, 36)
+INK_BLUE = (24, 38, 58)
+INK_BROWN = (55, 35, 30)
 
-EGG = (255, 220, 70)
-EGG_HI = (255, 240, 140)
-EGG_SH = (210, 160, 40)
-BOOT = (200, 45, 35)
-BOOT_HI = (230, 80, 60)
-GLOVE = (250, 245, 230)
-EYE = (25, 20, 30)
-SMILE = (80, 40, 40)
+SKY_TOP = (45, 87, 164)
+SKY_MID = (64, 132, 196)
+SKY_HORIZON = (139, 196, 216)
+SUN = (255, 220, 112)
+CLOUD = (246, 240, 210)
+CLOUD_HI = (255, 252, 233)
+CLOUD_SH = (178, 199, 216)
+
+SEA_DEEP = (20, 54, 112)
+SEA_MID = (28, 105, 159)
+SEA_LIGHT = (58, 160, 190)
+SEA_FOAM = (190, 231, 224)
+
+SAND_DRY = (226, 188, 105)
+SAND_HI = (246, 215, 139)
+SAND_MID = (196, 151, 77)
+SAND_WET = (153, 119, 70)
+SAND_DARK = (112, 78, 48)
+
+LEAF = (43, 126, 65)
+LEAF_DK = (22, 75, 52)
+LEAF_HI = (90, 174, 75)
+LEAF_LIME = (151, 191, 75)
+TRUNK = (126, 77, 43)
+TRUNK_DK = (74, 45, 35)
+TRUNK_HI = (181, 118, 57)
+
+ROCK = (104, 98, 112)
+ROCK_DK = (61, 55, 69)
+ROCK_HI = (151, 142, 143)
+WOOD = (145, 89, 47)
+WOOD_DK = (82, 49, 34)
+WOOD_HI = (202, 132, 63)
+
+EGG = (248, 202, 54)
+EGG_HI = (255, 238, 121)
+EGG_SH = (199, 137, 30)
+EGG_EDGE = (117, 73, 31)
+BOOT = (190, 45, 43)
+BOOT_HI = (239, 79, 58)
+BOOT_DK = (104, 28, 38)
+GLOVE = (244, 239, 216)
+GLOVE_HI = (255, 253, 235)
+GLOVE_SH = (177, 185, 176)
+EYE = INK
+SMILE = (99, 43, 37)
+
+GOLD = (240, 178, 38)
+GOLD_HI = (255, 228, 94)
+GOLD_DK = (139, 78, 26)
+METAL = (150, 165, 172)
+METAL_HI = (221, 229, 220)
+METAL_DK = (73, 78, 91)
+
+_BAYER_4 = (
+	(0, 8, 2, 10),
+	(12, 4, 14, 6),
+	(3, 11, 1, 9),
+	(15, 7, 13, 5),
+)
 
 
-def save(img: Image.Image, path: Path) -> None:
-	path.parent.mkdir(parents=True, exist_ok=True)
-	img = img.convert("RGBA")
-	img.save(path)
-	print("wrote", path, img.size)
+def rgba(color: Sequence[int], alpha: int = 255) -> tuple[int, int, int, int]:
+	if len(color) == 4:
+		return int(color[0]), int(color[1]), int(color[2]), int(color[3])
+	return int(color[0]), int(color[1]), int(color[2]), alpha
 
 
-def new_canvas(w: int, h: int, fill=(0, 0, 0, 0)) -> Image.Image:
-	return Image.new("RGBA", (w, h), fill)
+def shade(color: Sequence[int], amount: int) -> tuple[int, int, int]:
+	return tuple(max(0, min(255, int(channel) + amount)) for channel in color[:3])
 
 
-def px(im: Image.Image, x: int, y: int, c: tuple) -> None:
-	if 0 <= x < im.width and 0 <= y < im.height:
-		im.putpixel((x, y), c if len(c) == 4 else (*c, 255))
-
-
-def blend(a: tuple, b: tuple, t: float) -> tuple:
+def blend(a: Sequence[int], b: Sequence[int], t: float) -> tuple[int, int, int, int]:
 	t = max(0.0, min(1.0, t))
 	return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3)) + (255,)
 
 
-def dither_vgrad(im: Image.Image, y0: int, y1: int, c0: tuple, c1: tuple) -> None:
-	h = max(1, y1 - y0)
-	for y in range(y0, y1):
-		t = (y - y0) / h
-		base = blend(c0, c1, t)
-		alt = blend(c0, c1, min(1.0, t + 0.04))
+def save(img: Image.Image, path: Path) -> None:
+	resolved = path.resolve()
+	if REPO_ROOT not in resolved.parents:
+		raise ValueError(f"Generated art must stay under REPO_ROOT: {resolved}")
+	resolved.parent.mkdir(parents=True, exist_ok=True)
+	output = img.convert("RGBA")
+	output.save(resolved, format="PNG", compress_level=9)
+	print("wrote", resolved.relative_to(REPO_ROOT), output.size)
+
+
+def new_canvas(w: int, h: int, fill=(0, 0, 0, 0)) -> Image.Image:
+	return Image.new("RGBA", (w, h), rgba(fill))
+
+
+def upscale_nearest(im: Image.Image, scale: int) -> Image.Image:
+	if scale <= 0:
+		raise ValueError("scale must be positive")
+	return im.resize((im.width * scale, im.height * scale), Image.Resampling.NEAREST)
+
+
+def px(im: Image.Image, x: int, y: int, color: Sequence[int]) -> None:
+	if 0 <= x < im.width and 0 <= y < im.height:
+		im.putpixel((x, y), rgba(color))
+
+
+def fill_rect(
+	im: Image.Image,
+	x0: int,
+	y0: int,
+	x1: int,
+	y1: int,
+	color: Sequence[int],
+) -> None:
+	ImageDraw.Draw(im).rectangle([x0, y0, x1, y1], fill=rgba(color))
+
+
+def fill_ellipse(im: Image.Image, box: Sequence[int], color: Sequence[int]) -> None:
+	ImageDraw.Draw(im).ellipse(tuple(box), fill=rgba(color))
+
+
+def fill_polygon(
+	im: Image.Image,
+	points: Iterable[tuple[int, int]],
+	color: Sequence[int],
+) -> None:
+	ImageDraw.Draw(im).polygon(list(points), fill=rgba(color))
+
+
+def pixel_line(
+	im: Image.Image,
+	points: Iterable[tuple[int, int]],
+	color: Sequence[int],
+	width: int = 1,
+) -> None:
+	ImageDraw.Draw(im).line(list(points), fill=rgba(color), width=max(1, width))
+
+
+def dither_vgrad(
+	im: Image.Image,
+	y0: int,
+	y1: int,
+	c0: Sequence[int],
+	c1: Sequence[int],
+	levels: int = 6,
+) -> None:
+	"""Ordered vertical gradient using a small, finite colour ramp."""
+	levels = max(2, levels)
+	height = max(1, y1 - y0)
+	for y in range(max(0, y0), min(im.height, y1)):
+		t = (y - y0) / max(1, height - 1)
+		position = t * (levels - 1)
+		low = int(math.floor(position))
+		high = min(levels - 1, low + 1)
+		frac = position - low
 		for x in range(im.width):
-			use = alt if ((x + y) & 1) and t < 0.95 else base
-			px(im, x, y, use)
+			threshold = (_BAYER_4[y & 3][x & 3] + 0.5) / 16.0
+			band = high if frac > threshold else low
+			px(im, x, y, blend(c0, c1, band / (levels - 1)))
 
 
-def fill_rect(im: Image.Image, x0: int, y0: int, x1: int, y1: int, c: tuple) -> None:
-	d = ImageDraw.Draw(im)
-	d.rectangle([x0, y0, x1, y1], fill=c if len(c) == 4 else (*c, 255))
-
-
-def fill_ellipse(im: Image.Image, box: tuple, c: tuple) -> None:
-	d = ImageDraw.Draw(im)
-	d.ellipse(box, fill=c if len(c) == 4 else (*c, 255))
+def outline(
+	im: Image.Image,
+	color: Sequence[int] = INK,
+	diagonal: bool = True,
+	alpha_threshold: int = 24,
+) -> None:
+	"""Add a one-pixel outline behind existing non-transparent pixels."""
+	source = im.copy()
+	offsets = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+	if diagonal:
+		offsets.extend([(-1, -1), (1, -1), (-1, 1), (1, 1)])
+	for y in range(im.height):
+		for x in range(im.width):
+			if source.getpixel((x, y))[3] >= alpha_threshold:
+				continue
+			for dx, dy in offsets:
+				nx, ny = x + dx, y + dy
+				if (
+					0 <= nx < im.width
+					and 0 <= ny < im.height
+					and source.getpixel((nx, ny))[3] >= alpha_threshold
+				):
+					px(im, x, y, color)
+					break
+	im.alpha_composite(source)
 
 
 def draw_cloud(im: Image.Image, cx: int, cy: int, scale: float = 1.0) -> None:
-	blobs = [(-18, 0, 22), (0, -6, 26), (16, 2, 20), (-6, 6, 18)]
-	for ox, oy, r in blobs:
-		rr = int(r * scale)
-		fill_ellipse(
-			im,
-			(cx + int(ox * scale) - rr, cy + int(oy * scale) - rr // 2, cx + int(ox * scale) + rr, cy + int(oy * scale) + rr // 2),
-			CLOUD,
-		)
-	# soft shadow underbelly
-	for ox, oy, r in blobs:
-		rr = int(r * scale * 0.7)
-		fill_ellipse(
-			im,
-			(
-				cx + int(ox * scale) - rr,
-				cy + int(oy * scale) + rr // 3,
-				cx + int(ox * scale) + rr,
-				cy + int(oy * scale) + rr,
-			),
-			CLOUD_SH,
-		)
+	"""Blocky layered cloud intended for a 256×192 source backdrop."""
+	blobs = [(-12, 1, 12), (-3, -4, 14), (8, -2, 12), (16, 2, 8)]
+	for ox, oy, radius in blobs:
+		r = max(2, int(radius * scale))
+		x = cx + int(ox * scale)
+		y = cy + int((oy + 3) * scale)
+		fill_ellipse(im, (x - r, y - r // 2, x + r, y + r // 2), CLOUD_SH)
+	for ox, oy, radius in blobs:
+		r = max(2, int(radius * scale))
+		x = cx + int(ox * scale)
+		y = cy + int(oy * scale)
+		fill_ellipse(im, (x - r, y - r // 2, x + r, y + r // 2), CLOUD)
+	fill_rect(
+		im,
+		cx - int(11 * scale),
+		cy - int(4 * scale),
+		cx + int(5 * scale),
+		cy - int(2 * scale),
+		CLOUD_HI,
+	)
+	fill_rect(
+		im,
+		cx - int(16 * scale),
+		cy + int(5 * scale),
+		cx + int(17 * scale),
+		cy + int(6 * scale),
+		CLOUD_SH,
+	)
 
 
-def draw_palm(im: Image.Image, base_x: int, base_y: int) -> None:
-	"""Layered palm — original silhouette, not a rip."""
-	# trunk curve
-	for i in range(78):
-		t = i / 77
-		x = base_x + int(math.sin(t * 1.4) * 6)
-		y = base_y - i
-		w = 7 - int(t * 3)
-		for dx in range(-w, w + 1):
-			shade = TRUNK_HI if dx < -1 else (TRUNK_DK if dx > 2 else TRUNK)
-			px(im, x + dx, y, shade)
-	# fronds
+def draw_palm(
+	im: Image.Image,
+	base_x: int,
+	base_y: int,
+	scale: float = 1.0,
+	mirror: bool = False,
+) -> None:
+	"""Original layered palm silhouette with a chunky curved trunk."""
+	direction = -1 if mirror else 1
+	height = max(24, int(58 * scale))
+	trunk: list[tuple[int, int]] = []
+	for i in range(height + 1):
+		t = i / height
+		x = base_x + direction * int(math.sin(t * 1.35) * 6 * scale)
+		trunk.append((x, base_y - i))
+	pixel_line(im, trunk, TRUNK_DK, max(3, int(7 * scale)))
+	pixel_line(im, [(x - direction, y) for x, y in trunk], TRUNK, max(2, int(4 * scale)))
+	pixel_line(im, [(x - direction * 2, y) for x, y in trunk], TRUNK_HI, 1)
+	for i in range(7, height, max(5, int(8 * scale))):
+		x, y = trunk[i]
+		pixel_line(
+			im,
+			[(x - int(3 * scale), y), (x + int(3 * scale), y - 2)],
+			TRUNK_DK,
+			1,
+		)
+
+	crown_x, crown_y = trunk[-1]
 	fronds = [
-		(-50, -20, 40),
-		(-35, -40, 36),
-		(0, -52, 34),
-		(35, -38, 38),
-		(52, -18, 42),
-		(-20, -28, 30),
-		(22, -30, 30),
+		(-35, -7),
+		(-26, -19),
+		(-10, -28),
+		(9, -27),
+		(27, -17),
+		(37, -4),
+		(-19, 2),
+		(22, 2),
 	]
-	crown_x, crown_y = base_x + 2, base_y - 78
-	for fx, fy, length in fronds:
-		steps = length
-		for s in range(steps):
-			t = s / max(1, steps - 1)
-			x = crown_x + int(fx * t) + int(math.sin(t * 6) * 2)
-			y = crown_y + int(fy * t) + int(t * t * 18)
-			# leaf width taper
-			half = max(1, int(4 * (1 - t)))
-			for dy in range(-half, half + 1):
-				col = LEAF_HI if dy < 0 else (LEAF_DK if dy > 1 else LEAF)
-				px(im, x, y + dy, col)
-				if s % 3 == 0:
-					px(im, x + 1, y + dy, col)
-	# coconuts
-	fill_ellipse(im, (crown_x - 6, crown_y + 2, crown_x - 1, crown_y + 8), (90, 55, 30, 255))
-	fill_ellipse(im, (crown_x + 1, crown_y + 3, crown_x + 6, crown_y + 9), (100, 60, 32, 255))
+	for index, (fx, fy) in enumerate(fronds):
+		fx *= direction
+		mid = (
+			crown_x + int(fx * 0.45 * scale),
+			crown_y + int((fy - 5) * 0.55 * scale),
+		)
+		end = (
+			crown_x + int(fx * scale),
+			crown_y + int((fy + 7) * scale),
+		)
+		pixel_line(im, [(crown_x, crown_y), mid, end], LEAF_DK, max(2, int(3 * scale)))
+		pixel_line(im, [(crown_x, crown_y - 1), mid, end], LEAF, max(1, int(2 * scale)))
+		if index % 2 == 0:
+			pixel_line(im, [(crown_x, crown_y - 2), mid], LEAF_HI, 1)
+		for step in (0.35, 0.55, 0.73):
+			sx = int(mid[0] + (end[0] - mid[0]) * step)
+			sy = int(mid[1] + (end[1] - mid[1]) * step)
+			leaf_len = max(2, int(5 * scale * (1.0 - step * 0.35)))
+			pixel_line(im, [(sx, sy), (sx - direction * leaf_len, sy + leaf_len)], LEAF_DK, 1)
+			pixel_line(im, [(sx, sy), (sx + direction * leaf_len, sy + leaf_len)], LEAF_HI, 1)
+	for ox, oy in [(-4, 1), (1, 2), (4, 5)]:
+		r = max(1, int(2 * scale))
+		fill_ellipse(
+			im,
+			(crown_x + ox - r, crown_y + oy - r, crown_x + ox + r, crown_y + oy + r),
+			TRUNK_DK,
+		)
 
 
-def draw_bird(im: Image.Image, x: int, y: int) -> None:
-	px(im, x, y, (40, 40, 50, 255))
-	px(im, x - 1, y + 1, (40, 40, 50, 255))
-	px(im, x + 1, y + 1, (40, 40, 50, 255))
+def draw_bird(im: Image.Image, x: int, y: int, color: Sequence[int] = INK_BLUE) -> None:
+	pixel_line(im, [(x - 4, y), (x - 1, y - 2), (x, y)], color)
+	pixel_line(im, [(x, y), (x + 2, y - 2), (x + 5, y)], color)
 
 
-def speckles(im: Image.Image, x0: int, y0: int, x1: int, y1: int, colors: list, density: float, rng: random.Random) -> None:
-	area = max(1, (x1 - x0) * (y1 - y0))
-	n = int(area * density)
-	for _ in range(n):
-		x = rng.randint(x0, x1 - 1)
-		y = rng.randint(y0, y1 - 1)
-		px(im, x, y, rng.choice(colors))
+def speckles(
+	im: Image.Image,
+	x0: int,
+	y0: int,
+	x1: int,
+	y1: int,
+	colors: Sequence[Sequence[int]],
+	density: float,
+	rng: random.Random,
+	sizes: Sequence[int] = (1,),
+) -> None:
+	"""Deterministic clustered pixels; useful for sand, bark, and stone."""
+	x0, y0 = max(0, x0), max(0, y0)
+	x1, y1 = min(im.width, x1), min(im.height, y1)
+	if x1 <= x0 or y1 <= y0:
+		return
+	area = (x1 - x0) * (y1 - y0)
+	for _ in range(int(area * density)):
+		x = rng.randrange(x0, x1)
+		y = rng.randrange(y0, y1)
+		size = max(1, rng.choice(tuple(sizes)))
+		fill_rect(im, x, y, min(x1 - 1, x + size - 1), min(y1 - 1, y + size - 1), rng.choice(tuple(colors)))
+
+
+def star_points(
+	cx: int,
+	cy: int,
+	outer: float,
+	inner: float,
+	points: int = 5,
+	rotation: float = -math.pi / 2,
+) -> list[tuple[int, int]]:
+	result: list[tuple[int, int]] = []
+	for i in range(points * 2):
+		radius = outer if i % 2 == 0 else inner
+		angle = rotation + math.pi * i / points
+		result.append((int(round(cx + math.cos(angle) * radius)), int(round(cy + math.sin(angle) * radius))))
+	return result

@@ -97,12 +97,32 @@ func _draw() -> void:
 
 
 func _draw_snorkel_mask() -> void:
-	var mask := Color(0.18, 0.42, 0.72, 1.0)
-	var tube := Color(0.22, 0.58, 0.88, 1.0)
-	# Sit on upper third of current frame (works for 48–78px tall eggs).
 	var tex := _current_texture()
-	var h := tex.get_height() if tex else 60
-	var y := -float(h) * 0.72
-	var x0 := -10.0 if facing > 0 else -6.0
-	draw_rect(Rect2(x0, y, 20, 6), mask)
-	draw_rect(Rect2(x0 + 8.0, y - 10.0, 4, 12), tube)
+	if tex == null:
+		return
+	# Generated frames use authored 3×3 pixel blocks. Keep the overlay on that
+	# same grid so it looks equipped rather than vector-drawn over pixel art.
+	var frame_top := -float(tex.get_height()) + 4.0
+	var mask_y := frame_top + 24.0
+	var mask_left := -15.0
+	var rim := Color(0.08, 0.16, 0.28, 1.0)
+	var frame := Color(0.16, 0.43, 0.72, 1.0)
+	var lens := Color(0.32, 0.72, 0.86, 0.82)
+	var shine := Color(0.78, 0.94, 0.95, 0.95)
+	var tube := Color(0.88, 0.25, 0.20, 1.0)
+	var tube_hi := Color(1.0, 0.48, 0.28, 1.0)
+
+	var tube_x := 15.0 if facing > 0 else -21.0
+	draw_rect(Rect2(tube_x, mask_y - 21.0, 9.0, 30.0), rim)
+	draw_rect(Rect2(tube_x + 3.0, mask_y - 18.0, 3.0, 24.0), tube)
+	draw_rect(Rect2(tube_x + 3.0, mask_y - 18.0, 6.0, 3.0), tube_hi)
+	var mouth_x := 12.0 if facing > 0 else -21.0
+	draw_rect(Rect2(mouth_x, mask_y + 6.0, 12.0, 6.0), rim)
+	draw_rect(Rect2(mouth_x + 3.0, mask_y + 6.0, 9.0, 3.0), tube)
+
+	draw_rect(Rect2(mask_left - 3.0, mask_y - 3.0, 36.0, 15.0), rim)
+	draw_rect(Rect2(mask_left, mask_y, 30.0, 9.0), frame)
+	draw_rect(Rect2(mask_left + 3.0, mask_y + 3.0, 9.0, 3.0), lens)
+	draw_rect(Rect2(mask_left + 18.0, mask_y + 3.0, 9.0, 3.0), lens)
+	draw_rect(Rect2(mask_left + 12.0, mask_y + 3.0, 6.0, 3.0), rim)
+	draw_rect(Rect2(mask_left + 3.0, mask_y, 6.0, 3.0), shine)
