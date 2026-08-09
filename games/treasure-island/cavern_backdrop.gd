@@ -1,8 +1,8 @@
 extends "res://games/treasure-island/region_backdrop.gd"
 
-## Tree-village biome backdrop.
+## Cavern / mine biome backdrop.
 
 
 func _ready() -> void:
-	region = "tree"
+	region = "cavern"
 	super._ready()

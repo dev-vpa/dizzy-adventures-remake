@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://npc001" path="res://core/interactables/npc.tscn" id="2"]
+[ext_resource type="Script" path="res://games/treasure-island/hut_backdrop.gd" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(512, 32)
@@ -15,10 +16,13 @@ exit_left = "shop_exterior"
 override_spawn_from_west = true
 spawn_from_west = Vector2(140, 320)
 
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("3")
+
 [node name="Wall" type="ColorRect" parent="."]
 offset_right = 512.0
 offset_bottom = 384.0
-color = Color(0.28, 0.2, 0.14, 1)
+color = Color(0.28, 0.2, 0.14, 0.4)
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(256, 368)

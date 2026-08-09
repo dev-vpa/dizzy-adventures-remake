@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://mineshaft"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
+[ext_resource type="Script" path="res://games/treasure-island/cavern_backdrop.gd" id="2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
@@ -12,10 +13,13 @@ exit_left = "mine_blast"
 use_exit_up_zone = true
 exit_up_zone = Rect2(200, 300, 112, 68)
 
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
 [node name="Wall" type="ColorRect" parent="."]
 offset_right = 512.0
 offset_bottom = 384.0
-color = Color(0.18, 0.14, 0.12, 1)
+color = Color(0.18, 0.14, 0.12, 0.35)
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(256, 368)

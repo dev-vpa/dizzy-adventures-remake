@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="PackedScene" path="res://core/world/puzzle_barrier.tscn" id="2"]
 [ext_resource type="Script" path="res://core/world/flag_visibility.gd" id="3"]
+[ext_resource type="Script" path="res://games/treasure-island/cavern_backdrop.gd" id="4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
@@ -15,10 +16,13 @@ script = ExtResource("1")
 exit_left = "mine_gold_room"
 exit_right = "mine_shaft"
 
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("4")
+
 [node name="Wall" type="ColorRect" parent="."]
 offset_right = 512.0
 offset_bottom = 384.0
-color = Color(0.16, 0.12, 0.1, 1)
+color = Color(0.16, 0.12, 0.1, 0.35)
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(256, 368)
