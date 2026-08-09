@@ -19,7 +19,35 @@ var active_config: GameConfig
 
 
 func _ready() -> void:
-	_show_main_menu()
+	if OS.is_debug_build() and _debug_should_skip_menu():
+		_debug_boot_into_gameplay()
+	else:
+		_show_main_menu()
+
+
+func _debug_should_skip_menu() -> bool:
+	# F5 playtest: skip menus by default. Pass -- --menu to keep the full flow.
+	for arg in OS.get_cmdline_user_args():
+		if arg == "--menu" or arg == "menu":
+			return false
+	return true
+
+
+func _debug_boot_into_gameplay() -> void:
+	var games := get_available_games()
+	if games.is_empty():
+		_show_main_menu()
+		return
+	var config: GameConfig = games[0]
+	active_config = config
+	state = State.PLAYING
+	Inventory.configure(config.inventory_slots)
+	Lives.configure(config.starting_lives)
+	Collectibles.configure(config.collectible_name, config.collectible_total)
+	WorldState.reset()
+	ScreenManager.configure(config)
+	print("Debug: skip menu → %s (start: %s)" % [config.id, config.starting_screen_id])
+	_change_scene(GAME_WORLD_SCENE)
 
 
 func _change_scene(scene: PackedScene) -> void:

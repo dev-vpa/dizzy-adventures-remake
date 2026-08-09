@@ -119,9 +119,8 @@ Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). On la
 | Action | How |
 |--------|-----|
 | Reload current screen from disk | **F9** (respawns at center; picks up `.tscn` edits) |
-| Start on a specific screen | Set `starting_screen_id` in `games/treasure-island/treasure_island_config.tres`, **or** Project → Project Settings → Application → Run → Main Run Args: `-- --screen=tree_upper_far_west` |
-
-Remember to set `starting_screen_id` back to `beach_start` when finished playtesting that area.
+| Start on a specific screen | Set `starting_screen_id` in `games/treasure-island/treasure_island_config.tres` |
+| Skip menus on F5 | Debug builds boot straight into TI gameplay. To see menus: Main Run Args `-- --menu` |
 
 ## Export targets
 
