@@ -22,4 +22,5 @@ if ! command -v "$GODOT" >/dev/null 2>&1 && [ ! -x "$GODOT" ]; then
 fi
 
 echo "Using: $GODOT"
+"$GODOT" --headless --path "$ROOT" --import
 "$GODOT" --headless --path "$ROOT" res://tests/test_runner.tscn "$@"

@@ -107,7 +107,7 @@ scripts\run_tests.bat
 
 Or in Godot: open `tests/test_runner.tscn` and run the scene (F6).
 
-**Coverage:** autoloads (`Inventory`, `Collectibles`, `WorldState`), `ItemCatalog`, `items.json`, `GameScreen` API, TI level registry (all `.tscn` load, exits resolve), `ScreenManager` transitions, **WinPath** (beach_start graph + puzzle/trade/boat sequence). Exit code `0` = pass, `1` = fail.
+**Coverage:** autoloads (`Inventory`, `Collectibles`, `WorldState`), `ItemCatalog`, `items.json`, `GameScreen` API, TI level registry (all `.tscn` load, exits resolve), generated **ArtSkin** coverage (no visible solid-colour placeholders), `ScreenManager` transitions, **WinPath** (beach_start graph + puzzle/trade/boat sequence). Exit code `0` = pass, `1` = fail.
 
 ## Display
 

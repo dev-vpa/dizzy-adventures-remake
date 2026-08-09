@@ -88,12 +88,11 @@ func _draw() -> void:
 	var pos := Vector2(-size.x * 0.5, -size.y + 4.0)
 	if facing < 0:
 		draw_set_transform(Vector2(0, 0), 0.0, Vector2(-1, 1))
-		draw_texture(tex, Vector2(-size.x * 0.5, pos.y))
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-	else:
-		draw_texture(tex, pos)
+	draw_texture(tex, pos)
 	if Inventory.has_item("snorkel"):
 		_draw_snorkel_mask()
+	if facing < 0:
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
 func _draw_snorkel_mask() -> void:
@@ -101,7 +100,7 @@ func _draw_snorkel_mask() -> void:
 	if tex == null:
 		return
 	# Generated frames use authored 3×3 pixel blocks. Keep the overlay on that
-	# same grid so it looks equipped rather than vector-drawn over pixel art.
+	# same grid. It is authored facing right and mirrors with the body.
 	var frame_top := -float(tex.get_height()) + 4.0
 	var mask_y := frame_top + 24.0
 	var mask_left := -15.0
@@ -112,11 +111,11 @@ func _draw_snorkel_mask() -> void:
 	var tube := Color(0.88, 0.25, 0.20, 1.0)
 	var tube_hi := Color(1.0, 0.48, 0.28, 1.0)
 
-	var tube_x := 15.0 if facing > 0 else -21.0
+	var tube_x := 15.0
 	draw_rect(Rect2(tube_x, mask_y - 21.0, 9.0, 30.0), rim)
 	draw_rect(Rect2(tube_x + 3.0, mask_y - 18.0, 3.0, 24.0), tube)
 	draw_rect(Rect2(tube_x + 3.0, mask_y - 18.0, 6.0, 3.0), tube_hi)
-	var mouth_x := 12.0 if facing > 0 else -21.0
+	var mouth_x := 12.0
 	draw_rect(Rect2(mouth_x, mask_y + 6.0, 12.0, 6.0), rim)
 	draw_rect(Rect2(mouth_x + 3.0, mask_y + 6.0, 9.0, 3.0), tube)
 

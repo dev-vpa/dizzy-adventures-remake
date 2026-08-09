@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import random
 
+from PIL import Image
+
 from ti_art_lib import (
 	INK,
 	INK_BROWN,
@@ -18,6 +20,10 @@ from ti_art_lib import (
 	SAND_DRY,
 	SAND_HI,
 	SAND_MID,
+	SEA_DEEP,
+	SEA_FOAM,
+	SEA_LIGHT,
+	SEA_MID,
 	TRUNK,
 	TRUNK_DK,
 	TRUNK_HI,
@@ -183,6 +189,121 @@ def ledge(name: str, material: str, rng: random.Random) -> None:
 	save(im, TILES / f"{name}.png")
 
 
+def pier() -> Image.Image:
+	im = new_canvas(32, 16, WOOD_DK)
+	fill_rect(im, 0, 0, 31, 2, WOOD_HI)
+	fill_rect(im, 0, 3, 31, 11, WOOD)
+	fill_rect(im, 0, 12, 31, 15, TRUNK_DK)
+	for x in (0, 10, 21, 31):
+		fill_rect(im, x, 3, min(31, x + 1), 13, INK_BROWN)
+	for x, y in [(4, 6), (16, 9), (27, 5)]:
+		fill_rect(im, x, y, x + 1, y + 1, (85, 91, 96))
+	pixel_line(im, [(2, 4), (8, 3)], TRUNK_HI)
+	pixel_line(im, [(22, 8), (29, 7)], TRUNK_HI)
+	return im
+
+
+def bridge() -> Image.Image:
+	im = new_canvas(32, 16)
+	pixel_line(im, [(0, 2), (31, 2)], (96, 63, 42), 2)
+	pixel_line(im, [(0, 14), (31, 14)], INK_BROWN, 2)
+	for x in range(-2, 34, 8):
+		fill_polygon(im, [(x, 4), (x + 6, 4), (x + 5, 12), (x + 1, 12)], WOOD)
+		pixel_line(im, [(x, 4), (x + 6, 4)], WOOD_HI, 2)
+		pixel_line(im, [(x + 5, 5), (x + 5, 12)], WOOD_DK)
+		px(im, x + 2, 6, INK_BROWN)
+	return im
+
+
+def roof() -> Image.Image:
+	im = new_canvas(32, 16, (132, 61, 38))
+	fill_rect(im, 0, 0, 31, 2, (238, 151, 66))
+	for y, phase, color in [
+		(3, 0, (205, 102, 47)),
+		(8, 4, (174, 75, 42)),
+		(13, 0, (225, 126, 54)),
+	]:
+		fill_rect(im, 0, y, 31, min(15, y + 3), color)
+		for x in range(phase, 32, 8):
+			pixel_line(im, [(x, y), (min(31, x + 4), min(15, y + 3))], INK_BROWN)
+	fill_rect(im, 0, 15, 31, 15, INK_BROWN)
+	return im
+
+
+def counter() -> Image.Image:
+	im = new_canvas(32, 52, WOOD_DK)
+	fill_rect(im, 0, 0, 31, 5, TRUNK_DK)
+	fill_rect(im, 0, 0, 31, 2, WOOD_HI)
+	fill_rect(im, 2, 6, 29, 50, WOOD)
+	for y in (8, 29, 49):
+		fill_rect(im, 2, y, 29, y + 2, TRUNK_DK)
+	for x in (2, 15, 29):
+		fill_rect(im, x, 8, min(31, x + 1), 50, INK_BROWN)
+	for x, y in [(8, 18), (23, 18), (8, 39), (23, 39)]:
+		fill_rect(im, x, y, x + 2, y + 1, (210, 159, 76))
+	return im
+
+
+def barrel_stack() -> Image.Image:
+	im = new_canvas(32, 16, TRUNK_DK)
+	for x0 in (-2, 14, 30):
+		fill_ellipse(im, (x0, 1, x0 + 17, 14), WOOD_DK)
+		fill_ellipse(im, (x0 + 2, 3, x0 + 15, 12), WOOD)
+		fill_ellipse(im, (x0 + 5, 5, x0 + 12, 10), TRUNK)
+		pixel_line(im, [(x0 + 2, 5), (x0 + 15, 5)], WOOD_HI)
+	fill_rect(im, 0, 13, 31, 15, INK_BROWN)
+	return im
+
+
+def shelf() -> Image.Image:
+	im = new_canvas(32, 16)
+	fill_rect(im, 0, 3, 31, 10, WOOD_DK)
+	fill_rect(im, 0, 3, 31, 5, WOOD_HI)
+	fill_rect(im, 2, 6, 29, 9, WOOD)
+	for x in (5, 25):
+		fill_polygon(im, [(x, 10), (x + 4, 10), (x + 2, 15)], TRUNK_DK)
+	return im
+
+
+def rail() -> Image.Image:
+	im = new_canvas(32, 16)
+	fill_rect(im, 0, 1, 31, 5, WOOD_DK)
+	fill_rect(im, 0, 1, 31, 2, WOOD_HI)
+	fill_rect(im, 0, 12, 31, 15, TRUNK_DK)
+	for x in (2, 15, 28):
+		fill_rect(im, x, 3, x + 3, 14, WOOD)
+		fill_rect(im, x, 3, x, 14, WOOD_HI)
+	pixel_line(im, [(5, 12), (14, 5)], TRUNK_HI, 2)
+	pixel_line(im, [(18, 5), (27, 12)], TRUNK_HI, 2)
+	return im
+
+
+def water() -> Image.Image:
+	im = new_canvas(32, 16, (30, 105, 158, 78))
+	fill_rect(im, 0, 0, 31, 2, (*SEA_FOAM, 180))
+	for x in range(-4, 32, 12):
+		pixel_line(im, [(max(0, x), 5), (min(31, x + 6), 4), (min(31, x + 10), 5)], (*SEA_LIGHT, 150), 2)
+	for x, y in [(6, 11), (20, 8), (28, 13)]:
+		px(im, x, y, (*SEA_FOAM, 170))
+		px(im, x, y + 1, (*SEA_MID, 110))
+	fill_rect(im, 0, 14, 31, 15, (*SEA_DEEP, 105))
+	return im
+
+
+def zone_glow(color: tuple[int, int, int]) -> Image.Image:
+	im = new_canvas(32, 16)
+	soft = (*color, 42)
+	bright = (*color, 165)
+	fill_rect(im, 0, 5, 31, 13, soft)
+	for x in range(0, 32, 8):
+		fill_rect(im, x, 3, min(31, x + 4), 4, bright)
+	for x, y in [(3, 9), (15, 7), (27, 11)]:
+		px(im, x, y, (*SEA_FOAM, 205))
+		px(im, x - 1, y, bright)
+		px(im, x + 1, y, bright)
+	return im
+
+
 def main() -> None:
 	TILES.mkdir(parents=True, exist_ok=True)
 	generators = {
@@ -196,6 +317,20 @@ def main() -> None:
 		save(generate(random.Random(70 + index)), TILES / f"{name}.png")
 	for index, material in enumerate(("sand", "dirt", "wood", "rock", "cave")):
 		ledge(f"{material}_ledge", material, random.Random(90 + index))
+	special_tiles = {
+		"pier": pier(),
+		"bridge": bridge(),
+		"roof": roof(),
+		"counter": counter(),
+		"barrel_stack": barrel_stack(),
+		"shelf": shelf(),
+		"rail": rail(),
+		"water": water(),
+		"zone_glow_green": zone_glow((93, 205, 92)),
+		"zone_glow_blue": zone_glow((86, 207, 235)),
+	}
+	for name, image in special_tiles.items():
+		save(image, TILES / f"{name}.png")
 	print("tiles done")
 
 

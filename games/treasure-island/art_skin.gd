@@ -11,7 +11,6 @@ const PROPS := "res://games/treasure-island/art/props/"
 const GROUND_NAMES := {
 	"Ground": true,
 	"Floor": true,
-	"Pier": true,
 }
 
 const LEDGE_NAMES := {
@@ -29,7 +28,30 @@ const LEDGE_NAMES := {
 	"TreeStump": true,
 }
 
-## Top-level ColorRect décor → props/*.png
+## Collidable bodies that need a shaped prop rather than a repeated biome tile.
+const BODY_PROPS := {
+	"Hut": "hut",
+	"Boulder": "boulder",
+	"Rock": "boulder",
+	"RockBlock": "boulder",
+	"TreeStump": "stump",
+}
+
+## Long collidable surfaces with a dedicated repeatable material.
+const BODY_TILES := {
+	"Pier": "pier",
+	"Bridge": "bridge",
+	"Roof": "roof",
+	"BarrelStack": "barrel_stack",
+	"Counter": "counter",
+}
+
+## Node2D containers whose child named Visual is a shaped prop.
+const NODE_VISUAL_PROPS := {
+	"ShopFacade": "shop_facade",
+}
+
+## Standalone ColorRect décor → props/*.png.
 const PROP_RECTS := {
 	"BoatHull": "boat",
 	"Motor": "motor",
@@ -40,12 +62,32 @@ const PROP_RECTS := {
 	"BubbleB": "bubble",
 	"BubbleC": "bubble",
 	"Barrel": "barrel",
+	"BarrelA": "barrel",
+	"BarrelB": "barrel",
 	"RockDecor": "rock",
+	"Hut": "hut",
 	"HutL": "hut",
 	"HutR": "hut",
-	"Shelf": "hatch",
-	"Counter": "hatch",
-	"Cave": "rock",
+}
+
+## Repeated decorative strips and gameplay glows → tiles/*.png.
+const TILED_RECTS := {
+	"Shelf": "shelf",
+	"Counter": "counter",
+	"BalconyDecor": "rail",
+	"UpPad": "zone_glow_green",
+	"DownPad": "zone_glow_green",
+	"AscendPad": "zone_glow_blue",
+}
+
+## Legacy blocks superseded by richer backdrops or an integrated prop.
+const HIDDEN_RECTS := {
+	"Wall": true,
+	"Sky": true,
+	"Cave": true,
+	"Cross": true,
+	"GraveCross": true,
+	"DoorVisual": true,
 }
 
 
@@ -56,7 +98,15 @@ static func apply_screen(root: Node) -> void:
 
 static func _detect_biome(root: Node) -> String:
 	for child in root.get_children():
-		if child.has_method("_apply_texture") and "region" in child:
+		if child.has_method("_apply_texture"):
+			var script := child.get_script() as Script
+			var script_path := script.resource_path if script != null else ""
+			if script_path.contains("underwater_backdrop"):
+				return "ocean"
+			for candidate in ["tree", "cavern", "hut", "beach"]:
+				if script_path.contains("%s_backdrop" % candidate):
+					return candidate
+		if "region" in child:
 			var region: String = str(child.get("region"))
 			if not region.is_empty():
 				return region
@@ -98,100 +148,90 @@ static func _tile_for_biome(biome: String, ledge: bool) -> String:
 
 static func _skin_node(node: Node, biome: String) -> void:
 	if node is StaticBody2D:
-		var n := String(node.name)
-		var is_ground := GROUND_NAMES.has(n)
-		var is_ledge := LEDGE_NAMES.has(n) or n.contains("Platform")
-		if is_ground or is_ledge:
-			_skin_platform(node as StaticBody2D, biome, is_ledge and not is_ground)
-	if node is ColorRect and PROP_RECTS.has(String(node.name)):
-		_skin_prop_rect(node as ColorRect, PROP_RECTS[String(node.name)])
-	if node is Area2D and node.is_in_group("hazard_zone"):
-		_skin_hazard(node as Area2D)
-	if node is Area2D and ("npc_name" in node):
-		_skin_npc(node as Area2D)
-	# Shop door panel (child ColorRect on facade).
-	if node is ColorRect and String(node.name) == "DoorVisual":
-		_skin_prop_rect(node as ColorRect, "door")
+		_skin_static_body(node as StaticBody2D, biome)
+	if node is Node2D and NODE_VISUAL_PROPS.has(String(node.name)):
+		_skin_named_visual(node, NODE_VISUAL_PROPS[String(node.name)])
+	if node is Area2D:
+		var area := node as Area2D
+		if "requires_snorkel" in area:
+			_skin_water(area, biome)
+		elif "hazard_label" in area or area.is_in_group("hazard_zone"):
+			_skin_hazard(area)
+		elif "npc_name" in area:
+			_skin_npc(area)
+	if node is ColorRect:
+		_skin_color_rect(node as ColorRect)
 	for child in node.get_children():
 		_skin_node(child, biome)
 
 
-static func _skin_prop_rect(rect: ColorRect, prop_name: String) -> void:
-	var path := PROPS.path_join("%s.png" % prop_name)
-	if not ResourceLoader.exists(path):
-		return
-	var parent := rect.get_parent()
-	if parent == null:
-		return
-	var marker := "PropSprite_%s" % rect.name
-	if parent.get_node_or_null(marker) != null:
-		return
-	var tex: Texture2D = load(path)
-	var tw := float(tex.get_width())
-	var th := float(tex.get_height())
-	if tw <= 0.0 or th <= 0.0:
-		return
-	var grect := rect.get_global_rect()
-	var w := grect.size.x
-	var h := grect.size.y
-	if w <= 0.0 or h <= 0.0:
-		return
-	var fit := minf(w / tw, h / th)
-	# Prefer whole-pixel scale for chunky look.
-	fit = maxf(1.0, floorf(fit + 0.001)) if fit >= 1.0 else fit
-	var draw_w := tw * fit
-	var draw_h := th * fit
-	var sprite := Sprite2D.new()
-	sprite.name = marker
-	sprite.texture = tex
-	sprite.centered = false
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	sprite.scale = Vector2(fit, fit)
-	var top_left: Vector2
-	if parent is Node2D:
-		top_left = (parent as Node2D).to_local(grect.position)
-	else:
-		top_left = rect.position
-	sprite.position = top_left + Vector2((w - draw_w) * 0.5, (h - draw_h) * 0.5)
-	parent.add_child(sprite)
-	rect.visible = false
-
-
-static func _skin_platform(body: StaticBody2D, biome: String, ledge: bool) -> void:
-	# Ledges sit in the walk gap — one-way so Dizzy is not wedged under them.
-	if ledge:
+static func _skin_static_body(body: StaticBody2D, biome: String) -> void:
+	var body_name := String(body.name)
+	var is_ground := GROUND_NAMES.has(body_name)
+	var is_ledge := LEDGE_NAMES.has(body_name) or body_name.contains("Platform")
+	if is_ledge:
+		# Ledges sit in the walk gap — one-way so Dizzy is not wedged under them.
 		_enable_one_way(body)
+	if BODY_PROPS.has(body_name):
+		_skin_body_visual(body, PROPS.path_join("%s.png" % BODY_PROPS[body_name]), false)
+	elif BODY_TILES.has(body_name):
+		_skin_body_visual(body, TILES.path_join("%s.png" % BODY_TILES[body_name]), true)
+	elif is_ground or is_ledge:
+		var tex_name := _tile_for_biome(biome, is_ledge and not is_ground)
+		_skin_body_visual(body, TILES.path_join("%s.png" % tex_name), true)
+
+
+static func _skin_named_visual(node: Node, prop_name: String) -> void:
+	var visual := node.get_node_or_null("Visual")
+	if visual is ColorRect:
+		_skin_texture_rect(
+			visual as ColorRect,
+			PROPS.path_join("%s.png" % prop_name),
+			false
+		)
+
+
+static func _skin_color_rect(rect: ColorRect) -> void:
+	var rect_name := String(rect.name)
+	if HIDDEN_RECTS.has(rect_name):
+		rect.visible = false
+	elif PROP_RECTS.has(rect_name):
+		_skin_prop_rect(rect, PROP_RECTS[rect_name])
+	elif TILED_RECTS.has(rect_name):
+		_skin_tiled_rect(rect, TILED_RECTS[rect_name])
+
+
+static func _skin_prop_rect(rect: ColorRect, prop_name: String) -> void:
+	_skin_texture_rect(rect, PROPS.path_join("%s.png" % prop_name), false)
+
+
+static func _skin_tiled_rect(rect: ColorRect, tile_name: String) -> void:
+	_skin_texture_rect(rect, TILES.path_join("%s.png" % tile_name), true)
+
+
+static func _skin_body_visual(body: StaticBody2D, path: String, tiled: bool) -> void:
 	var visual := body.get_node_or_null("Visual")
-	if visual == null or not (visual is ColorRect):
-		return
-	if body.get_node_or_null("VisualSprite") != null:
-		return
-	var rect := visual as ColorRect
-	var tex_name := _tile_for_biome(biome, ledge)
-	var path := TILES.path_join("%s.png" % tex_name)
+	if visual is ColorRect:
+		_skin_texture_rect(visual as ColorRect, path, tiled)
+
+
+static func _skin_texture_rect(rect: ColorRect, path: String, tiled: bool) -> void:
 	if not ResourceLoader.exists(path):
 		return
-	var tex: Texture2D = load(path)
-	var w := absf(rect.offset_right - rect.offset_left)
-	var h := absf(rect.offset_bottom - rect.offset_top)
-	if w <= 0.0:
-		w = rect.size.x
-	if h <= 0.0:
-		h = rect.size.y
-	var sprite := Sprite2D.new()
-	sprite.name = "VisualSprite"
-	sprite.texture = tex
-	sprite.centered = false
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	sprite.region_enabled = true
-	sprite.region_rect = Rect2(0, 0, w, h)
-	sprite.position = Vector2(
-		minf(rect.offset_left, rect.offset_right),
-		minf(rect.offset_top, rect.offset_bottom)
-	)
-	body.add_child(sprite)
-	rect.visible = false
+	if rect.get_node_or_null("ArtTexture") != null:
+		return
+	var art := TextureRect.new()
+	art.name = "ArtTexture"
+	art.texture = load(path) as Texture2D
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_TILE if tiled else TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	art.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if tiled:
+		art.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	rect.color = Color(rect.color.r, rect.color.g, rect.color.b, 0.0)
+	rect.add_child(art)
+	art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
 static func _enable_one_way(body: StaticBody2D) -> void:
@@ -200,6 +240,17 @@ static func _enable_one_way(body: StaticBody2D) -> void:
 			var cs := child as CollisionShape2D
 			cs.one_way_collision = true
 			cs.one_way_collision_margin = 2.0
+
+
+static func _skin_water(area: Area2D, biome: String) -> void:
+	var visual := area.get_node_or_null("Visual")
+	if not (visual is ColorRect):
+		return
+	if biome == "ocean":
+		# The authored ocean backdrop already carries depth, shafts, and bubbles.
+		(visual as ColorRect).visible = false
+	else:
+		_skin_tiled_rect(visual as ColorRect, "water")
 
 
 static func _skin_hazard(area: Area2D) -> void:
@@ -215,24 +266,11 @@ static func _skin_hazard(area: Area2D) -> void:
 	elif "cuttle" in lower:
 		file = "cuttlefish"
 	var path := HAZARDS.path_join("%s.png" % file)
-	if not ResourceLoader.exists(path):
-		return
 	var visual := area.get_node_or_null("Visual")
 	if visual is ColorRect:
-		(visual as ColorRect).visible = false
-	var existing := area.get_node_or_null("HazardSprite")
-	if existing:
-		existing.queue_free()
-	var sprite := Sprite2D.new()
-	sprite.name = "HazardSprite"
-	sprite.texture = load(path)
-	sprite.centered = true
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	var center := Vector2(256, 340)
-	if "zone_center" in area:
-		center = area.get("zone_center")
-	sprite.position = center
-	area.add_child(sprite)
+		# Keeping art inside Visual makes patrol movement and clear_flag visibility
+		# move together with the collision instead of leaving a stale sprite behind.
+		_skin_texture_rect(visual as ColorRect, path, false)
 
 
 static func _skin_npc(area: Area2D) -> void:
@@ -249,7 +287,7 @@ static func _skin_npc(area: Area2D) -> void:
 			node.visible = false
 	var existing := area.get_node_or_null("NpcSprite")
 	if existing:
-		existing.queue_free()
+		return
 	var sprite := Sprite2D.new()
 	sprite.name = "NpcSprite"
 	sprite.texture = load(path)

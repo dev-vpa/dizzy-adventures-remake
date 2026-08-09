@@ -13,5 +13,7 @@ if errorlevel 1 (
 )
 
 echo Using: %GODOT%
+"%GODOT%" --headless --path "%ROOT%" --import
+if errorlevel 1 exit /b %ERRORLEVEL%
 "%GODOT%" --headless --path "%ROOT%" res://tests/test_runner.tscn %*
 exit /b %ERRORLEVEL%

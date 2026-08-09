@@ -76,18 +76,18 @@ def body(
 	im.alpha_composite(_egg_layer(10.5, cy + y_off, rx, ry))
 
 
-def face(im: Image.Image, y_off: int = 0) -> None:
-	# Large oval eyes with one-pixel glints survive at 512×384.
-	for x in (7, 12):
-		fill_rect(im, x, 8 + y_off, x + 2, 11 + y_off, EYE)
-		px(im, x, 8 + y_off, GLOVE_HI)
-	px(im, 10, 12 + y_off, EGG_EDGE)
-	px(im, 8, 14 + y_off, SMILE)
-	px(im, 9, 15 + y_off, SMILE)
-	px(im, 10, 15 + y_off, SMILE)
-	px(im, 11, 15 + y_off, SMILE)
-	px(im, 12, 14 + y_off, SMILE)
-	px(im, 10, 14 + y_off, (235, 105, 70))
+def face_three_quarter(im: Image.Image, y_off: int = 0) -> None:
+	"""Author the hero facing right; runtime mirroring supplies the left pose."""
+	# A smaller far eye and larger near eye make the movement direction legible
+	# while keeping enough of Dizzy's friendly front-facing expression.
+	fill_rect(im, 9, 8 + y_off, 10, 11 + y_off, EYE)
+	fill_rect(im, 13, 7 + y_off, 15, 11 + y_off, EYE)
+	px(im, 9, 8 + y_off, GLOVE_HI)
+	px(im, 13, 7 + y_off, GLOVE_HI)
+	px(im, 16, 12 + y_off, EGG_EDGE)
+	for x, y in [(11, 14), (12, 15), (13, 15), (14, 15), (15, 14)]:
+		px(im, x, y + y_off, SMILE)
+	px(im, 13, 14 + y_off, (235, 105, 70))
 
 
 def arm(im: Image.Image, start: tuple[int, int], end: tuple[int, int]) -> None:
@@ -130,7 +130,7 @@ def _standing_pose(
 ) -> Image.Image:
 	im = blank()
 	body(im, y_off)
-	face(im, y_off)
+	face_three_quarter(im, y_off)
 	arm(im, (4, 13 + y_off), left_hand)
 	arm(im, (17, 13 + y_off), right_hand)
 	glove(im, *left_hand, -1)
@@ -143,7 +143,7 @@ def _standing_pose(
 def jump_pose() -> Image.Image:
 	im = blank()
 	body(im, -2)
-	face(im, -2)
+	face_three_quarter(im, -2)
 	arm(im, (5, 10), (2, 6))
 	arm(im, (16, 10), (19, 6))
 	glove(im, 2, 6, -1)
@@ -151,7 +151,7 @@ def jump_pose() -> Image.Image:
 	# Knees and feet pull inward, making the airborne silhouette unmistakable.
 	pixel_line(im, [(8, 18), (7, 20)], EGG_EDGE, 2)
 	pixel_line(im, [(13, 18), (14, 20)], EGG_EDGE, 2)
-	boot(im, 7, 20, -1)
+	boot(im, 7, 20, 1)
 	boot(im, 14, 20, 1)
 	return im
 
@@ -193,9 +193,9 @@ def export(name: str, im: Image.Image) -> None:
 def main() -> None:
 	DIZZY.mkdir(parents=True, exist_ok=True)
 	frames = {
-		"idle": _standing_pose((2, 16), (19, 16), (7, 22, -1), (14, 22, 1)),
-		"walk_a": _standing_pose((2, 12), (19, 17), (6, 22, -1), (14, 23, 1), -1),
-		"walk_b": _standing_pose((2, 17), (19, 12), (7, 23, -1), (15, 22, 1)),
+		"idle": _standing_pose((2, 16), (19, 16), (7, 22, 1), (14, 22, 1)),
+		"walk_a": _standing_pose((2, 12), (19, 17), (6, 22, 1), (14, 23, 1), -1),
+		"walk_b": _standing_pose((2, 17), (19, 12), (7, 23, 1), (15, 22, 1)),
 		"jump": jump_pose(),
 		"roll_a": roll_pose(0),
 		"roll_b": roll_pose(1),

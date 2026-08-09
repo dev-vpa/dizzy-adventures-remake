@@ -687,34 +687,99 @@ def paint_rock(im: Image.Image, d: ImageDraw.ImageDraw) -> None:
 	d.point((17, 10), fill=rgba(CLOUD_SH))
 
 
+def paint_boulder(im: Image.Image, d: ImageDraw.ImageDraw) -> None:
+	d.polygon(((2, 43), (7, 19), (20, 6), (43, 4), (58, 18), (62, 40), (53, 46), (10, 46)), fill=rgba(ROCK_DK))
+	d.polygon(((8, 37), (12, 20), (22, 9), (35, 12), (29, 38)), fill=rgba(ROCK_HI))
+	d.polygon(((36, 10), (43, 7), (56, 20), (58, 37), (48, 43), (30, 39)), fill=rgba(ROCK))
+	d.polygon(((13, 25), (22, 13), (33, 15), (27, 28)), fill=rgba((181, 174, 168)))
+	d.line((9, 38, 19, 31, 29, 36), fill=rgba(METAL_DK), width=3)
+	d.line((42, 13, 47, 23, 43, 34), fill=rgba(ROCK_DK), width=3)
+	d.line((31, 15, 35, 25, 32, 31), fill=rgba(METAL_DK), width=2)
+	for x, y in [(16, 15), (24, 41), (51, 27), (42, 9)]:
+		d.rectangle((x, y, x + 1, y + 1), fill=rgba(CLOUD_SH))
+
+
 def paint_stump(im: Image.Image, d: ImageDraw.ImageDraw) -> None:
-	d.polygon(((6, 8), (26, 8), (27, 28), (23, 34), (8, 34), (4, 28)), fill=rgba(TRUNK_DK))
-	d.rectangle((8, 8, 24, 29), fill=rgba(TRUNK))
-	d.ellipse((3, 1, 29, 15), fill=rgba(WOOD_DK))
-	d.ellipse((6, 3, 26, 12), fill=rgba(WOOD_HI))
-	d.ellipse((10, 5, 22, 10), outline=rgba(TRUNK_DK), width=2)
-	d.ellipse((14, 6, 19, 9), outline=rgba(TRUNK), width=1)
-	d.line((9, 16, 7, 27), fill=rgba(TRUNK_HI), width=2)
-	d.line((22, 14, 24, 28), fill=rgba(INK_BROWN), width=2)
-	d.polygon(((6, 27), (1, 34), (10, 32)), fill=rgba(TRUNK_DK))
-	d.polygon(((25, 27), (31, 34), (21, 32)), fill=rgba(TRUNK_DK))
+	d.polygon(((10, 14), (38, 14), (39, 49), (34, 60), (14, 60), (9, 49)), fill=rgba(TRUNK_DK))
+	d.rectangle((14, 15, 34, 51), fill=rgba(TRUNK))
+	d.ellipse((5, 2, 43, 22), fill=rgba(WOOD_DK))
+	d.ellipse((9, 5, 39, 18), fill=rgba(WOOD_HI))
+	d.ellipse((14, 7, 35, 16), outline=rgba(TRUNK_DK), width=2)
+	d.ellipse((20, 9, 30, 15), outline=rgba(TRUNK), width=2)
+	d.line((15, 25, 12, 48), fill=rgba(TRUNK_HI), width=3)
+	d.line((32, 22, 36, 49), fill=rgba(INK_BROWN), width=3)
+	d.polygon(((13, 48), (2, 61), (19, 57)), fill=rgba(TRUNK_DK))
+	d.polygon(((35, 48), (46, 61), (29, 57)), fill=rgba(TRUNK_DK))
+	d.line((7, 59, 16, 55), fill=rgba(WOOD_HI), width=2)
+	d.line((41, 59, 32, 55), fill=rgba(WOOD_HI), width=2)
 
 
 def paint_hut(im: Image.Image, d: ImageDraw.ImageDraw) -> None:
-	d.polygon(((1, 23), (27, 2), (55, 23), (49, 28), (7, 28)), fill=rgba(INK_BROWN))
-	for y, color in [(5, (188, 97, 49)), (10, (218, 123, 57)), (15, (173, 78, 43)), (20, (225, 135, 66))]:
-		d.polygon(((4 + y // 2, 23), (27, y), (52 - y // 2, 23)), fill=rgba(color))
-	d.rectangle((7, 24, 49, 51), fill=rgba(SAND_DARK))
-	for x in range(8, 49, 7):
-		d.rectangle((x, 25, x + 4, 50), fill=rgba((185, 139, 79)))
-		d.line((x, 25, x, 50), fill=rgba(WOOD_HI))
-	d.rectangle((20, 32, 36, 51), fill=rgba(WOOD_DK))
-	d.rectangle((23, 35, 33, 51), fill=rgba(INK_BROWN))
-	d.rectangle((9, 31, 18, 41), fill=rgba(SEA_DEEP))
-	d.rectangle((10, 32, 17, 37), fill=rgba(SEA_LIGHT))
-	d.line((5, 51, 51, 51), fill=rgba(TRUNK_DK), width=3)
-	d.line((13, 51, 7, 55), fill=rgba(TRUNK_DK), width=3)
-	d.line((43, 51, 49, 55), fill=rgba(TRUNK_DK), width=3)
+	d.polygon(((1, 17), (19, 1), (38, 17), (34, 20), (5, 20)), fill=rgba(INK_BROWN))
+	for y, color in [(4, (218, 123, 57)), (8, (173, 78, 43)), (12, (225, 135, 66))]:
+		d.polygon(((4 + y // 2, 17), (19, y), (35 - y // 2, 17)), fill=rgba(color))
+	d.rectangle((5, 18, 34, 34), fill=rgba(SAND_DARK))
+	for x in range(6, 35, 5):
+		d.rectangle((x, 19, x + 3, 33), fill=rgba((185, 139, 79)))
+		d.line((x, 19, x, 33), fill=rgba(WOOD_HI))
+	d.rectangle((15, 23, 25, 34), fill=rgba(WOOD_DK))
+	d.rectangle((17, 25, 23, 34), fill=rgba(INK_BROWN))
+	d.rectangle((7, 22, 13, 28), fill=rgba(SEA_DEEP))
+	d.rectangle((8, 23, 12, 25), fill=rgba(SEA_LIGHT))
+	d.line((4, 34, 35, 34), fill=rgba(TRUNK_DK), width=2)
+
+
+def paint_shop_facade(im: Image.Image, d: ImageDraw.ImageDraw) -> None:
+	# Full facade includes the door so the old 112×76 placeholder disappears as
+	# one coherent landmark. Door centre matches ShopDoor at local x = -16.
+	d.rectangle((5, 20, 107, 74), fill=rgba(TRUNK_DK))
+	d.rectangle((8, 23, 104, 74), fill=rgba((181, 128, 72)))
+	for x in range(9, 105, 9):
+		d.rectangle((x, 24, x + 5, 73), fill=rgba((195, 143, 79)))
+		d.line((x, 24, x, 73), fill=rgba(WOOD_HI), width=1)
+	d.polygon(((1, 20), (14, 3), (99, 3), (111, 20), (104, 25), (7, 25)), fill=rgba(INK_BROWN))
+	d.polygon(((5, 18), (17, 6), (96, 6), (107, 18)), fill=rgba((202, 95, 45)))
+	for x in range(12, 104, 12):
+		d.line((x, 8, min(107, x + 8), 19), fill=rgba((239, 151, 65)), width=3)
+
+	# Deep doorway, frame, panels, and a warm brass handle.
+	d.rectangle((23, 29, 57, 75), fill=rgba(INK_BROWN))
+	d.rectangle((26, 32, 54, 74), fill=rgba(WOOD_DK))
+	d.rectangle((29, 35, 51, 52), fill=rgba(TRUNK))
+	d.rectangle((29, 56, 51, 72), fill=rgba(TRUNK))
+	d.line((30, 36, 50, 36), fill=rgba(WOOD_HI), width=2)
+	d.line((30, 57, 50, 57), fill=rgba(WOOD_HI), width=2)
+	d.ellipse((47, 51, 52, 56), fill=rgba(GOLD_DK))
+	d.point((49, 52), fill=rgba(GOLD_HI))
+	d.polygon(((20, 27), (60, 27), (55, 34), (25, 34)), fill=rgba((226, 125, 53)))
+	d.line((22, 28, 58, 28), fill=rgba((255, 190, 84)), width=2)
+
+	# Sea-glass window and mullions.
+	d.rectangle((68, 32, 101, 60), fill=rgba(INK_BLUE))
+	d.rectangle((71, 35, 98, 57), fill=rgba(SEA_DEEP))
+	d.rectangle((73, 36, 96, 47), fill=rgba(SEA_LIGHT))
+	d.line((84, 35, 84, 58), fill=rgba(WOOD_DK), width=3)
+	d.line((70, 46, 99, 46), fill=rgba(WOOD_DK), width=3)
+	d.line((73, 36, 81, 36), fill=rgba(SEA_FOAM), width=2)
+
+	# Pixel-lettered hanging sign.
+	d.rectangle((57, 8, 99, 25), fill=rgba(INK_BROWN))
+	d.rectangle((59, 10, 97, 23), fill=rgba(WOOD))
+	glyphs = {
+		"S": ("111", "100", "111", "001", "111"),
+		"H": ("101", "101", "111", "101", "101"),
+		"O": ("111", "101", "101", "101", "111"),
+		"P": ("110", "101", "110", "100", "100"),
+	}
+	x0 = 62
+	for letter in "SHOP":
+		for gy, row in enumerate(glyphs[letter]):
+			for gx, bit in enumerate(row):
+				if bit == "1":
+					d.rectangle((x0 + gx * 2, 12 + gy * 2, x0 + gx * 2 + 1, 13 + gy * 2), fill=rgba(GOLD_HI))
+		x0 += 8
+	d.line((65, 7, 65, 3), fill=rgba(METAL_DK), width=2)
+	d.line((92, 7, 92, 3), fill=rgba(METAL_DK), width=2)
 
 
 def main() -> None:
@@ -774,8 +839,10 @@ def main() -> None:
 	sprite_asset(PROPS, "barrel", 32, 40, paint_barrel, INK_BROWN)
 	sprite_asset(PROPS, "door", 28, 44, paint_door, INK_BROWN)
 	sprite_asset(PROPS, "rock", 48, 32, paint_rock, ROCK_DK)
-	sprite_asset(PROPS, "stump", 32, 36, paint_stump, INK_BROWN)
-	sprite_asset(PROPS, "hut", 56, 52, paint_hut, INK_BROWN)
+	sprite_asset(PROPS, "boulder", 64, 48, paint_boulder, ROCK_DK)
+	sprite_asset(PROPS, "stump", 48, 64, paint_stump, INK_BROWN)
+	sprite_asset(PROPS, "hut", 40, 36, paint_hut, INK_BROWN)
+	sprite_asset(PROPS, "shop_facade", 112, 76, paint_shop_facade, INK_BROWN)
 	print("sprites done")
 
 

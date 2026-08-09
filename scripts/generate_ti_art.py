@@ -31,6 +31,22 @@ _expect(
 	["sand_ledge", "dirt_ledge", "wood_ledge", "rock_ledge", "cave_ledge"],
 	(32, 16),
 )
+_expect(
+	"games/treasure-island/art/tiles",
+	[
+		"pier",
+		"bridge",
+		"roof",
+		"barrel_stack",
+		"shelf",
+		"rail",
+		"water",
+		"zone_glow_green",
+		"zone_glow_blue",
+	],
+	(32, 16),
+)
+_expect("games/treasure-island/art/tiles", ["counter"], (32, 52))
 _expect("shared/sprites/dizzy", ["idle", "walk_a", "walk_b", "jump", "roll_a", "roll_b"], (66, 84))
 _expect(
 	"games/treasure-island/art/items",
@@ -87,8 +103,10 @@ for relative, size in {
 	"barrel": (32, 40),
 	"door": (28, 44),
 	"rock": (48, 32),
-	"stump": (32, 36),
-	"hut": (56, 52),
+	"boulder": (64, 48),
+	"stump": (48, 64),
+	"hut": (40, 36),
+	"shop_facade": (112, 76),
 }.items():
 	_expect("games/treasure-island/art/props", [relative], size)
 
