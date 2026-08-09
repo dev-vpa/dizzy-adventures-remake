@@ -30,3 +30,8 @@ Thumbs.db
 
 # Local editor config (not pushed)
 .cursor/
+
+# accidental generator output
+scripts/games/
+scripts/shared/
+scripts/__pycache__/
