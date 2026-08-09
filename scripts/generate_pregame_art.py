@@ -232,10 +232,10 @@ def menu_dizzy_source() -> Image.Image:
 	im.alpha_composite(body_layer)
 
 	# Matching stepped ovals keep the greeting pose friendly and front-facing.
-	pixel_eye(im, 5, 5)
-	pixel_eye(im, 11, 5)
+	pixel_eye(im, 5, 6)
+	pixel_eye(im, 11, 6)
 	fill_rect(im, 10, 12, 11, 12, EGG_EDGE)
-	pixel_line(im, [(7, 14), (9, 16), (12, 16), (14, 14)], EGG_EDGE)
+	pixel_line(im, [(8, 14), (10, 16), (11, 16), (13, 14)], EGG_EDGE)
 	px(im, 10, 15, BOOT_HI)
 	px(im, 11, 15, BOOT_HI)
 	return im

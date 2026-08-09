@@ -80,13 +80,14 @@ def face_three_quarter(im: Image.Image, y_off: int = 0) -> None:
 	"""Author the hero facing right; runtime mirroring supplies the left pose."""
 	# Equal oval eyes avoid the old bar-like face. Pupils and a small profile
 	# nose carry direction, then runtime mirroring supplies a true left gaze.
-	pixel_eye(im, 5, 6 + y_off, look=1)
-	pixel_eye(im, 11, 6 + y_off, look=1)
+	pixel_eye(im, 6, 7 + y_off, look=1)
+	pixel_eye(im, 12, 7 + y_off, look=1)
 	fill_rect(im, 16, 12 + y_off, 17, 13 + y_off, EGG_EDGE)
 	px(im, 16, 12 + y_off, EGG_HI)
 	px(im, 15, 13 + y_off, (235, 105, 70))
-	for x, y in [(9, 14), (10, 15), (11, 16), (12, 16), (13, 16), (14, 15), (15, 14)]:
+	for x, y in [(9, 14), (10, 15), (11, 16), (12, 16), (13, 15), (14, 14)]:
 		px(im, x, y + y_off, SMILE)
+	px(im, 11, 15 + y_off, (244, 92, 66))
 	px(im, 12, 15 + y_off, (244, 92, 66))
 
 

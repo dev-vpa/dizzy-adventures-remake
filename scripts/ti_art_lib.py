@@ -144,16 +144,14 @@ def fill_polygon(
 
 
 def pixel_eye(im: Image.Image, x: int, y: int, look: int = 0) -> None:
-	"""Draw a 5×6 stepped oval eye with sclera, pupil, and one-pixel glint."""
+	"""Draw a calm 5×4 stepped oval eye with a small directional pupil."""
 	look = max(-1, min(1, int(look)))
 	fill_rect(im, x + 1, y, x + 3, y, EYE)
-	fill_rect(im, x, y + 1, x + 4, y + 4, EYE)
-	fill_rect(im, x + 1, y + 5, x + 3, y + 5, EYE)
-	fill_rect(im, x + 1, y + 1, x + 3, y + 4, GLOVE_HI)
-	fill_rect(im, x + 1, y + 4, x + 3, y + 4, GLOVE_SH)
+	fill_rect(im, x, y + 1, x + 4, y + 2, EYE)
+	fill_rect(im, x + 1, y + 3, x + 3, y + 3, EYE)
+	fill_rect(im, x + 1, y + 1, x + 3, y + 2, GLOVE_HI)
 	pupil_x = x + 2 + look
-	fill_rect(im, pupil_x, y + 2, pupil_x, y + 4, EYE)
-	px(im, pupil_x, y + 2, GLOVE_HI)
+	px(im, pupil_x, y + 2, EYE)
 
 
 def pixel_line(
