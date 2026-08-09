@@ -53,10 +53,12 @@ func _draw() -> void:
 	if _texture != null:
 		var tw := float(_texture.get_width())
 		var th := float(_texture.get_height())
-		var scale := _pixel_size * (GRID / 16.0) * (16.0 / tw) * 2.2
-		var size := Vector2(tw * scale, th * scale)
-		var pos := Vector2(-size.x * 0.5, -size.y * 0.72 + bob)
-		draw_texture_rect(_texture, Rect2(pos, size), false)
+		# World pickups ~22px; inventory configure() uses smaller feel via _pixel_size.
+		var target := 22.0 if bob_enabled else 16.0
+		var scale := target / maxf(tw, th)
+		var draw_size := Vector2(tw * scale, th * scale)
+		var pos := Vector2(-draw_size.x * 0.5, -draw_size.y * 0.72 + bob)
+		draw_texture_rect(_texture, Rect2(pos, draw_size), false)
 		return
 	var content := Vector2(GRID * _pixel_size, GRID * _pixel_size)
 	var area := Rect2(Vector2(-content.x * 0.5, -content.y * 0.72 + bob), content)

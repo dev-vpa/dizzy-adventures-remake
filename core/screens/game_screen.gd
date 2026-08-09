@@ -26,10 +26,28 @@ extends Node2D
 
 
 func _ready() -> void:
+	# Ledges must be one-way even if ArtSkin is missing (prevents floor wedge).
+	_enable_ledge_one_way(self)
 	# TI pixel skins (platforms / hazards / NPCs).
 	var skin_path := "res://games/treasure-island/art_skin.gd"
 	if ResourceLoader.exists(skin_path):
 		(load(skin_path) as GDScript).call("apply_screen", self)
+
+
+func _enable_ledge_one_way(node: Node) -> void:
+	if node is StaticBody2D:
+		var n := String(node.name)
+		if n != "Ground" and n != "Floor" and n != "Pier":
+			if (
+				n in ["Platform", "Ledge", "Balcony", "Bridge", "Roof", "Hut", "ShopFacade", "TreeStump", "Boulder", "RockBlock", "BarrelStack", "Counter"]
+				or n.contains("Platform")
+			):
+				for child in node.get_children():
+					if child is CollisionShape2D:
+						(child as CollisionShape2D).one_way_collision = true
+						(child as CollisionShape2D).one_way_collision_margin = 2.0
+	for child in node.get_children():
+		_enable_ledge_one_way(child)
 
 
 func get_exits() -> Dictionary:

@@ -1,164 +1,145 @@
 #!/usr/bin/env python3
-"""Original homage Dizzy frames — egg hero, not a Codemasters rip."""
+"""Original homage Dizzy — round yellow egg, gloves, red boots (not a rip)."""
 from __future__ import annotations
 
 from pathlib import Path
 
 from PIL import Image
 
-from ti_art_lib import (
-	REPO_ROOT,
-	BOOT,
-	BOOT_HI,
-	EGG,
-	EGG_HI,
-	EGG_SH,
-	EYE,
-	GLOVE,
-	SMILE,
-	px,
-	save,
-)
+from ti_art_lib import REPO_ROOT, px, save
 
 DIZZY = REPO_ROOT / "shared/sprites/dizzy"
-SRC_W, SRC_H = 20, 26
-SCALE = 3  # -> 60×78
+SRC_W, SRC_H = 22, 28
+SCALE = 3  # 66×84
 
 
 def blank() -> Image.Image:
 	return Image.new("RGBA", (SRC_W, SRC_H), (0, 0, 0, 0))
 
 
-def egg_body(im: Image.Image, y_off: int = 0) -> None:
-	# soft oval body
-	for y in range(4 + y_off, 20 + y_off):
-		for x in range(3, 17):
-			cx, cy = 9.5, 11.5 + y_off
-			nx = (x - cx) / 6.8
-			ny = (y - cy) / 8.2
+def _egg_color(x: int, y: int, cx: float, cy: float) -> tuple:
+	# Radial shading on yellow egg
+	nx = (x - cx) / 7.2
+	ny = (y - cy) / 9.0
+	r2 = nx * nx + ny * ny
+	if r2 > 1.0:
+		return (0, 0, 0, 0)
+	# highlight top-right, shadow bottom-left
+	hi = max(0.0, 0.55 - ((x - (cx + 2)) ** 2 + (y - (cy - 3)) ** 2) / 40.0)
+	sh = max(0.0, ((cx - 3 - x) ** 2 + (y - (cy + 4)) ** 2) / 80.0)
+	r = int(min(255, 255 - sh * 40 + hi * 10))
+	g = int(min(255, 215 - sh * 50 + hi * 25))
+	b = int(min(255, 55 - sh * 20 + hi * 40))
+	return (r, g, b, 255)
+
+
+def body(im: Image.Image, y_off: int = 0, squash: float = 1.0) -> None:
+	cx, cy = 10.5, 12.5 + y_off
+	for y in range(SRC_H):
+		for x in range(SRC_W):
+			nx = (x - cx) / (7.2 * squash)
+			ny = (y - cy) / 9.0
 			if nx * nx + ny * ny <= 1.0:
-				if x <= 6:
-					c = EGG_SH
-				elif x >= 13:
-					c = EGG_HI
-				else:
-					c = EGG
-				px(im, x, y, c)
-	# highlight
-	for y in range(6 + y_off, 10 + y_off):
-		for x in range(11, 15):
-			if im.getpixel((x, y))[3]:
-				px(im, x, y, EGG_HI)
+				px(im, x, y, _egg_color(x, y, cx, cy))
+	# outline
+	for y in range(SRC_H):
+		for x in range(SRC_W):
+			c = im.getpixel((x, y))
+			if c[3] == 0:
+				continue
+			for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+				xx, yy = x + dx, y + dy
+				if 0 <= xx < SRC_W and 0 <= yy < SRC_H:
+					if im.getpixel((xx, yy))[3] == 0:
+						# soft edge darken
+						px(im, x, y, (max(0, c[0] - 35), max(0, c[1] - 40), max(0, c[2] - 10), 255))
+						break
 
 
 def face(im: Image.Image, y_off: int = 0) -> None:
-	# eyes
-	px(im, 7, 10 + y_off, EYE)
-	px(im, 8, 10 + y_off, EYE)
-	px(im, 11, 10 + y_off, EYE)
-	px(im, 12, 10 + y_off, EYE)
-	# brows
-	px(im, 7, 9 + y_off, EGG_SH)
-	px(im, 12, 9 + y_off, EGG_SH)
+	# eyes (friendly dots)
+	for x, y in ((7, 10 + y_off), (8, 10 + y_off), (12, 10 + y_off), (13, 10 + y_off)):
+		px(im, x, y, (25, 20, 30, 255))
+	# pupils gleam
+	px(im, 8, 10 + y_off, (60, 50, 40, 255))
+	px(im, 13, 10 + y_off, (60, 50, 40, 255))
 	# smile
-	px(im, 8, 13 + y_off, SMILE)
-	px(im, 9, 14 + y_off, SMILE)
-	px(im, 10, 14 + y_off, SMILE)
-	px(im, 11, 13 + y_off, SMILE)
+	px(im, 9, 13 + y_off, (90, 50, 40, 255))
+	px(im, 10, 14 + y_off, (90, 50, 40, 255))
+	px(im, 11, 13 + y_off, (90, 50, 40, 255))
 
 
-def gloves(im: Image.Image, left: int, right: int, y: int) -> None:
-	for x in range(left, left + 3):
+def gloves(im: Image.Image, lx: int, rx: int, y: int) -> None:
+	for x in range(lx, lx + 3):
 		for dy in range(2):
-			px(im, x, y + dy, GLOVE)
-	for x in range(right, right + 3):
+			px(im, x, y + dy, (250, 245, 230, 255))
+			if dy == 0:
+				px(im, x, y + dy, (255, 255, 245, 255))
+	for x in range(rx, rx + 3):
 		for dy in range(2):
-			px(im, x, y + dy, GLOVE)
+			px(im, x, y + dy, (250, 245, 230, 255))
 
 
-def boots(im: Image.Image, l: int, r: int, y: int) -> None:
-	for x in range(l, l + 4):
-		px(im, x, y, BOOT)
-		px(im, x, y + 1, BOOT_HI if x < l + 2 else BOOT)
-	for x in range(r, r + 4):
-		px(im, x, y, BOOT)
-		px(im, x, y + 1, BOOT_HI if x < r + 2 else BOOT)
-
-
-def frame_idle() -> Image.Image:
-	im = blank()
-	egg_body(im)
-	face(im)
-	gloves(im, 1, 16, 14)
-	boots(im, 5, 11, 21)
-	return im
-
-
-def frame_walk(phase: int) -> Image.Image:
-	im = blank()
-	egg_body(im, 0)
-	face(im)
-	if phase == 0:
-		gloves(im, 2, 15, 13)
-		boots(im, 4, 12, 21)
-		# trailing boot lift
-		px(im, 12, 20, BOOT)
-		px(im, 13, 20, BOOT)
-	else:
-		gloves(im, 1, 16, 15)
-		boots(im, 6, 10, 21)
-		px(im, 5, 20, BOOT)
-		px(im, 6, 20, BOOT)
-	return im
-
-
-def frame_jump() -> Image.Image:
-	im = blank()
-	egg_body(im, -1)
-	face(im, -1)
-	gloves(im, 2, 15, 11)
-	# tucked boots
-	boots(im, 6, 10, 18)
-	return im
-
-
-def frame_roll(phase: int) -> Image.Image:
-	im = blank()
-	# more circular / sideways egg
-	for y in range(6, 20):
-		for x in range(2, 18):
-			cx, cy = 9.5, 13.0
-			nx = (x - cx) / 7.5
-			ny = (y - cy) / 6.5
-			if nx * nx + ny * ny <= 1.0:
-				c = EGG_HI if (phase == 0 and y < 10) or (phase == 1 and y > 15) else EGG
-				if x < 5:
-					c = EGG_SH
-				px(im, x, y, c)
-	# eye streak
-	for x in range(6, 14):
-		px(im, x, 12 + phase, EYE)
-	# boot flash
-	if phase == 0:
-		boots(im, 14, 14, 14)
-	else:
-		gloves(im, 1, 1, 12)
-	return im
+def boots(im: Image.Image, lx: int, rx: int, y: int) -> None:
+	for x in range(lx, lx + 4):
+		px(im, x, y, (190, 40, 35, 255))
+		px(im, x, y + 1, (220, 70, 50, 255) if x < lx + 2 else (170, 35, 30, 255))
+	for x in range(rx, rx + 4):
+		px(im, x, y, (190, 40, 35, 255))
+		px(im, x, y + 1, (220, 70, 50, 255) if x < rx + 2 else (170, 35, 30, 255))
 
 
 def export(name: str, im: Image.Image) -> None:
-	out = im.resize((SRC_W * SCALE, SRC_H * SCALE), Image.NEAREST)
-	save(out, DIZZY / f"{name}.png")
+	save(im.resize((SRC_W * SCALE, SRC_H * SCALE), Image.NEAREST), DIZZY / f"{name}.png")
 
 
 def main() -> None:
 	DIZZY.mkdir(parents=True, exist_ok=True)
-	export("idle", frame_idle())
-	export("walk_a", frame_walk(0))
-	export("walk_b", frame_walk(1))
-	export("jump", frame_jump())
-	export("roll_a", frame_roll(0))
-	export("roll_b", frame_roll(1))
+
+	idle = blank()
+	body(idle)
+	face(idle)
+	gloves(idle, 1, 17, 15)
+	boots(idle, 5, 12, 23)
+	export("idle", idle)
+
+	w0 = blank()
+	body(w0)
+	face(w0)
+	gloves(w0, 2, 16, 14)
+	boots(w0, 4, 13, 23)
+	px(w0, 13, 22, (190, 40, 35, 255))
+	export("walk_a", w0)
+
+	w1 = blank()
+	body(w1)
+	face(w1)
+	gloves(w1, 1, 17, 16)
+	boots(w1, 6, 11, 23)
+	px(w1, 5, 22, (190, 40, 35, 255))
+	export("walk_b", w1)
+
+	jp = blank()
+	body(jp, -1)
+	face(jp, -1)
+	gloves(jp, 2, 16, 12)
+	boots(jp, 7, 10, 20)
+	export("jump", jp)
+
+	r0 = blank()
+	body(r0, 0, squash=1.15)
+	for x in range(6, 15):
+		px(r0, x, 12, (25, 20, 30, 255))
+	boots(r0, 15, 15, 14)
+	export("roll_a", r0)
+
+	r1 = blank()
+	body(r1, 0, squash=1.15)
+	for x in range(6, 15):
+		px(r1, x, 13, (25, 20, 30, 255))
+	gloves(r1, 1, 1, 13)
+	export("roll_b", r1)
+
 	print("dizzy done")
 
 

@@ -158,6 +158,9 @@ static func _skin_prop_rect(rect: ColorRect, prop_name: String) -> void:
 
 
 static func _skin_platform(body: StaticBody2D, biome: String, ledge: bool) -> void:
+	# Ledges sit in the walk gap — one-way so Dizzy is not wedged under them.
+	if ledge:
+		_enable_one_way(body)
 	var visual := body.get_node_or_null("Visual")
 	if visual == null or not (visual is ColorRect):
 		return
@@ -189,6 +192,14 @@ static func _skin_platform(body: StaticBody2D, biome: String, ledge: bool) -> vo
 	)
 	body.add_child(sprite)
 	rect.visible = false
+
+
+static func _enable_one_way(body: StaticBody2D) -> void:
+	for child in body.get_children():
+		if child is CollisionShape2D:
+			var cs := child as CollisionShape2D
+			cs.one_way_collision = true
+			cs.one_way_collision_margin = 2.0
 
 
 static func _skin_hazard(area: Area2D) -> void:

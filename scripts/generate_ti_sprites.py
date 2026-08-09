@@ -26,14 +26,16 @@ def main() -> None:
 		p.mkdir(parents=True, exist_ok=True)
 
 	item("default", lambda im, d: d.rectangle([4, 4, 11, 11], fill=(200, 200, 200, 255)))
-	item(
-		"coin",
-		lambda im, d: (
-			d.ellipse([1, 1, 14, 14], fill=(200, 150, 20, 255)),
-			d.ellipse([3, 3, 12, 12], fill=(255, 215, 60, 255)),
-			d.ellipse([5, 5, 8, 8], fill=(255, 240, 140, 255)),
-		),
-	)
+	def paint_coin(im, d):
+		# Classic gold disc with rim + small shine (reads as a coin at ~22px).
+		d.ellipse([1, 1, 14, 14], fill=(160, 110, 20, 255))
+		d.ellipse([2, 2, 13, 13], fill=(230, 185, 40, 255))
+		d.ellipse([3, 3, 12, 12], fill=(255, 215, 70, 255))
+		d.arc([4, 4, 11, 11], 200, 320, fill=(255, 245, 160, 255), width=1)
+		d.point((5, 5), fill=(255, 255, 220, 255))
+		d.point((6, 5), fill=(255, 255, 220, 255))
+
+	item("coin", paint_coin)
 	item(
 		"snorkel",
 		lambda im, d: (
