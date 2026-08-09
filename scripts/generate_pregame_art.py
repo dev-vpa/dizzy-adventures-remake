@@ -43,6 +43,7 @@ from ti_art_lib import (
 	fill_rect,
 	new_canvas,
 	outline,
+	pixel_eye,
 	pixel_line,
 	px,
 	save,
@@ -230,12 +231,9 @@ def menu_dizzy_source() -> Image.Image:
 	outline(body_layer, EGG_EDGE, diagonal=False)
 	im.alpha_composite(body_layer)
 
-	# Identical eye boxes and inward pupils give a friendly front-facing gaze.
-	for eye_x in (6, 12):
-		fill_rect(im, eye_x, 6, eye_x + 3, 11, INK)
-		fill_rect(im, eye_x + 1, 7, eye_x + 2, 10, GLOVE_HI)
-	px(im, 8, 9, INK)
-	px(im, 13, 9, INK)
+	# Matching stepped ovals keep the greeting pose friendly and front-facing.
+	pixel_eye(im, 5, 5)
+	pixel_eye(im, 11, 5)
 	fill_rect(im, 10, 12, 11, 12, EGG_EDGE)
 	pixel_line(im, [(7, 14), (9, 16), (12, 16), (14, 14)], EGG_EDGE)
 	px(im, 10, 15, BOOT_HI)

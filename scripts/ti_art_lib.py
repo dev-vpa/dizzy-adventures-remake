@@ -143,6 +143,19 @@ def fill_polygon(
 	ImageDraw.Draw(im).polygon(list(points), fill=rgba(color))
 
 
+def pixel_eye(im: Image.Image, x: int, y: int, look: int = 0) -> None:
+	"""Draw a 5×6 stepped oval eye with sclera, pupil, and one-pixel glint."""
+	look = max(-1, min(1, int(look)))
+	fill_rect(im, x + 1, y, x + 3, y, EYE)
+	fill_rect(im, x, y + 1, x + 4, y + 4, EYE)
+	fill_rect(im, x + 1, y + 5, x + 3, y + 5, EYE)
+	fill_rect(im, x + 1, y + 1, x + 3, y + 4, GLOVE_HI)
+	fill_rect(im, x + 1, y + 4, x + 3, y + 4, GLOVE_SH)
+	pupil_x = x + 2 + look
+	fill_rect(im, pupil_x, y + 2, pupil_x, y + 4, EYE)
+	px(im, pupil_x, y + 2, GLOVE_HI)
+
+
 def pixel_line(
 	im: Image.Image,
 	points: Iterable[tuple[int, int]],

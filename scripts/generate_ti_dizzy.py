@@ -12,7 +12,6 @@ from ti_art_lib import (
 	EGG_EDGE,
 	EGG_HI,
 	EGG_SH,
-	EYE,
 	GLOVE,
 	GLOVE_HI,
 	GLOVE_SH,
@@ -23,6 +22,7 @@ from ti_art_lib import (
 	fill_rect,
 	new_canvas,
 	outline,
+	pixel_eye,
 	pixel_line,
 	px,
 	save,
@@ -78,16 +78,16 @@ def body(
 
 def face_three_quarter(im: Image.Image, y_off: int = 0) -> None:
 	"""Author the hero facing right; runtime mirroring supplies the left pose."""
-	# A smaller far eye and larger near eye make the movement direction legible
-	# while keeping enough of Dizzy's friendly front-facing expression.
-	fill_rect(im, 9, 8 + y_off, 10, 11 + y_off, EYE)
-	fill_rect(im, 13, 7 + y_off, 15, 11 + y_off, EYE)
-	px(im, 9, 8 + y_off, GLOVE_HI)
-	px(im, 13, 7 + y_off, GLOVE_HI)
-	px(im, 16, 12 + y_off, EGG_EDGE)
-	for x, y in [(11, 14), (12, 15), (13, 15), (14, 15), (15, 14)]:
+	# Equal oval eyes avoid the old bar-like face. Pupils and a small profile
+	# nose carry direction, then runtime mirroring supplies a true left gaze.
+	pixel_eye(im, 5, 6 + y_off, look=1)
+	pixel_eye(im, 11, 6 + y_off, look=1)
+	fill_rect(im, 16, 12 + y_off, 17, 13 + y_off, EGG_EDGE)
+	px(im, 16, 12 + y_off, EGG_HI)
+	px(im, 15, 13 + y_off, (235, 105, 70))
+	for x, y in [(9, 14), (10, 15), (11, 16), (12, 16), (13, 16), (14, 15), (15, 14)]:
 		px(im, x, y + y_off, SMILE)
-	px(im, 13, 14 + y_off, (235, 105, 70))
+	px(im, 12, 15 + y_off, (244, 92, 66))
 
 
 def arm(im: Image.Image, start: tuple[int, int], end: tuple[int, int]) -> None:
