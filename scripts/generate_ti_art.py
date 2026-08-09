@@ -47,7 +47,7 @@ _expect(
 	(32, 16),
 )
 _expect("games/treasure-island/art/tiles", ["counter"], (32, 52))
-_expect("shared/sprites/dizzy", ["idle", "walk_a", "walk_b", "jump", "roll_a", "roll_b"], (66, 84))
+_expect("shared/sprites/dizzy", ["idle", "walk_a", "walk_b", "jump", "roll_a", "roll_b"], (44, 56))
 _expect(
 	"games/treasure-island/art/items",
 	[

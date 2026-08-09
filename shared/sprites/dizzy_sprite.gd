@@ -99,11 +99,12 @@ func _draw_snorkel_mask() -> void:
 	var tex := _current_texture()
 	if tex == null:
 		return
-	# Generated frames use authored 3×3 pixel blocks. Keep the overlay on that
-	# same grid. It is authored facing right and mirrors with the body.
+	# Keep the overlay on the 22px authored source grid at any export scale.
+	# It is authored facing right and mirrors with the body.
+	var p := float(tex.get_width()) / 22.0
 	var frame_top := -float(tex.get_height()) + 4.0
-	var mask_y := frame_top + 24.0
-	var mask_left := -15.0
+	var mask_y := frame_top + 8.0 * p
+	var mask_left := -5.0 * p
 	var rim := Color(0.08, 0.16, 0.28, 1.0)
 	var frame := Color(0.16, 0.43, 0.72, 1.0)
 	var lens := Color(0.32, 0.72, 0.86, 0.82)
@@ -111,17 +112,17 @@ func _draw_snorkel_mask() -> void:
 	var tube := Color(0.88, 0.25, 0.20, 1.0)
 	var tube_hi := Color(1.0, 0.48, 0.28, 1.0)
 
-	var tube_x := 15.0
-	draw_rect(Rect2(tube_x, mask_y - 21.0, 9.0, 30.0), rim)
-	draw_rect(Rect2(tube_x + 3.0, mask_y - 18.0, 3.0, 24.0), tube)
-	draw_rect(Rect2(tube_x + 3.0, mask_y - 18.0, 6.0, 3.0), tube_hi)
-	var mouth_x := 12.0
-	draw_rect(Rect2(mouth_x, mask_y + 6.0, 12.0, 6.0), rim)
-	draw_rect(Rect2(mouth_x + 3.0, mask_y + 6.0, 9.0, 3.0), tube)
+	var tube_x := 5.0 * p
+	draw_rect(Rect2(tube_x, mask_y - 7.0 * p, 3.0 * p, 10.0 * p), rim)
+	draw_rect(Rect2(tube_x + p, mask_y - 6.0 * p, p, 8.0 * p), tube)
+	draw_rect(Rect2(tube_x + p, mask_y - 6.0 * p, 2.0 * p, p), tube_hi)
+	var mouth_x := 4.0 * p
+	draw_rect(Rect2(mouth_x, mask_y + 2.0 * p, 4.0 * p, 2.0 * p), rim)
+	draw_rect(Rect2(mouth_x + p, mask_y + 2.0 * p, 3.0 * p, p), tube)
 
-	draw_rect(Rect2(mask_left - 3.0, mask_y - 3.0, 36.0, 15.0), rim)
-	draw_rect(Rect2(mask_left, mask_y, 30.0, 9.0), frame)
-	draw_rect(Rect2(mask_left + 3.0, mask_y + 3.0, 9.0, 3.0), lens)
-	draw_rect(Rect2(mask_left + 18.0, mask_y + 3.0, 9.0, 3.0), lens)
-	draw_rect(Rect2(mask_left + 12.0, mask_y + 3.0, 6.0, 3.0), rim)
-	draw_rect(Rect2(mask_left + 3.0, mask_y, 6.0, 3.0), shine)
+	draw_rect(Rect2(mask_left - p, mask_y - p, 12.0 * p, 5.0 * p), rim)
+	draw_rect(Rect2(mask_left, mask_y, 10.0 * p, 3.0 * p), frame)
+	draw_rect(Rect2(mask_left + p, mask_y + p, 3.0 * p, p), lens)
+	draw_rect(Rect2(mask_left + 6.0 * p, mask_y + p, 3.0 * p, p), lens)
+	draw_rect(Rect2(mask_left + 4.0 * p, mask_y + p, 2.0 * p, p), rim)
+	draw_rect(Rect2(mask_left + p, mask_y, 2.0 * p, p), shine)
