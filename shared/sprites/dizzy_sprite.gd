@@ -1,19 +1,36 @@
 class_name DizzySprite
 extends Node2D
 
-## Procedural pixel-art Dizzy placeholder (shared across games).
+## Pixel Dizzy — PNG frames: idle / walk / jump / roll; snorkel overlay when held.
 
-const GRID_W := 16
-const GRID_H := 20
-const PIXEL_SIZE := 3.0
+const FRAMES_PATH := "res://shared/sprites/dizzy/"
 
 var facing: int = 1
-var _walk_phase: float = 0.0
+var _anim_phase: float = 0.0
+var _idle: Texture2D
+var _walk_a: Texture2D
+var _walk_b: Texture2D
+var _jump: Texture2D
+var _roll_a: Texture2D
+var _roll_b: Texture2D
 
 
 func _ready() -> void:
 	Inventory.inventory_changed.connect(_on_inventory_changed)
+	_idle = _load_frame("idle")
+	_walk_a = _load_frame("walk_a")
+	_walk_b = _load_frame("walk_b")
+	_jump = _load_frame("jump")
+	_roll_a = _load_frame("roll_a")
+	_roll_b = _load_frame("roll_b")
 	queue_redraw()
+
+
+func _load_frame(name: String) -> Texture2D:
+	var path := FRAMES_PATH.path_join("%s.png" % name)
+	if ResourceLoader.exists(path):
+		return load(path) as Texture2D
+	return null
 
 
 func _on_inventory_changed() -> void:
@@ -21,8 +38,8 @@ func _on_inventory_changed() -> void:
 
 
 func _process(delta: float) -> void:
-	if _is_walking():
-		_walk_phase += delta * 10.0
+	if _is_walking() or _is_airborne():
+		_anim_phase += delta * 10.0
 	queue_redraw()
 
 
@@ -33,89 +50,56 @@ func set_facing(direction: int) -> void:
 	queue_redraw()
 
 
+func _body() -> CharacterBody2D:
+	if is_instance_valid(get_parent()) and get_parent() is CharacterBody2D:
+		return get_parent() as CharacterBody2D
+	return null
+
+
 func _is_walking() -> bool:
-	return is_instance_valid(get_parent()) and get_parent() is CharacterBody2D and absf((get_parent() as CharacterBody2D).velocity.x) > 1.0 and (get_parent() as CharacterBody2D).is_on_floor()
+	var body := _body()
+	return body != null and absf(body.velocity.x) > 1.0 and body.is_on_floor()
+
+
+func _is_airborne() -> bool:
+	var body := _body()
+	return body != null and not body.is_on_floor()
+
+
+func _current_texture() -> Texture2D:
+	if _is_airborne():
+		var body := _body()
+		if body != null and body.velocity.y < -20.0 and _jump != null:
+			return _jump
+		if _roll_a != null and _roll_b != null:
+			return _roll_a if int(_anim_phase) % 2 == 0 else _roll_b
+		if _jump != null:
+			return _jump
+	if _is_walking() and _walk_a and _walk_b:
+		return _walk_a if int(_anim_phase) % 2 == 0 else _walk_b
+	return _idle
 
 
 func _draw() -> void:
-	var body := Color(0.88, 0.16, 0.12, 1.0)
-	var body_hi := Color(1.0, 0.42, 0.34, 1.0)
-	var body_sh := Color(0.62, 0.1, 0.08, 1.0)
-	var glove := Color(0.98, 0.94, 0.82, 1.0)
-	var shoe := Color(0.92, 0.78, 0.18, 1.0)
-	var eye := Color(0.08, 0.06, 0.1, 1.0)
-	var cheek := Color(0.96, 0.55, 0.42, 1.0)
-
-	var origin := Vector2(-GRID_W * PIXEL_SIZE * 0.5, -GRID_H * PIXEL_SIZE)
-	draw_set_transform(origin, 0.0, Vector2.ONE)
-
-	var bob := int(sin(_walk_phase) * 0.5) if _is_walking() else 0
-
-	for x in GRID_W:
-		for y in GRID_H:
-			var color := _body_pixel(x, y, body, body_hi, body_sh, glove, shoe, eye, cheek, bob)
-			if color.a > 0.0:
-				var draw_x := x if facing > 0 else GRID_W - 1 - x
-				_px(draw_x, y + bob, color)
-
+	var tex := _current_texture()
+	if tex == null:
+		return
+	var size := tex.get_size()
+	var pos := Vector2(-size.x * 0.5, -size.y + 4.0)
+	if facing < 0:
+		draw_set_transform(Vector2(0, 0), 0.0, Vector2(-1, 1))
+		draw_texture(tex, Vector2(-size.x * 0.5, pos.y))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	else:
+		draw_texture(tex, pos)
 	if Inventory.has_item("snorkel"):
-		_draw_snorkel_mask(bob)
-
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		_draw_snorkel_mask()
 
 
-func _body_pixel(
-	x: int, y: int,
-	body: Color, body_hi: Color, body_sh: Color,
-	glove: Color, shoe: Color, eye: Color, cheek: Color,
-	bob: int
-) -> Color:
-	var _y := y - bob
-	# Egg body (wider)
-	if x in range(4, 12) and _y in range(5, 15):
-		if x <= 6:
-			return body_sh
-		if x >= 9:
-			return body_hi
-		return body
-	if x in range(3, 13) and _y in range(3, 6):
-		return body_hi if x > 8 else body
-	if x in range(3, 13) and _y in range(15, 17):
-		return body_sh
-	# Face
-	if x in range(6, 10) and _y == 8:
-		return eye
-	if x in range(5, 8) and _y == 10:
-		return cheek
-	# Gloves
-	if x in range(2, 5) and _y in range(11, 13):
-		return glove
-	if x in range(11, 14) and _y in range(11, 13):
-		return glove
-	# Shoes
-	if x in range(5, 8) and _y in range(17, 20):
-		return shoe
-	if x in range(9, 12) and _y in range(17, 20):
-		return shoe
-	return Color.TRANSPARENT
-
-
-func _draw_snorkel_mask(bob: int) -> void:
+func _draw_snorkel_mask() -> void:
 	var mask := Color(0.18, 0.42, 0.72, 1.0)
 	var tube := Color(0.22, 0.58, 0.88, 1.0)
-	var strap := Color(0.82, 0.22, 0.18, 1.0)
-	var y_off := bob
-	for x in range(4, 12):
-		_px(x if facing > 0 else GRID_W - 1 - x, 2 + y_off, mask)
-	for y in range(3, 6):
-		var draw_x := 7 if facing > 0 else GRID_W - 1 - 7
-		_px(draw_x, y + y_off, tube)
-	for x in range(3, 13):
-		_px(x if facing > 0 else GRID_W - 1 - x, 5 + y_off, strap)
-
-
-func _px(x: int, y: int, color: Color) -> void:
-	draw_rect(
-		Rect2(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE),
-		color
-	)
+	var y := -48.0
+	var x0 := -10.0 if facing > 0 else -6.0
+	draw_rect(Rect2(x0, y, 20, 6), mask)
+	draw_rect(Rect2(x0 + 8.0, y - 10.0, 4, 12), tube)

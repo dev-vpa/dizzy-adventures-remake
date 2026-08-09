@@ -5,7 +5,6 @@ extends CharacterBody2D
 const GRAVITY := 980.0
 const MOVE_SPEED := 140.0
 const JUMP_VELOCITY := -320.0
-const SOMERSAULT_SPEED := 12.0
 const FALL_DEATH_Y := 392.0
 
 const PICKUP_SCENE := preload("res://core/items/pickup_item.tscn")
@@ -14,7 +13,6 @@ const PICKUP_SCENE := preload("res://core/items/pickup_item.tscn")
 @onready var pickup_area: Area2D = $PickupArea
 @onready var _screen_container: Node2D = get_parent().get_node("ScreenContainer")
 
-var _somersault_rotation: float = 0.0
 var _facing: int = 1
 var _spawn_position: Vector2
 var _action_queued := false
@@ -37,9 +35,6 @@ func _physics_process(delta: float) -> void:
 
 	if not is_on_floor():
 		velocity.y += GRAVITY * delta
-	else:
-		_somersault_rotation = 0.0
-		sprite.rotation = 0.0
 
 	var direction := Input.get_axis("move_left", "move_right")
 	velocity.x = direction * MOVE_SPEED
@@ -50,10 +45,6 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-		_somersault_rotation = SOMERSAULT_SPEED
-
-	if not is_on_floor() and _somersault_rotation != 0.0:
-		sprite.rotation += _somersault_rotation * delta
 
 	move_and_slide()
 	ScreenManager.clamp_player_to_bounds(self, _screen_container)

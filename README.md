@@ -19,7 +19,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 | Treasure Island Dizzy | **Phase 3 content playable** — 51 screens, puzzles, 30 coins, win chain |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 4 art** — five PNG regional backdrops (beach / tree / ocean / cavern / hut); playthrough after visuals improve.
+**Current milestone:** **Phase 4 art in progress** — PNG backdrops, tiles, items, hazards, NPCs, Dizzy walk/jump/roll; next: holistic visual review, then SFX/title/release.
 
 ### Phase 3 progress (Treasure Island)
 

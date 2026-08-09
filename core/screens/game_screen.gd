@@ -25,6 +25,13 @@ extends Node2D
 @export var exit_down_zone: Rect2 = Rect2(8, 328, 176, 56)
 
 
+func _ready() -> void:
+	# TI pixel skins (platforms / hazards / NPCs).
+	var skin_path := "res://games/treasure-island/art_skin.gd"
+	if ResourceLoader.exists(skin_path):
+		(load(skin_path) as GDScript).call("apply_screen", self)
+
+
 func get_exits() -> Dictionary:
 	var exits := {}
 	if not exit_left.is_empty():
