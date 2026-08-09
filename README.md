@@ -16,24 +16,20 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 
 | Part | Status |
 |------|--------|
-| Treasure Island Dizzy | **Phase 3 in progress** — ~45 screens (west + ocean + east + cavern stubs); puzzles stubbed |
+| Treasure Island Dizzy | **Phase 3 content playable** — 51 screens, puzzles, 30 coins, win chain |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 3 in progress** — ocean/east/west + kitchen hatch + 30 coins; puzzle flags in `ti_gameplay` / WorldState.
+**Current milestone:** **Phase 3** — full map content in; next is a start-to-win playthrough + art/audio (Phase 4).
 
 ### Phase 3 progress (Treasure Island)
 
-- **Full screen map:** `games/treasure-island/data/screen_map.md` (~48 target screens)
-- **Items database:** `games/treasure-island/data/items.json` (33 items, trade chain, coin map)
-- **Regions playable:** west/tree/mine, **ocean** (`ocean_*`), **east** (grave → taxman), cavern/bridge stubs
-- **Puzzles (stub):** spade→bubbles, sword→grave, axe→bridge, shop Use-trade, boat parts on pier
-- **Hazards:** `hazard_zone` + WaterZone (snorkel gate for `ocean_*`)
-- **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, dynamite+detonator→mine, bible→cursed treasure; `puzzle_barrier` + WorldState flags
-- **Kitchen:** golden key on `cavern_kitchen_door` → `kitchen_open` → `blackbeard_kitchen` (microwave)
-- **Camera:** `tree_camera_ledge` (↓ from `tree_upper_east`) — video camera for shop trade
-- **Optional junk:** `tree_rail_coin` (↑ from central), `tree_magazine` (↑ from mushrooms)
-- **Coins:** exactly **30** world pickups (guarded by `test_coin_layout`)
-- **Win:** assemble boat on `pier_boat` (order), then Taxman on `taxman_dock` with 30 coins
+- **51 level scenes** + `screen_map.md` / `items.json` (trade chain, coin map)
+- **Regions:** west/tree/mine, ocean, east/shop/pier, cavern/kitchen/bridge
+- **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, key→kitchen, dynamite+detonator→mine, bible→treasure, shop Use-trades
+- **Hazards:** path-height `hazard_zone` (patrol fish/crab/cuttlefish) + WaterZone (snorkel)
+- **Optional junk:** `tree_rail_coin`, `tree_magazine`
+- **Coins:** exactly **30** (guarded by `test_coin_layout`)
+- **Win:** boat parts on `pier_boat` (order) → Taxman on `taxman_dock` with 30 coins
 
 ### Phase 2 gameplay (still available on east path)
 
