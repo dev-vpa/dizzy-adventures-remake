@@ -7,12 +7,19 @@ extends Area2D
 @export var zone_center: Vector2 = Vector2(256, 340)
 ## When this WorldState flag is true, the hazard is disabled (e.g. after bridge cut).
 @export var clear_flag: String = ""
+## Horizontal patrol (sin wave) around zone_center.
+@export var patrol_enabled: bool = false
+@export var patrol_range: float = 100.0
+@export var patrol_speed: float = 1.4
 
 var _players_inside: Array[Node] = []
+var _base_center: Vector2 = Vector2.ZERO
+var _patrol_t: float = 0.0
 
 
 func _ready() -> void:
 	add_to_group("hazard_zone")
+	_base_center = zone_center
 	_apply_zone_bounds()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
@@ -63,7 +70,11 @@ func _apply_zone_bounds() -> void:
 		visual.offset_bottom = zone_center.y + zone_size.y * 0.5
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if patrol_enabled and monitoring:
+		_patrol_t += delta * patrol_speed
+		zone_center = _base_center + Vector2(sin(_patrol_t) * patrol_range, 0.0)
+		_apply_zone_bounds()
 	if not monitoring:
 		return
 	for body in _players_inside.duplicate():

@@ -99,6 +99,8 @@ func _apply_debug_start_items(start_id: String) -> void:
 		"ocean_bubble_cave":
 			Inventory.try_pick_up("snorkel")
 			Inventory.try_pick_up("salt_spade")
+		"ocean_entry", "ocean_fish_run", "ocean_wreck", "ocean_spade_bay":
+			Inventory.try_pick_up("snorkel")
 		"cavern_kitchen_door", "blackbeard_kitchen":
 			Inventory.try_pick_up("golden_key")
 			WorldState.set_flag("kitchen_open")

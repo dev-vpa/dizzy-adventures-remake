@@ -36,15 +36,18 @@ zone_center = Vector2(256, 220)
 
 [node name="Hazard1" parent="." instance=ExtResource("5")]
 hazard_label = "Large Fish"
-zone_size = Vector2(100, 40)
+zone_size = Vector2(72, 36)
 zone_center = Vector2(256, 280)
+patrol_enabled = true
+patrol_range = 140.0
+patrol_speed = 1.6
 
 [node name="Warn" type="Label" parent="."]
-offset_left = 180.0
+offset_left = 160.0
 offset_top = 200.0
-offset_right = 340.0
+offset_right = 360.0
 offset_bottom = 216.0
 theme_override_colors/font_color = Color(1, 0.55, 0.4, 0.95)
 theme_override_font_sizes/font_size = 10
-text = "Fish hazard — jump past"
+text = "Fish patrols — jump or wait"
 horizontal_alignment = 1

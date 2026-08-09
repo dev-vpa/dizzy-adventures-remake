@@ -59,7 +59,10 @@ world_id = "ocean_wreck/skull_1"
 [node name="Hazard1" parent="." instance=ExtResource("5")]
 hazard_label = "Crab"
 zone_size = Vector2(56, 32)
-zone_center = Vector2(320, 270)
+zone_center = Vector2(320, 300)
+patrol_enabled = true
+patrol_range = 70.0
+patrol_speed = 1.1
 
 [node name="Warn" type="Label" parent="."]
 offset_left = 250.0
