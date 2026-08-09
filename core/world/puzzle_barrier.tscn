@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://core/world/puzzle_barrier.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_barrier"]
-size = Vector2(72, 72)
+size = Vector2(144, 144)
 
 [node name="PuzzleBarrier" type="StaticBody2D"]
 collision_layer = 1
@@ -14,9 +14,9 @@ script = ExtResource("1")
 shape = SubResource("RectangleShape2D_barrier")
 
 [node name="Visual" type="ColorRect" parent="."]
-offset_left = -36.0
-offset_top = -36.0
-offset_right = 36.0
-offset_bottom = 36.0
+offset_left = -72
+offset_top = -72
+offset_right = 72
+offset_bottom = 72
 color = Color(0.42, 0.38, 0.34, 1)
 mouse_filter = 2

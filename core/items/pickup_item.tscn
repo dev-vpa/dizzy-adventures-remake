@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://core/items/item_sprite.gd" id="2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
-radius = 22.0
+radius = 44
 
 [node name="PickupItem" type="Area2D"]
 collision_layer = 4
@@ -16,20 +16,20 @@ item_id = "snorkel"
 display_name = "Snorkel"
 
 [node name="ItemSprite" type="Node2D" parent="."]
-position = Vector2(0, -4)
+position = Vector2(0, -8)
 script = ExtResource("2")
 
 [node name="HintLabel" type="Label" parent="."]
 visible = false
-offset_left = -16.0
-offset_top = -36.0
-offset_right = 16.0
-offset_bottom = -22.0
+offset_left = -32
+offset_top = -72
+offset_right = 32
+offset_bottom = -44
 theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)
 theme_override_colors/font_shadow_color = Color(0.2, 0.08, 0.05, 0.8)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 11
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 22
 text = "E"
 horizontal_alignment = 1
 

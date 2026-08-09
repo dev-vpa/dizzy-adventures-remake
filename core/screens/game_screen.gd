@@ -10,19 +10,19 @@ extends Node2D
 
 @export_group("Spawn Overrides")
 @export var override_spawn_from_west: bool = false
-@export var spawn_from_west: Vector2 = Vector2(320, 320)
+@export var spawn_from_west: Vector2 = Vector2(640, 640)
 @export var override_spawn_from_east: bool = false
-@export var spawn_from_east: Vector2 = Vector2(360, 320)
+@export var spawn_from_east: Vector2 = Vector2(720, 640)
 @export var override_spawn_from_north: bool = false
-@export var spawn_from_north: Vector2 = Vector2(256, 320)
+@export var spawn_from_north: Vector2 = Vector2(512, 640)
 @export var override_spawn_from_south: bool = false
-@export var spawn_from_south: Vector2 = Vector2(256, 320)
+@export var spawn_from_south: Vector2 = Vector2(512, 640)
 
 @export_group("Exit Zones")
 @export var use_exit_up_zone: bool = false
-@export var exit_up_zone: Rect2 = Rect2(176, 0, 160, 96)
+@export var exit_up_zone: Rect2 = Rect2(352, 0, 320, 192)
 @export var use_exit_down_zone: bool = false
-@export var exit_down_zone: Rect2 = Rect2(8, 328, 176, 56)
+@export var exit_down_zone: Rect2 = Rect2(16, 656, 352, 112)
 
 
 func _ready() -> void:
@@ -94,10 +94,10 @@ func get_spawn_for_entry(entry_direction: String, fallback_y: float) -> Vector2:
 func point_in_up_exit_zone(point: Vector2) -> bool:
 	if use_exit_up_zone:
 		return exit_up_zone.has_point(point)
-	return point.y <= 120.0
+	return point.y <= 240.0
 
 
 func point_in_down_exit_zone(point: Vector2) -> bool:
 	if use_exit_down_zone:
 		return exit_down_zone.has_point(point)
-	return point.y >= 336.0
+	return point.y >= 672.0

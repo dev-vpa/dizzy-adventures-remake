@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://games/treasure-island/taxman.gd" id="5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [node name="TaxmanDock" type="Node2D"]
 script = ExtResource("1")
@@ -17,36 +17,36 @@ exit_left = "pier_boat"
 script = ExtResource("2")
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.74, 0.6, 0.36, 1)
 
 [node name="Taxman" parent="." instance=ExtResource("4")]
-position = Vector2(320, 330)
+position = Vector2(640, 660)
 script = ExtResource("5")
 npc_name = "Taxman"
 message = "Pay me 30 gold coins when your boat is ready."
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(420, 339)
+position = Vector2(840, 678)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "taxman_dock/coin30"
 
 [node name="EndHint" type="Label" parent="."]
-offset_left = 8.0
-offset_top = 40.0
-offset_right = 400.0
-offset_bottom = 72.0
+offset_left = 16
+offset_top = 80
+offset_right = 800
+offset_bottom = 144
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "Talk (E): need boat_ready + 30 coins to escape"

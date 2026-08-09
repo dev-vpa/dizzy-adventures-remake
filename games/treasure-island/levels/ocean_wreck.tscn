@@ -7,69 +7,69 @@
 [ext_resource type="PackedScene" path="res://core/world/hazard_zone.tscn" id="5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [node name="OceanWreck" type="Node2D"]
 script = ExtResource("1")
 exit_left = "ocean_fish_run"
 exit_right = "ocean_spade_bay"
 override_spawn_from_west = true
-spawn_from_west = Vector2(40, 320)
+spawn_from_west = Vector2(80, 640)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
 
 [node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 shape = SubResource("RectangleShape2D_floor")
 
 [node name="Visual" type="ColorRect" parent="Floor"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.55, 0.45, 0.28, 1)
 
 [node name="FullWater" parent="." instance=ExtResource("4")]
-zone_size = Vector2(512, 300)
-zone_center = Vector2(256, 220)
+zone_size = Vector2(1024, 600)
+zone_center = Vector2(512, 440)
 
 [node name="Coin1" parent="." instance=ExtResource("3")]
-position = Vector2(140, 280)
+position = Vector2(280, 560)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "ocean_wreck/coin17"
 
 [node name="Coin2" parent="." instance=ExtResource("3")]
-position = Vector2(380, 300)
+position = Vector2(760, 600)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "ocean_wreck/coin18"
 
 [node name="Item1" parent="." instance=ExtResource("3")]
-position = Vector2(420, 330)
+position = Vector2(840, 660)
 item_id = "skull_1"
 display_name = "Imitation Skull"
 world_id = "ocean_wreck/skull_1"
 
 [node name="Hazard1" parent="." instance=ExtResource("5")]
 hazard_label = "Crab"
-zone_size = Vector2(36, 32)
-zone_center = Vector2(320, 344)
+zone_size = Vector2(72, 64)
+zone_center = Vector2(640, 688)
 patrol_enabled = true
-patrol_range = 80.0
+patrol_range = 160
 patrol_speed = 1.1
 
 [node name="Warn" type="Label" parent="."]
-offset_left = 230.0
-offset_top = 250.0
-offset_right = 420.0
-offset_bottom = 266.0
+offset_left = 460
+offset_top = 500
+offset_right = 840
+offset_bottom = 532
 theme_override_colors/font_color = Color(1, 0.55, 0.4, 0.95)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "Crab on sand — jump over or wait"
 horizontal_alignment = 1

@@ -31,7 +31,7 @@ from ti_art_lib import (
 
 DIZZY = REPO_ROOT / "shared/sprites/dizzy"
 SRC_W, SRC_H = 22, 28
-SCALE = 2  # 44×56: original-like proportions in the doubled 512×384 viewport.
+SCALE = 4  # 88×112 at 1024×768 viewport.
 
 
 def blank() -> Image.Image:

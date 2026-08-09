@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://core/interactables/npc.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
-size = Vector2(40, 56)
+size = Vector2(80, 112)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
 bg_color = Color(0.14, 0.11, 0.2, 0.95)
@@ -31,47 +31,47 @@ npc_name = "Shopkeeper"
 message = "Welcome to my shop! More goods coming soon..."
 
 [node name="BodyVisual" type="ColorRect" parent="."]
-offset_left = -20.0
-offset_top = -48.0
-offset_right = 20.0
-offset_bottom = 8.0
+offset_left = -40
+offset_top = -96
+offset_right = 40
+offset_bottom = 16
 color = Color(0.55, 0.38, 0.28, 1)
 
 [node name="HeadVisual" type="ColorRect" parent="."]
-offset_left = -14.0
-offset_top = -62.0
-offset_right = 14.0
-offset_bottom = -48.0
+offset_left = -28
+offset_top = -124
+offset_right = 28
+offset_bottom = -96
 color = Color(0.92, 0.78, 0.62, 1)
 
 [node name="HintLabel" type="Label" parent="."]
 visible = false
-offset_left = -20.0
-offset_top = -78.0
-offset_right = 20.0
-offset_bottom = -64.0
+offset_left = -40
+offset_top = -156
+offset_right = 40
+offset_bottom = -128
 theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "E"
 horizontal_alignment = 1
 
 [node name="SpeechBubble" type="PanelContainer" parent="."]
 visible = false
-offset_left = -80.0
-offset_top = -110.0
-offset_right = 90.0
-offset_bottom = -72.0
+offset_left = -160
+offset_top = -220
+offset_right = 180
+offset_bottom = -144
 theme_override_styles/panel = SubResource("StyleBoxFlat_bubble")
 
 [node name="MessageLabel" type="Label" parent="SpeechBubble"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 18
 text = "Hello!"
 autowrap_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -20)
+position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_npc")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

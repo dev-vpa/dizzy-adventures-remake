@@ -1,6 +1,6 @@
 extends Node2D
 
-## Full-screen 512×384 PNG backdrop for a TI biome (nearest-neighbor).
+## Full-screen 1024×768 PNG backdrop for a TI biome (nearest-neighbor).
 
 const BACKDROPS_PATH := "res://games/treasure-island/art/backdrops/"
 

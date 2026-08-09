@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [node name="TreeUpperCentral" type="Node2D"]
 script = ExtResource("1")
@@ -14,55 +14,55 @@ exit_right = "tree_upper_east"
 exit_up = "tree_rail_coin"
 exit_down = "tree_village_gate"
 use_exit_up_zone = true
-exit_up_zone = Rect2(200, 300, 112, 68)
+exit_up_zone = Rect2(400, 600, 224, 136)
 use_exit_down_zone = true
-exit_down_zone = Rect2(220, 328, 72, 56)
+exit_down_zone = Rect2(440, 656, 144, 112)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.34, 0.26, 0.14, 1)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(280, 339)
+position = Vector2(560, 678)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "tree_upper_central/coin"
 
 [node name="Detonator" parent="." instance=ExtResource("3")]
-position = Vector2(160, 339)
+position = Vector2(320, 678)
 item_id = "detonator"
 display_name = "Infra Red Detonator"
 world_id = "tree_upper_central/detonator"
 
 [node name="UpHint" type="Label" parent="."]
-offset_left = 200.0
-offset_top = 290.0
-offset_right = 312.0
-offset_bottom = 306.0
+offset_left = 400
+offset_top = 580
+offset_right = 624
+offset_bottom = 612
 theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "↑ Rail balcony"
 horizontal_alignment = 1
 
 [node name="DownHint" type="Label" parent="."]
-offset_left = 220.0
-offset_top = 352.0
-offset_right = 292.0
-offset_bottom = 368.0
+offset_left = 440
+offset_top = 704
+offset_right = 584
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "↓ Gate"
 horizontal_alignment = 1

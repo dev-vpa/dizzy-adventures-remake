@@ -63,12 +63,12 @@ func _draw_stars(sz: Vector2) -> void:
 			floorf(STAR_POSITIONS[i].y * sz.y)
 		)
 		var twinkle := 0.45 + 0.55 * (0.5 + 0.5 * sin(_time * 2.4 + float(i) * 1.9))
-		var pixel_size := 2.0 if i % 3 == 0 else 1.0
+		var pixel_size := 4.0 if i % 3 == 0 else 2.0
 		draw_rect(Rect2(pos, Vector2(pixel_size, pixel_size)), Color(1.0, 0.97, 0.82, twinkle))
 		if i % 4 == 0 and twinkle > 0.92:
 			var shine := Color(1.0, 1.0, 0.9, twinkle * 0.42)
-			draw_rect(Rect2(pos - Vector2(3, 0), Vector2(7, 1)), shine)
-			draw_rect(Rect2(pos - Vector2(0, 3), Vector2(1, 7)), shine)
+			draw_rect(Rect2(pos - Vector2(6, 0), Vector2(14, 2)), shine)
+			draw_rect(Rect2(pos - Vector2(0, 6), Vector2(2, 14)), shine)
 
 
 func _draw_shooting_star() -> void:
@@ -78,9 +78,9 @@ func _draw_shooting_star() -> void:
 	var alpha := 1.0 - _shooting_star_progress
 	var direction := (_shooting_star_end - _shooting_star_start).normalized()
 	for step in 6:
-		var point := head - direction * float(step * 3)
+		var point := head - direction * float(step * 6)
 		point = Vector2(floorf(point.x), floorf(point.y))
-		var pixel_size := 2.0 if step < 2 else 1.0
+		var pixel_size := 4.0 if step < 2 else 2.0
 		var fade := alpha * (1.0 - float(step) / 7.0)
 		draw_rect(
 			Rect2(point, Vector2(pixel_size, pixel_size)),
@@ -92,10 +92,10 @@ func _draw_fireflies(sz: Vector2) -> void:
 	for i in FIREFLY_SEEDS.size():
 		var seed := FIREFLY_SEEDS[i]
 		var pos := Vector2(
-			seed.x * sz.x + sin(_time * 0.7 + float(i) * 2.1) * 14.0,
-			seed.y * sz.y + cos(_time * 0.9 + float(i) * 1.6) * 8.0
+			seed.x * sz.x + sin(_time * 0.7 + float(i) * 2.1) * 28.0,
+			seed.y * sz.y + cos(_time * 0.9 + float(i) * 1.6) * 16.0
 		)
 		pos = Vector2(floorf(pos.x), floorf(pos.y))
 		var glow := 0.25 + 0.75 * (0.5 + 0.5 * sin(_time * 3.0 + float(i) * 2.4))
-		draw_rect(Rect2(pos - Vector2.ONE, Vector2(3, 3)), Color(1.0, 0.82, 0.3, glow * 0.22))
-		draw_rect(Rect2(pos, Vector2.ONE), Color(1.0, 0.98, 0.75, glow))
+		draw_rect(Rect2(pos - Vector2(2, 2), Vector2(6, 6)), Color(1.0, 0.82, 0.3, glow * 0.22))
+		draw_rect(Rect2(pos, Vector2(2, 2)), Color(1.0, 0.98, 0.75, glow))

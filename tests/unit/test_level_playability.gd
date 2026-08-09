@@ -8,14 +8,14 @@ const LevelRegistryHelper := preload("res://tests/helpers/level_registry_helper.
 
 const TI_CONFIG := preload("res://games/treasure-island/treasure_island_config.tres")
 
-## Jump height ~52px from floor; climb platforms (h≈16) must sit at y >= this.
-const MIN_CLIMB_PLATFORM_Y := 328.0
+## Jump height ~104px from floor; climb platforms (h≈32) must sit at y >= this.
+const MIN_CLIMB_PLATFORM_Y := 656.0
 ## Floor traps wider than this are hard/impossible to clear from standing edge.
-const MAX_FLOOR_TRAP_WIDTH := 40.0
-const FLOOR_TRAP_MIN_Y := 340.0
-## Standing Dizzy on ground (feet ≈352): collision roughly y 326–354.
-const STAND_BODY_TOP := 326.0
-const STAND_BODY_BOTTOM := 354.0
+const MAX_FLOOR_TRAP_WIDTH := 80.0
+const FLOOR_TRAP_MIN_Y := 680.0
+## Standing Dizzy on ground (feet ≈704): collision roughly y 652–708.
+const STAND_BODY_TOP := 652.0
+const STAND_BODY_BOTTOM := 708.0
 
 const CLIMB_NAMES := {
 	"Platform": true,
@@ -61,14 +61,14 @@ static func _check_exit_up(screen_id: String, root: Node) -> void:
 		return
 	TestAssert.true_(
 		bool(root.get("use_exit_up_zone")),
-		"%s: exit_up set but use_exit_up_zone is false (default needs y<=120)" % screen_id
+		"%s: exit_up set but use_exit_up_zone is false (default needs y<=240)" % screen_id
 	)
 	# Underwater screens use a top-of-screen ↑ zone; land screens need a floor zone.
 	if _is_aquatic_screen(screen_id, root):
 		return
 	var zone: Rect2 = root.get("exit_up_zone")
 	TestAssert.true_(
-		zone.position.y >= 200.0,
+		zone.position.y >= 400.0,
 		"%s: exit_up_zone too high (y=%.0f) — unreachable from floor" % [screen_id, zone.position.y]
 	)
 

@@ -3,13 +3,13 @@ extends Area2D
 ## Instant-death hazard — contact kills player (1 life games).
 
 @export var hazard_label: String = "Trap"
-@export var zone_size: Vector2 = Vector2(64, 32)
-@export var zone_center: Vector2 = Vector2(256, 340)
+@export var zone_size: Vector2 = Vector2(128, 64)
+@export var zone_center: Vector2 = Vector2(512, 680)
 ## When this WorldState flag is true, the hazard is disabled (e.g. after bridge cut).
 @export var clear_flag: String = ""
 ## Horizontal patrol (sin wave) around zone_center.
 @export var patrol_enabled: bool = false
-@export var patrol_range: float = 100.0
+@export var patrol_range: float = 200.0
 @export var patrol_speed: float = 1.4
 
 var _players_inside: Array[Node] = []

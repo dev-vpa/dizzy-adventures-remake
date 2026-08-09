@@ -54,7 +54,7 @@ func _draw() -> void:
 		var tw := float(_texture.get_width())
 		var th := float(_texture.get_height())
 		# World pickups ~22px; inventory configure() uses smaller feel via _pixel_size.
-		var target := 22.0 if bob_enabled else 16.0
+		var target := 44.0 if bob_enabled else 32.0
 		var scale := target / maxf(tw, th)
 		var draw_size := Vector2(tw * scale, th * scale)
 		var pos := Vector2(-draw_size.x * 0.5, -draw_size.y * 0.72 + bob)

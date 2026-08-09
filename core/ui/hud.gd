@@ -2,7 +2,7 @@ extends CanvasLayer
 
 ## In-game HUD: title, lives, inventory slots, menu.
 
-const MIN_PANEL_WIDTH := 192.0
+const MIN_PANEL_WIDTH := 384.0
 
 var _slot_panels: Array[PanelContainer] = []
 var _slot_icons: Array[HudItemIcon] = []

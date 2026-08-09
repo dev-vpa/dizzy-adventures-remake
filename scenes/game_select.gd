@@ -28,8 +28,8 @@ func _apply_touch_layout() -> void:
 	if not PlatformUI.is_touch_device():
 		return
 	var back: Button = $ActionsFooter/Margin/VBox/ActionsRow/BackButton
-	back.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
-	_play_button.custom_minimum_size = Vector2(168, PlatformUI.MIN_TOUCH_SIZE)
+	back.custom_minimum_size = Vector2(336, PlatformUI.MIN_TOUCH_SIZE)
+	_play_button.custom_minimum_size = Vector2(336, PlatformUI.MIN_TOUCH_SIZE)
 
 
 func _apply_keyboard_hint() -> void:
@@ -94,7 +94,7 @@ func _create_game_card(config: GameConfig) -> PanelContainer:
 	content.add_child(row)
 
 	var icon := GameSelectIcon.new()
-	icon.custom_minimum_size = Vector2(52, 52)
+	icon.custom_minimum_size = Vector2(104, 104)
 	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	icon.configure(config)
 	row.add_child(icon)
@@ -108,13 +108,13 @@ func _create_game_card(config: GameConfig) -> PanelContainer:
 	var title := Label.new()
 	title.text = config.title
 	title.add_theme_color_override("font_color", Color(1.0, 0.92, 0.55, 1.0))
-	title.add_theme_font_size_override("font_size", 16)
+	title.add_theme_font_size_override("font_size", 32)
 	text_col.add_child(title)
 
 	var stats := Label.new()
 	stats.text = _format_stats(config)
 	stats.add_theme_color_override("font_color", Color(0.78, 0.72, 0.58, 1.0))
-	stats.add_theme_font_size_override("font_size", 11)
+	stats.add_theme_font_size_override("font_size", 22)
 	text_col.add_child(stats)
 
 	var description := Label.new()
@@ -123,7 +123,7 @@ func _create_game_card(config: GameConfig) -> PanelContainer:
 	)
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.add_theme_color_override("font_color", Color(0.84, 0.78, 0.64, 1.0))
-	description.add_theme_font_size_override("font_size", 11)
+	description.add_theme_font_size_override("font_size", 22)
 	description.visible = false
 	content.add_child(description)
 	card.set_meta("description", description)

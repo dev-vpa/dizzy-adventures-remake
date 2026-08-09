@@ -3,7 +3,7 @@ extends Area2D
 ## One-way screen transition (e.g. shop door). Press action while at the door.
 
 @export var target_screen_id: String = ""
-@export var spawn_position: Vector2 = Vector2(140, 320)
+@export var spawn_position: Vector2 = Vector2(280, 640)
 @export var block_edge_on_arrival: String = "left"
 
 var _cooldown := 0.0

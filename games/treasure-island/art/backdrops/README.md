@@ -1,6 +1,6 @@
 # TI regional backdrops
 
-512×384 chunky pixel PNGs (nearest filter in `region_backdrop.gd`).
+1024×768 chunky pixel PNGs (nearest filter in `region_backdrop.gd`).
 
 | File | Biome |
 |------|--------|

@@ -2,7 +2,7 @@ extends Node
 
 ## Single-slot save per game id (ConfigFile under user://).
 
-const SCHEMA_VERSION := 1
+const SCHEMA_VERSION := 2
 const SAVE_DIR := "user://saves"
 
 signal save_changed
@@ -11,7 +11,7 @@ signal save_changed
 var _ground_items: Dictionary = {}
 var _pending_restore := false
 var _restore_screen := ""
-var _restore_pos := Vector2(256, 350)
+var _restore_pos := Vector2(512, 700)
 var _suppress_autosave := false
 
 
@@ -147,7 +147,7 @@ func apply_ground_items(container: Node2D) -> void:
 		pickup.world_id = world_id
 		pickup.set_meta("ground_uid", uid)
 		screen.add_child(pickup)
-		pickup.global_position = Vector2(float(entry.get("x", 256)), float(entry.get("y", 340)))
+		pickup.global_position = Vector2(float(entry.get("x", 512)), float(entry.get("y", 680)))
 
 
 func _write_save(game_id: String) -> void:
@@ -159,7 +159,7 @@ func _write_save(game_id: String) -> void:
 
 	cfg.set_value("progress", "screen_id", ScreenManager.current_screen_id)
 	var player := get_tree().get_first_node_in_group("player") if get_tree() else null
-	var pos := Vector2(256, 350)
+	var pos := Vector2(512, 700)
 	if player is Node2D:
 		pos = (player as Node2D).global_position
 	cfg.set_value("progress", "pos_x", pos.x)
@@ -233,8 +233,8 @@ func _read_save(game_id: String) -> bool:
 
 	_restore_screen = str(cfg.get_value("progress", "screen_id", "beach_start"))
 	_restore_pos = Vector2(
-		float(cfg.get_value("progress", "pos_x", 256.0)),
-		float(cfg.get_value("progress", "pos_y", 350.0))
+		float(cfg.get_value("progress", "pos_x", 512.0)),
+		float(cfg.get_value("progress", "pos_y", 700.0))
 	)
 	_pending_restore = not _restore_screen.is_empty()
 	return true

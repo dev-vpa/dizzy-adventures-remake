@@ -15,7 +15,7 @@ func _ready() -> void:
 	if _menu_button:
 		_menu_button.pressed.connect(_on_menu)
 		if PlatformUI.is_touch_device():
-			_menu_button.custom_minimum_size = Vector2(200, PlatformUI.MIN_TOUCH_SIZE)
+			_menu_button.custom_minimum_size = Vector2(400, PlatformUI.MIN_TOUCH_SIZE)
 		_menu_button.grab_focus()
 
 

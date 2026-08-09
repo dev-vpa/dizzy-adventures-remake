@@ -5,10 +5,10 @@
 [ext_resource type="Script" path="res://games/treasure-island/beach_backdrop.gd" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
-size = Vector2(120, 16)
+size = Vector2(240, 32)
 
 [node name="BeachStart" type="Node2D"]
 script = ExtResource("1")
@@ -16,70 +16,70 @@ exit_left = "beach_wreck"
 exit_right = "beach_right"
 exit_down = "ocean_entry"
 use_exit_down_zone = true
-exit_down_zone = Rect2(360, 320, 140, 56)
+exit_down_zone = Rect2(720, 640, 280, 112)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("3")
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.78, 0.64, 0.36, 1)
 
 [node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(300, 332)
+position = Vector2(600, 664)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 shape = SubResource("RectangleShape2D_platform")
 
 [node name="Visual" type="ColorRect" parent="Platform"]
-offset_left = -60.0
-offset_top = -8.0
-offset_right = 60.0
-offset_bottom = 8.0
+offset_left = -120
+offset_top = -16
+offset_right = 120
+offset_bottom = 16
 color = Color(0.72, 0.58, 0.32, 1)
 
 [node name="Snorkel" parent="." instance=ExtResource("2")]
-position = Vector2(140, 339)
+position = Vector2(280, 678)
 item_id = "snorkel"
 display_name = "Rubber Snorkel"
 world_id = "beach_start/snorkel"
 
 [node name="LeftHint" type="Label" parent="."]
-offset_left = 8.0
-offset_top = 352.0
-offset_right = 120.0
-offset_bottom = 368.0
+offset_left = 16
+offset_top = 704
+offset_right = 240
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.12, 0.22, 0.42, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "← Wreck / cliff"
 
 [node name="DownHint" type="Label" parent="."]
-offset_left = 360.0
-offset_top = 340.0
-offset_right = 504.0
-offset_bottom = 368.0
+offset_left = 720
+offset_top = 680
+offset_right = 1008
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.12, 0.22, 0.42, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "↓ Ocean (snorkel)"
 horizontal_alignment = 2
 
 [node name="Plant1" parent="." instance=ExtResource("2")]
-position = Vector2(80, 339)
+position = Vector2(160, 678)
 item_id = "plant_1"
 display_name = "Protected Species"
 world_id = "beach_start/plant_1"
 
 [node name="CoinPlant1" parent="." instance=ExtResource("2")]
-position = Vector2(100, 339)
+position = Vector2(200, 678)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true

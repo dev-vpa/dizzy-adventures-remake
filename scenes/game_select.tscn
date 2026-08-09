@@ -132,43 +132,43 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -92.0
+offset_bottom = -184
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 28
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 16
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 32
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 24
 alignment = 1
 
 [node name="Title" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_colors/font_shadow_color = Color(0.45, 0.12, 0.05, 0.8)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 24
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 48
 text = "Select Adventure"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.82, 0.74, 0.58, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "Pick an adventure, then press Play"
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(0, 4)
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
 [node name="GameCards" type="VBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 16
 
 [node name="ActionsFooter" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -177,47 +177,47 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -184.0
-offset_top = -84.0
-offset_right = 184.0
-offset_bottom = -16.0
+offset_left = -368
+offset_top = -168
+offset_right = 368
+offset_bottom = -32
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_footer")
 
 [node name="Margin" type="MarginContainer" parent="ActionsFooter"]
 layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
 
 [node name="VBox" type="VBoxContainer" parent="ActionsFooter/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 12
 
 [node name="ActionsRow" type="HBoxContainer" parent="ActionsFooter/Margin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="BackButton" type="Button" parent="ActionsFooter/Margin/VBox/ActionsRow"]
-custom_minimum_size = Vector2(156, 34)
+custom_minimum_size = Vector2(312, 68)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
 theme_override_colors/font_hover_color = Color(1, 0.95, 0.78, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_back")
 theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_back_hover")
 text = "Back"
 
 [node name="PlayButton" type="Button" parent="ActionsFooter/Margin/VBox/ActionsRow"]
-custom_minimum_size = Vector2(156, 34)
+custom_minimum_size = Vector2(312, 68)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.62, 1)
 theme_override_colors/font_hover_color = Color(1, 0.96, 0.78, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_play")
 theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_play_hover")
@@ -226,7 +226,7 @@ text = "Play"
 [node name="KeyboardHint" type="Label" parent="ActionsFooter/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.62, 0.58, 0.48, 1)
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 18
 text = "Enter — Play · Esc — Back"
 horizontal_alignment = 1
 

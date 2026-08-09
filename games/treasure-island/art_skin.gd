@@ -293,5 +293,5 @@ static func _skin_npc(area: Area2D) -> void:
 	sprite.texture = load(path)
 	sprite.centered = true
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	sprite.position = Vector2(0, -24)
+	sprite.position = Vector2(0, -48)
 	area.add_child(sprite)

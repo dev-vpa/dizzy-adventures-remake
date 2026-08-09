@@ -331,6 +331,10 @@ def main() -> None:
 	}
 	for name, image in special_tiles.items():
 		save(image, TILES / f"{name}.png")
+	# Paint at 32px logical tiles; export ×2 for 1024×768 viewport.
+	for path in TILES.glob("*.png"):
+		im = Image.open(path)
+		save(im.resize((im.width * 2, im.height * 2), Image.Resampling.NEAREST), path)
 	print("tiles done")
 
 

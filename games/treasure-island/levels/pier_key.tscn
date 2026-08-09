@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pier"]
-size = Vector2(160, 16)
+size = Vector2(320, 32)
 
 [node name="PierKey" type="Node2D"]
 script = ExtResource("1")
@@ -19,43 +19,43 @@ exit_right = "pier_boat"
 script = ExtResource("2")
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.74, 0.6, 0.36, 1)
 
 [node name="Pier" type="StaticBody2D" parent="."]
-position = Vector2(300, 330)
+position = Vector2(600, 660)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pier"]
 shape = SubResource("RectangleShape2D_pier")
 
 [node name="Visual" type="ColorRect" parent="Pier"]
-offset_left = -80.0
-offset_top = -8.0
-offset_right = 80.0
-offset_bottom = 8.0
+offset_left = -160
+offset_top = -16
+offset_right = 160
+offset_bottom = 16
 color = Color(0.5, 0.4, 0.28, 1)
 
 [node name="Key" parent="." instance=ExtResource("3")]
-position = Vector2(380, 315)
+position = Vector2(760, 630)
 item_id = "golden_key"
 display_name = "Large Golden Key"
 world_id = "pier_key/golden_key"
 
 [node name="RightHint" type="Label" parent="."]
-offset_left = 400.0
-offset_top = 352.0
-offset_right = 504.0
-offset_bottom = 368.0
+offset_left = 800
+offset_top = 704
+offset_right = 1008
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.12, 0.22, 0.42, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "→ Boat pier"
 horizontal_alignment = 2

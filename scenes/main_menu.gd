@@ -12,13 +12,13 @@ func _ready() -> void:
 			$MarginContainer/VBox/NewGameButton,
 			$MarginContainer/VBox/QuitButton,
 		]:
-			button.custom_minimum_size = Vector2(232, PlatformUI.MIN_TOUCH_SIZE)
+			button.custom_minimum_size = Vector2(464, PlatformUI.MIN_TOUCH_SIZE)
 	$MarginContainer/VBox/NewGameButton.grab_focus()
 
 
 func _process(delta: float) -> void:
 	_time += delta
-	_hero.position.y = 1.0 + roundf(sin(_time * 2.2) * 2.0)
+	_hero.position.y = 2.0 + roundf(sin(_time * 2.2) * 4.0)
 
 
 func _on_new_game_pressed() -> void:

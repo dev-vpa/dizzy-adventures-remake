@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hut"]
-size = Vector2(48, 64)
+size = Vector2(96, 128)
 
 [node name="VillagePath" type="Node2D"]
 script = ExtResource("1")
@@ -16,78 +16,78 @@ exit_left = "beach_jetty"
 exit_right = "totem_pole"
 exit_up = "cave_entrance"
 use_exit_up_zone = true
-exit_up_zone = Rect2(68, 300, 104, 68)
+exit_up_zone = Rect2(136, 600, 208, 136)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.72, 0.62, 0.38, 1)
 
 [node name="TreeStump" type="StaticBody2D" parent="."]
-position = Vector2(120, 330)
+position = Vector2(240, 660)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TreeStump"]
 shape = SubResource("RectangleShape2D_hut")
 
 [node name="Visual" type="ColorRect" parent="TreeStump"]
-offset_left = -24.0
-offset_top = -32.0
-offset_right = 24.0
-offset_bottom = 32.0
+offset_left = -48
+offset_top = -64
+offset_right = 48
+offset_bottom = 64
 color = Color(0.42, 0.32, 0.22, 1)
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(280, 339)
+position = Vector2(560, 678)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "village_path/coin"
 
 [node name="UpHint" type="Label" parent="."]
-offset_left = 72.0
-offset_top = 276.0
-offset_right = 168.0
-offset_bottom = 292.0
+offset_left = 144
+offset_top = 552
+offset_right = 336
+offset_bottom = 584
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
 theme_override_colors/font_shadow_color = Color(1, 0.96, 0.82, 0.5)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 10
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
 text = "↑ Cave (Up arrow)"
 horizontal_alignment = 1
 
 [node name="RightHint" type="Label" parent="."]
-offset_left = 420.0
-offset_top = 352.0
-offset_right = 504.0
-offset_bottom = 368.0
+offset_left = 840
+offset_top = 704
+offset_right = 1008
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
 theme_override_colors/font_shadow_color = Color(1, 0.96, 0.82, 0.5)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 10
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
 text = "→ Totem / shop"
 horizontal_alignment = 2
 
 [node name="LeftHint" type="Label" parent="."]
-offset_left = 8.0
-offset_top = 352.0
-offset_right = 120.0
-offset_bottom = 368.0
+offset_left = 16
+offset_top = 704
+offset_right = 240
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
 theme_override_colors/font_shadow_color = Color(1, 0.96, 0.82, 0.5)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 10
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
 text = "← Jetty"

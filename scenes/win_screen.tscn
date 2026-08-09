@@ -43,46 +43,46 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -108.0
+offset_bottom = -216
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VictoryPanel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(392, 0)
+custom_minimum_size = Vector2(784, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleVictoryPanel")
 
 [node name="Margin" type="MarginContainer" parent="Center/VictoryPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 18
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 18
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 24
 
 [node name="VBox" type="VBoxContainer" parent="Center/VictoryPanel/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 20
 
 [node name="Title" type="Label" parent="Center/VictoryPanel/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
 theme_override_colors/font_shadow_color = Color(0.38, 0.09, 0.04, 0.9)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 28
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 56
 text = "You escaped!"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Center/VictoryPanel/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.9, 0.76, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 26
 text = "Treasure Island Dizzy
 30 coins paid — the Taxman lets you leave."
 horizontal_alignment = 1
 
 [node name="MenuButton" type="Button" parent="Center/VictoryPanel/Margin/VBox"]
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(440, 88)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Back to main menu"

@@ -3,8 +3,8 @@ extends Area2D
 ## Water hazard — drowns player without snorkel in inventory.
 
 @export var requires_snorkel: bool = true
-@export var zone_size: Vector2 = Vector2(512, 64)
-@export var zone_center: Vector2 = Vector2(256, 352)
+@export var zone_size: Vector2 = Vector2(1024, 128)
+@export var zone_center: Vector2 = Vector2(512, 704)
 
 var _players_inside: Array[Node] = []
 

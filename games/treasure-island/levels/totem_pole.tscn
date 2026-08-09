@@ -6,10 +6,10 @@
 [ext_resource type="Script" path="res://core/world/screen_door.gd" id="4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(512, 32)
+size = Vector2(1024, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
-size = Vector2(64, 64)
+size = Vector2(128, 128)
 
 [node name="TotemPole" type="Node2D"]
 script = ExtResource("1")
@@ -20,69 +20,69 @@ exit_right = "grave_hill"
 script = ExtResource("2")
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(256, 368)
+position = Vector2(512, 736)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -256.0
-offset_top = -16.0
-offset_right = 256.0
-offset_bottom = 16.0
+offset_left = -512
+offset_top = -32
+offset_right = 512
+offset_bottom = 32
 color = Color(0.74, 0.6, 0.36, 1)
 
 [node name="Totem" type="ColorRect" parent="."]
-offset_left = 240.0
-offset_top = 180.0
-offset_right = 280.0
-offset_bottom = 352.0
+offset_left = 480
+offset_top = 360
+offset_right = 560
+offset_bottom = 704
 color = Color(0.55, 0.35, 0.22, 1)
 
 [node name="Hut" type="ColorRect" parent="."]
-offset_left = 360.0
-offset_top = 280.0
-offset_right = 460.0
-offset_bottom = 352.0
+offset_left = 720
+offset_top = 560
+offset_right = 920
+offset_bottom = 704
 color = Color(0.58, 0.42, 0.28, 1)
 
 [node name="Rock" parent="." instance=ExtResource("3")]
-position = Vector2(160, 339)
+position = Vector2(320, 678)
 item_id = "heavy_rock"
 display_name = "Big Red Heavy Rock"
 world_id = "totem_pole/heavy_rock"
 
 [node name="Bible" parent="." instance=ExtResource("3")]
-position = Vector2(340, 339)
+position = Vector2(680, 678)
 item_id = "holy_bible"
 display_name = "Old Holy Bible"
 world_id = "totem_pole/holy_bible"
 
 [node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(180, 320)
+position = Vector2(360, 640)
 item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "totem_pole/coin22"
 
 [node name="ShopDoor" type="Area2D" parent="."]
-position = Vector2(400, 338)
+position = Vector2(800, 676)
 collision_layer = 0
 collision_mask = 2
 monitoring = true
 script = ExtResource("4")
 target_screen_id = "shop_exterior"
-spawn_position = Vector2(80, 350)
+spawn_position = Vector2(160, 700)
 block_edge_on_arrival = "left"
 
 [node name="HintLabel" type="Label" parent="ShopDoor"]
 visible = false
-offset_left = -28.0
-offset_top = -52.0
-offset_right = 28.0
-offset_bottom = -34.0
+offset_left = -56
+offset_top = -104
+offset_right = 56
+offset_bottom = -68
 theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "E — Shop"
 horizontal_alignment = 1
 
@@ -90,20 +90,20 @@ horizontal_alignment = 1
 shape = SubResource("RectangleShape2D_door")
 
 [node name="LeftHint" type="Label" parent="."]
-offset_left = 8.0
-offset_top = 352.0
-offset_right = 120.0
-offset_bottom = 368.0
+offset_left = 16
+offset_top = 704
+offset_right = 240
+offset_bottom = 736
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "← Beach path"
 
 [node name="DoorHint" type="Label" parent="."]
-offset_left = 360.0
-offset_top = 260.0
-offset_right = 500.0
-offset_bottom = 276.0
+offset_left = 720
+offset_top = 520
+offset_right = 1000
+offset_bottom = 552
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 18
 text = "E hut → Shop"
 horizontal_alignment = 1

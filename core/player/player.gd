@@ -2,10 +2,10 @@ extends CharacterBody2D
 
 ## Dizzy player: platform movement, somersault jump, item pickup/drop.
 
-const GRAVITY := 980.0
-const MOVE_SPEED := 140.0
-const JUMP_VELOCITY := -320.0
-const FALL_DEATH_Y := 392.0
+const GRAVITY := 1960.0
+const MOVE_SPEED := 280.0
+const JUMP_VELOCITY := -640.0
+const FALL_DEATH_Y := 784.0
 
 const PICKUP_SCENE := preload("res://core/items/pickup_item.tscn")
 
@@ -106,7 +106,7 @@ func _try_drop_item() -> void:
 		return
 
 	var screen := _screen_container.get_child(0) as Node2D
-	var drop_pos := global_position + Vector2(float(_facing) * 12.0, -8.0)
+	var drop_pos := global_position + Vector2(float(_facing) * 24.0, -16.0)
 	var uid := SaveGame.record_drop(ScreenManager.current_screen_id, item_id, drop_pos)
 	var pickup: Area2D = PICKUP_SCENE.instantiate()
 	pickup.item_id = item_id

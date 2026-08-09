@@ -97,69 +97,69 @@ mouse_filter = 2
 
 [node name="HudPanel" type="PanelContainer" parent="Root"]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 16
+offset_top = 16
+offset_right = 16
+offset_bottom = 16
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="VBox" type="VBoxContainer" parent="Root/HudPanel"]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 10
 
 [node name="HeaderRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 16
 
 [node name="TitleLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.0
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "Treasure Island Dizzy"
 clip_text = false
 text_overrun_behavior = 0
 
 [node name="LivesLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
-custom_minimum_size = Vector2(16, 0)
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.45, 0.42, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "♥"
 horizontal_alignment = 2
 
 [node name="CoinsLabel" type="Label" parent="Root/HudPanel/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.82, 0.28, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "Coins: 0/30"
 
 [node name="InventoryRow" type="VBoxContainer" parent="Root/HudPanel/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 3
+theme_override_constants/separation = 6
 
 [node name="InventoryTag" type="Label" parent="Root/HudPanel/VBox/InventoryRow"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.72, 0.66, 0.52, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "Items"
 
 [node name="Slots" type="HBoxContainer" parent="Root/HudPanel/VBox/InventoryRow"]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 12
 
 [node name="ActionsHBox" type="HBoxContainer" parent="Root/HudPanel/VBox"]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 12
 
 [node name="DropButton" type="Button" parent="Root/HudPanel/VBox/ActionsHBox"]
-custom_minimum_size = Vector2(0, 22)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
@@ -167,11 +167,11 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_menu")
 text = "Drop"
 
 [node name="UseButton" type="Button" parent="Root/HudPanel/VBox/ActionsHBox"]
-custom_minimum_size = Vector2(0, 22)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
@@ -181,16 +181,16 @@ text = "Use"
 [node name="InventoryLabel" type="Label" parent="Root/HudPanel/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 18
 text = "Tab — select  ·  R — drop  ·  U — use"
 autowrap_mode = 2
 
 [node name="MenuButton" type="Button" parent="Root/HudPanel/VBox"]
-custom_minimum_size = Vector2(0, 22)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
 theme_override_colors/font_hover_color = Color(1, 0.95, 0.78, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
@@ -226,42 +226,42 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="Root/QuitOverlay/Center"]
-custom_minimum_size = Vector2(292, 0)
+custom_minimum_size = Vector2(584, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_quit_panel")
 
 [node name="VBox" type="VBoxContainer" parent="Root/QuitOverlay/Center/Panel"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 20
 
 [node name="TitleLabel" type="Label" parent="Root/QuitOverlay/Center/Panel/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_colors/font_shadow_color = Color(0.35, 0.1, 0.05, 0.75)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 14
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 28
 text = "Leave game?"
 horizontal_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="Root/QuitOverlay/Center/Panel/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "Return to the main menu? Progress on this run will be lost."
 autowrap_mode = 2
 horizontal_alignment = 1
 
 [node name="Buttons" type="HBoxContainer" parent="Root/QuitOverlay/Center/Panel/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 16
 alignment = 1
 
 [node name="KeepPlayingButton" type="Button" parent="Root/QuitOverlay/Center/Panel/VBox/Buttons"]
-custom_minimum_size = Vector2(128, 26)
+custom_minimum_size = Vector2(256, 52)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.9, 0.78, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_quit_primary")
 theme_override_styles/hover = SubResource("StyleBoxFlat_quit_primary")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
@@ -269,10 +269,10 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_quit_primary")
 text = "Keep Playing"
 
 [node name="MainMenuButton" type="Button" parent="Root/QuitOverlay/Center/Panel/VBox/Buttons"]
-custom_minimum_size = Vector2(128, 26)
+custom_minimum_size = Vector2(256, 52)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.82, 0.76, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_quit_danger")
 theme_override_styles/hover = SubResource("StyleBoxFlat_quit_danger")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_quit_danger")

@@ -843,6 +843,11 @@ def main() -> None:
 	sprite_asset(PROPS, "stump", 48, 64, paint_stump, INK_BROWN)
 	sprite_asset(PROPS, "hut", 40, 36, paint_hut, INK_BROWN)
 	sprite_asset(PROPS, "shop_facade", 112, 76, paint_shop_facade, INK_BROWN)
+	# Paint at half-res; export ×2 for 1024×768.
+	for folder in (ITEMS, HAZARDS, NPCS, PROPS):
+		for path in folder.glob("*.png"):
+			im = Image.open(path)
+			save(im.resize((im.width * 2, im.height * 2), Image.Resampling.NEAREST), path)
 	print("sprites done")
 
 

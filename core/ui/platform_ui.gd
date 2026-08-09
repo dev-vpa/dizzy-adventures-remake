@@ -3,7 +3,7 @@ extends RefCounted
 
 ## Helpers for multiplatform UX (desktop + touch + web).
 
-const MIN_TOUCH_SIZE := 44.0
+const MIN_TOUCH_SIZE := 88.0
 
 
 static func is_touch_device() -> bool:

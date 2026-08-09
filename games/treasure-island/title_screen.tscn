@@ -65,37 +65,37 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TitlePanel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(382, 0)
+custom_minimum_size = Vector2(764, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleTitlePanel")
 
 [node name="Margin" type="MarginContainer" parent="Center/TitlePanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 18
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 18
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 24
 
 [node name="VBox" type="VBoxContainer" parent="Center/TitlePanel/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 9
+theme_override_constants/separation = 18
 
 [node name="TitleRow" type="HBoxContainer" parent="Center/TitlePanel/Margin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 24
 alignment = 1
 
 [node name="HeroHolder" type="Control" parent="Center/TitlePanel/Margin/VBox/TitleRow"]
-custom_minimum_size = Vector2(52, 60)
+custom_minimum_size = Vector2(104, 120)
 layout_mode = 2
 mouse_filter = 2
 
 [node name="DizzyHero" type="TextureRect" parent="Center/TitlePanel/Margin/VBox/TitleRow/HeroHolder"]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 2.0
-offset_right = 48.0
-offset_bottom = 58.0
+offset_left = 8
+offset_top = 4
+offset_right = 96
+offset_bottom = 116
 mouse_filter = 2
 texture = ExtResource("3_dizzy")
 expand_mode = 1
@@ -103,44 +103,44 @@ stretch_mode = 5
 
 [node name="TitleText" type="VBoxContainer" parent="Center/TitlePanel/Margin/VBox/TitleRow"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 8
 
 [node name="Brand" type="Label" parent="Center/TitlePanel/Margin/VBox/TitleRow/TitleText"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.45, 1)
 theme_override_colors/font_shadow_color = Color(0.28, 0.08, 0.04, 0.9)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 26
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 52
 text = "Treasure Island Dizzy"
 horizontal_alignment = 1
 
 [node name="Tagline" type="Label" parent="Center/TitlePanel/Margin/VBox/TitleRow/TitleText"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.9, 0.8, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 22
 text = "Unofficial fan remake
 Collect 30 coins and escape"
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="Center/TitlePanel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 3)
+custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
 [node name="ContinueButton" type="Button" parent="Center/TitlePanel/Margin/VBox"]
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(440, 88)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Continue"
 
 [node name="NewGameButton" type="Button" parent="Center/TitlePanel/Margin/VBox"]
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(440, 88)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "New Game"
 
 [node name="BackButton" type="Button" parent="Center/TitlePanel/Margin/VBox"]
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(440, 88)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Back"
@@ -148,6 +148,6 @@ text = "Back"
 [node name="InputHint" type="Label" parent="Center/TitlePanel/Margin/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.74, 0.69, 0.58, 1)
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 18
 text = "Esc — Back"
 horizontal_alignment = 1

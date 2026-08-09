@@ -360,11 +360,11 @@ def treasure_island_icon_source() -> Image.Image:
 
 
 def main() -> None:
-	save(upscale_nearest(menu_night_source(), 2), SHARED_ART / "menu_night.png")
-	save(upscale_nearest(boot_splash_source(), 2), SHARED_ART / "boot_splash.png")
-	save(upscale_nearest(menu_dizzy_source(), 2), SHARED_ART / "menu_dizzy.png")
-	save(upscale_nearest(victory_escape_source(), 2), SHARED_ART / "victory_escape.png")
-	save(upscale_nearest(treasure_island_icon_source(), 2), TI_ICONS / "select_ti.png")
+	save(upscale_nearest(menu_night_source(), 4), SHARED_ART / "menu_night.png")
+	save(upscale_nearest(boot_splash_source(), 4), SHARED_ART / "boot_splash.png")
+	save(upscale_nearest(menu_dizzy_source(), 4), SHARED_ART / "menu_dizzy.png")
+	save(upscale_nearest(victory_escape_source(), 4), SHARED_ART / "victory_escape.png")
+	save(upscale_nearest(treasure_island_icon_source(), 4), TI_ICONS / "select_ti.png")
 	print("pre-game art done")
 
 

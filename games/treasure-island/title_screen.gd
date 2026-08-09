@@ -27,7 +27,7 @@ func _ready() -> void:
 	_input_hint.text = PlatformUI.hint_text("Esc — Back", "Tap a button to continue")
 	if PlatformUI.is_touch_device():
 		for btn in [_continue_btn, _new_btn, _back_btn]:
-			btn.custom_minimum_size = Vector2(232, PlatformUI.MIN_TOUCH_SIZE)
+			btn.custom_minimum_size = Vector2(464, PlatformUI.MIN_TOUCH_SIZE)
 	if can_continue:
 		_continue_btn.grab_focus()
 	else:
@@ -36,7 +36,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_time += delta
-	_hero.position.y = 2.0 + roundf(sin(_time * 2.0) * 2.0)
+	_hero.position.y = 4.0 + roundf(sin(_time * 2.0) * 4.0)
 
 
 func _load_backdrop() -> void:

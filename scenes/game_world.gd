@@ -20,7 +20,7 @@ func _ready() -> void:
 	var restore := SaveGame.consume_restore()
 	if not restore.is_empty():
 		var sid := str(restore.get("screen_id", ""))
-		var pos: Vector2 = restore.get("position", Vector2(256, 350))
+		var pos: Vector2 = restore.get("position", Vector2(512, 700))
 		if sid.is_empty():
 			sid = ScreenManager.get_start_screen_id()
 		ScreenManager.load_screen(sid, screen_container, player, true)
@@ -129,5 +129,5 @@ func _debug_reload_current_screen() -> void:
 		return
 	if not ScreenManager.reload_screen_resource(screen_id):
 		return
-	ScreenManager.transition_to(screen_id, Vector2(256.0, 350.0), screen_container, player)
+	ScreenManager.transition_to(screen_id, Vector2(512.0, 700.0), screen_container, player)
 	print("Debug reload screen (from disk): %s" % screen_id)

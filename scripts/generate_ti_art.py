@@ -25,15 +25,15 @@ def _expect(folder: str, names: list[str], size: tuple[int, int]) -> None:
 		EXPECTED[f"{folder}/{name}.png"] = size
 
 
-_expect("games/treasure-island/art/backdrops", ["beach", "tree", "ocean", "cavern", "hut"], (512, 384))
-_expect("shared/ui/art", ["menu_night", "boot_splash", "victory_escape"], (512, 384))
-_expect("shared/ui/art", ["menu_dizzy"], (44, 56))
-_expect("games/treasure-island/art/icons", ["select_ti"], (48, 48))
-_expect("games/treasure-island/art/tiles", ["sand", "dirt", "wood", "rock", "cave"], (32, 32))
+_expect("games/treasure-island/art/backdrops", ["beach", "tree", "ocean", "cavern", "hut"], (1024, 768))
+_expect("shared/ui/art", ["menu_night", "boot_splash", "victory_escape"], (1024, 768))
+_expect("shared/ui/art", ["menu_dizzy"], (88, 112))
+_expect("games/treasure-island/art/icons", ["select_ti"], (96, 96))
+_expect("games/treasure-island/art/tiles", ["sand", "dirt", "wood", "rock", "cave"], (64, 64))
 _expect(
 	"games/treasure-island/art/tiles",
 	["sand_ledge", "dirt_ledge", "wood_ledge", "rock_ledge", "cave_ledge"],
-	(32, 16),
+	(64, 32),
 )
 _expect(
 	"games/treasure-island/art/tiles",
@@ -48,10 +48,10 @@ _expect(
 		"zone_glow_green",
 		"zone_glow_blue",
 	],
-	(32, 16),
+	(64, 32),
 )
-_expect("games/treasure-island/art/tiles", ["counter"], (32, 52))
-_expect("shared/sprites/dizzy", ["idle", "walk_a", "walk_b", "jump", "roll_a", "roll_b"], (44, 56))
+_expect("games/treasure-island/art/tiles", ["counter"], (64, 104))
+_expect("shared/sprites/dizzy", ["idle", "walk_a", "walk_b", "jump", "roll_a", "roll_b"], (88, 112))
 _expect(
 	"games/treasure-island/art/items",
 	[
@@ -91,26 +91,26 @@ _expect(
 		"toothpaste",
 		"magazine",
 	],
-	(22, 22),
+	(44, 44),
 )
-_expect("games/treasure-island/art/hazards", ["trap"], (32, 24))
-_expect("games/treasure-island/art/hazards", ["fish", "crab"], (40, 24))
-_expect("games/treasure-island/art/hazards", ["cuttlefish"], (40, 28))
-_expect("games/treasure-island/art/npc", ["shopkeeper", "taxman"], (48, 72))
+_expect("games/treasure-island/art/hazards", ["trap"], (64, 48))
+_expect("games/treasure-island/art/hazards", ["fish", "crab"], (80, 48))
+_expect("games/treasure-island/art/hazards", ["cuttlefish"], (80, 56))
+_expect("games/treasure-island/art/npc", ["shopkeeper", "taxman"], (96, 144))
 for relative, size in {
-	"boat": (72, 40),
-	"motor": (28, 32),
-	"grave": (48, 52),
-	"totem": (36, 72),
-	"hatch": (48, 18),
-	"bubble": (16, 16),
-	"barrel": (32, 40),
-	"door": (28, 44),
-	"rock": (48, 32),
-	"boulder": (64, 48),
-	"stump": (48, 64),
-	"hut": (40, 36),
-	"shop_facade": (112, 76),
+	"boat": (144, 80),
+	"motor": (56, 64),
+	"grave": (96, 104),
+	"totem": (72, 144),
+	"hatch": (96, 36),
+	"bubble": (32, 32),
+	"barrel": (64, 80),
+	"door": (56, 88),
+	"rock": (96, 64),
+	"boulder": (128, 96),
+	"stump": (96, 128),
+	"hut": (80, 72),
+	"shop_facade": (224, 152),
 }.items():
 	_expect("games/treasure-island/art/props", [relative], size)
 

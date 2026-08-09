@@ -4,13 +4,13 @@ extends Node
 
 signal screen_changed(screen_id: String)
 
-const SCREEN_WIDTH := 512
-const SCREEN_HEIGHT := 384
-const EDGE_MARGIN := 8.0
-const SPAWN_INSET := 24.0
+const SCREEN_WIDTH := 1024
+const SCREEN_HEIGHT := 768
+const EDGE_MARGIN := 16.0
+const SPAWN_INSET := 48.0
 const REENTRY_BLOCK_TIME := 1.0
-const SPAWN_FLOOR_Y := 350.0
-const PLAYER_HALF_WIDTH := 11.0
+const SPAWN_FLOOR_Y := 700.0
+const PLAYER_HALF_WIDTH := 22.0
 
 var _config: GameConfig
 var _screens: Dictionary = {}

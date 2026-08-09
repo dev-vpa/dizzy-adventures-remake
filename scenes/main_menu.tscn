@@ -68,71 +68,71 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 24
 alignment = 1
 
 [node name="Title" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_colors/font_shadow_color = Color(0.45, 0.12, 0.05, 0.8)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 28
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 56
 text = "Dizzy Adventures Remake"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.8, 0.62, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 24
 text = "Unofficial fan remake — free & non-commercial"
 horizontal_alignment = 1
 
 [node name="HeroHolder" type="Control" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(0, 58)
+custom_minimum_size = Vector2(0, 116)
 layout_mode = 2
 mouse_filter = 2
 
 [node name="DizzyHero" type="TextureRect" parent="MarginContainer/VBox/HeroHolder"]
 layout_mode = 0
-offset_left = 202.0
-offset_top = 1.0
-offset_right = 246.0
-offset_bottom = 57.0
+offset_left = 404
+offset_top = 2
+offset_right = 492
+offset_bottom = 114
 mouse_filter = 2
 texture = ExtResource("3_dizzy")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(0, 4)
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
 [node name="NewGameButton" type="Button" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(440, 88)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 0.75, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_newgame")
 theme_override_styles/hover = SubResource("StyleBoxFlat_newgame")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_newgame")
 text = "New Game"
 
 [node name="QuitButton" type="Button" parent="MarginContainer/VBox"]
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(440, 88)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_quit")
 theme_override_styles/hover = SubResource("StyleBoxFlat_quit")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_quit")

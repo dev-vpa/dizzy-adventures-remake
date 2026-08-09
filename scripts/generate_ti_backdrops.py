@@ -57,7 +57,7 @@ from ti_art_lib import (
 
 BACKDROPS = REPO_ROOT / "games/treasure-island/art/backdrops"
 W, H = 256, 192
-EXPORT_SCALE = 2
+EXPORT_SCALE = 4
 
 
 def _export(im: Image.Image) -> Image.Image:

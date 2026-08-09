@@ -9,7 +9,7 @@ python scripts/generate_ti_art.py
 
 | Folder | Contents |
 |--------|----------|
-| `backdrops/` | 512×384 biome backgrounds |
+| `backdrops/` | 1024×768 biome backgrounds |
 | `tiles/` | Ground / ledge textures |
 | `items/` | 16×16 item icons |
 | `hazards/` | Trap, fish, crab, cuttlefish |

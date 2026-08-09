@@ -90,7 +90,7 @@ func _drop_through_bridge_hole() -> void:
 			"request_door_transition",
 			player,
 			"bridge_cavern_west",
-			Vector2(256.0, 350.0),
+			Vector2(512.0, 700.0),
 			"up"
 		)
 

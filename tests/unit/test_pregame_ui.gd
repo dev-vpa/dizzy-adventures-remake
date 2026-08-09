@@ -76,7 +76,7 @@ static func _assert_shared_menu_art() -> void:
 			TestAssert.eq(hero.texture.resource_path, MENU_DIZZY, "main menu uses front-facing Dizzy")
 		var new_game := main.get_node("MarginContainer/VBox/NewGameButton") as Button
 		TestAssert.true_(
-			new_game.custom_minimum_size.y >= 44.0,
+			new_game.custom_minimum_size.y >= 88.0,
 			"main menu primary action is touch-sized"
 		)
 		main.free()
@@ -98,7 +98,7 @@ static func _assert_loading_screen() -> void:
 		TestAssert.eq(last_rect.end.x, inner.end.x, "last loading block reaches the inner edge")
 	var button := loading.get_node("ContinueButton") as Button
 	TestAssert.true_(
-		button.custom_minimum_size.y >= 44.0,
+		button.custom_minimum_size.y >= 88.0,
 		"disclaimer continue action is touch-sized"
 	)
 	TestAssert.ne(loading.get_node_or_null("InputHint"), null, "disclaimer has input hint")
@@ -124,7 +124,7 @@ static func _assert_ti_title() -> void:
 		var path := "Center/TitlePanel/Margin/VBox/%s" % name
 		var button := title.get_node(path) as Button
 		TestAssert.true_(
-			button.custom_minimum_size.y >= 44.0,
+			button.custom_minimum_size.y >= 88.0,
 			"TI title %s is touch-sized" % name
 		)
 	title.free()
@@ -146,7 +146,7 @@ static func _assert_win_screen() -> void:
 	TestAssert.ne(win.get_node_or_null("Center/VictoryPanel"), null, "win screen has a framed panel")
 	TestAssert.eq(win.find_children("*", "ColorRect", true, false).size(), 0, "win screen has no flat blocks")
 	var button := win.get_node("Center/VictoryPanel/Margin/VBox/MenuButton") as Button
-	TestAssert.true_(button.custom_minimum_size.y >= 44.0, "win screen action is touch-sized")
+	TestAssert.true_(button.custom_minimum_size.y >= 88.0, "win screen action is touch-sized")
 	win.free()
 
 

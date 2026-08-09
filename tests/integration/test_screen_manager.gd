@@ -19,7 +19,7 @@ static func run() -> void:
 	TestAssert.eq(container.get_child_count(), 1, "screen instance in container")
 	ScreenManager.transition_to(
 		"beach_wreck",
-		Vector2(480, 350),
+		Vector2(960, 700),
 		container,
 		player,
 		"right"

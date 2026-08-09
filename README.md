@@ -111,9 +111,9 @@ Or in Godot: open `tests/test_runner.tscn` and run the scene (F6).
 
 ## Display
 
-Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). On launch (exported or standalone run) the window fills the **usable screen area**; Godot **integer-scales** the viewport to the largest whole size that fits and adds **letterbox/pillarbox bars** as needed (`stretch/aspect=keep`). Resizing the window recalculates scale automatically.
+Retro **1024×768** internal resolution (exact 2× of the previous 512×384 / 4× classic ZX Spectrum 256×192). On launch (exported or standalone run) the window fills the **usable screen area**; Godot **integer-scales** the viewport to the largest whole size that fits and adds **letterbox/pillarbox bars** as needed (`stretch/aspect=keep`). Resizing the window recalculates scale automatically.
 
-**Godot editor (F5):** embedded play mode controls window size — `DisplayManager` does not resize it. For full-screen scaling test: **Game → Embedding options → disable “Embed Game on Next Play”**, then F5 again. The debug toolbar always shows **512×384** (internal viewport — that is normal). Game logic and flick-screens stay in 512×384 coordinates.
+**Godot editor (F5):** embedded play mode controls window size — `DisplayManager` does not resize it. For full-screen scaling test: **Game → Embedding options → disable “Embed Game on Next Play”**, then F5 again. The debug toolbar always shows **1024×768** (internal viewport — that is normal). Game logic and flick-screens stay in 1024×768 coordinates.
 
 ### Debug playtest shortcuts (debug builds / F5 only)
 
