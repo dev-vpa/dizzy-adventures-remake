@@ -38,8 +38,11 @@ zone_center = Vector2(256, 220)
 
 [node name="Hazard1" parent="." instance=ExtResource("5")]
 hazard_label = "Cuttlefish"
-zone_size = Vector2(80, 36)
-zone_center = Vector2(120, 260)
+zone_size = Vector2(36, 40)
+zone_center = Vector2(120, 342)
+patrol_enabled = true
+patrol_range = 60.0
+patrol_speed = 1.3
 
 [node name="BubbleHint" type="Label" parent="."]
 offset_left = 160.0

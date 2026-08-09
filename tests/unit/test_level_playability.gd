@@ -13,6 +13,9 @@ const MIN_CLIMB_PLATFORM_Y := 328.0
 ## Floor traps wider than this are hard/impossible to clear from standing edge.
 const MAX_FLOOR_TRAP_WIDTH := 40.0
 const FLOOR_TRAP_MIN_Y := 340.0
+## Standing Dizzy on ground (feet ≈352): collision roughly y 326–354.
+const STAND_BODY_TOP := 326.0
+const STAND_BODY_BOTTOM := 354.0
 
 const CLIMB_NAMES := {
 	"Platform": true,
@@ -36,6 +39,7 @@ static func run() -> void:
 		_check_exit_up(screen_id, root)
 		_check_climb_platforms(screen_id, root)
 		_check_floor_traps(screen_id, root)
+		_check_path_hazard_height(screen_id, root)
 		root.free()
 
 
@@ -100,4 +104,27 @@ static func _check_floor_traps(screen_id: String, root: Node) -> void:
 			size.x <= MAX_FLOOR_TRAP_WIDTH,
 			"%s/%s floor trap width=%.0f > %.0f (unjumpable)"
 			% [screen_id, node.name, size.x, MAX_FLOOR_TRAP_WIDTH]
+		)
+
+
+static func _check_path_hazard_height(screen_id: String, root: Node) -> void:
+	## Path hazards must overlap standing Dizzy — not float above so you walk under them.
+	## Ledge* traps are allowed high (punish climbing a high platform).
+	for node in root.get_children():
+		var n := String(node.name)
+		if not (n.contains("Trap") or n.contains("Hazard")):
+			continue
+		if n.contains("Ledge"):
+			continue
+		if not ("zone_size" in node) or not ("zone_center" in node):
+			continue
+		var size: Vector2 = node.get("zone_size")
+		var center: Vector2 = node.get("zone_center")
+		var top := center.y - size.y * 0.5
+		var bottom := center.y + size.y * 0.5
+		var overlaps_stand := bottom > STAND_BODY_TOP and top < STAND_BODY_BOTTOM
+		TestAssert.true_(
+			overlaps_stand,
+			"%s/%s hazard y=%.0f–%.0f misses standing body %.0f–%.0f (walk-under bug)"
+			% [screen_id, n, top, bottom, STAND_BODY_TOP, STAND_BODY_BOTTOM]
 		)
