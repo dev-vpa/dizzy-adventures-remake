@@ -14,6 +14,7 @@ const _TestLevelPlayability := preload("res://tests/unit/test_level_playability.
 const _TestCoinLayout := preload("res://tests/unit/test_coin_layout.gd")
 const _TestScreenRegistry := preload("res://tests/integration/test_screen_registry.gd")
 const _TestScreenManager := preload("res://tests/integration/test_screen_manager.gd")
+const _TestWinPath := preload("res://tests/integration/test_win_path.gd")
 
 var _suites: Array[Dictionary] = []
 
@@ -31,6 +32,7 @@ func _init() -> void:
 		{"name": "CoinLayout", "script": _TestCoinLayout},
 		{"name": "ScreenRegistry", "script": _TestScreenRegistry},
 		{"name": "ScreenManager", "script": _TestScreenManager},
+		{"name": "WinPath", "script": _TestWinPath},
 	]
 
 
