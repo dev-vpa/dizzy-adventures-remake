@@ -153,6 +153,8 @@ func _can_use_directional_exit(_direction: String, target_id: String) -> bool:
 		return false
 	if target_id == "bridge_cavern_west" and not WorldState.get_flag("bridge_cut"):
 		return false
+	if target_id == "blackbeard_kitchen" and not WorldState.get_flag("kitchen_open"):
+		return false
 	return true
 
 

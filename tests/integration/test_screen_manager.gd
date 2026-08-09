@@ -44,6 +44,15 @@ static func run() -> void:
 		ScreenManager._can_use_directional_exit("down", "bridge_cavern_west"),
 		"bridge cavern open after cut"
 	)
+	TestAssert.false_(
+		ScreenManager._can_use_directional_exit("down", "blackbeard_kitchen"),
+		"kitchen blocked before key"
+	)
+	WorldState.set_flag("kitchen_open")
+	TestAssert.true_(
+		ScreenManager._can_use_directional_exit("down", "blackbeard_kitchen"),
+		"kitchen open after key"
+	)
 	container.queue_free()
 	player.queue_free()
 	WorldState.reset()

@@ -114,6 +114,9 @@ func _try_open_kitchen() -> void:
 		return
 	if WorldState.get_flag("kitchen_open"):
 		return
+	if not Inventory.has_item("golden_key"):
+		return
+	Inventory.remove_item("golden_key")
 	WorldState.set_flag("kitchen_open")
 	print("TI: kitchen hatch unlocked — ↓")
 

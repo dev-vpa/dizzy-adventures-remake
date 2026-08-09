@@ -32,6 +32,15 @@ static func run() -> void:
 	TestAssert.false_(Inventory.has_item("dynamite"), "dynamite consumed")
 	TestAssert.false_(Inventory.has_item("detonator"), "detonator consumed")
 
+	ScreenManager.current_screen_id = "cavern_kitchen_door"
+	Inventory.clear()
+	hooks._on_item_used("golden_key")
+	TestAssert.false_(WorldState.get_flag("kitchen_open"), "kitchen needs key in inventory")
+	Inventory.try_pick_up("golden_key")
+	hooks._on_item_used("golden_key")
+	TestAssert.true_(WorldState.get_flag("kitchen_open"), "key opens kitchen hatch")
+	TestAssert.false_(Inventory.has_item("golden_key"), "golden key consumed")
+
 	ScreenManager.current_screen_id = "pier_boat"
 	Inventory.clear()
 	Inventory.try_pick_up("outboard_motor")

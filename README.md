@@ -19,7 +19,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 | Treasure Island Dizzy | **Phase 3 in progress** — ~45 screens (west + ocean + east + cavern stubs); puzzles stubbed |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 3 in progress** — ocean + east shore + cavern/bridge stubs; puzzle flags in `ti_gameplay` / WorldState. Still TODO: full caverns, tree upper items (sword/camera/detonator), win condition polish, 30 coins placement.
+**Current milestone:** **Phase 3 in progress** — ocean/east/west + kitchen hatch + 30 coins; puzzle flags in `ti_gameplay` / WorldState.
 
 ### Phase 3 progress (Treasure Island)
 
@@ -29,7 +29,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 - **Puzzles (stub):** spade→bubbles, sword→grave, axe→bridge, shop Use-trade, boat parts on pier
 - **Hazards:** `hazard_zone` + WaterZone (snorkel gate for `ocean_*`)
 - **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, dynamite+detonator→mine, bible→cursed treasure; `puzzle_barrier` + WorldState flags
-- **Still TODO:** kitchen key room
+- **Kitchen:** golden key on `cavern_kitchen_door` → `kitchen_open` → `blackbeard_kitchen` (microwave)
 - **Coins:** exactly **30** world pickups (guarded by `test_coin_layout`)
 - **Win:** assemble boat on `pier_boat` (order), then Taxman on `taxman_dock` with 30 coins
 

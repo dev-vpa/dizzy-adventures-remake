@@ -109,9 +109,9 @@ Phase 2 slice — сжатый восточный маршрут. При рас�
 |----|----------|-------------------|-------|-------|
 | `cavern_grave_entry` | Вход из могилы | **WaterZone** (thin) | **U** `grave_hill`, **R** `cavern_skull_room` | — |
 | `cavern_skull_room` | Бочки | imitation skull #2 | **L** `cavern_grave_entry`, **R** `cavern_barrels` | 25 |
-| `cavern_barrels` | Бочки наверх | — | **L** `cavern_skull_room`, **R** `cavern_kitchen_door` | 26 |
-| `cavern_kitchen_door` | Бочка-люк | key use → fall | **L** `cavern_barrels`, **D** `blackbeard_kitchen` | — |
-| `blackbeard_kitchen` | Secret kitchen | microwave oven | **U** `cavern_kitchen_door` | 28 |
+| `cavern_barrels` | Бочки наверх | — | **L** `cavern_skull_room`, **R** `cavern_kitchen_door` | — |
+| `cavern_kitchen_door` | Бочка-люк | golden key → `kitchen_open` | **L** `cavern_barrels`, **D** `blackbeard_kitchen` | — |
+| `blackbeard_kitchen` | Secret kitchen | microwave oven | **U** `cavern_kitchen_door` | — |
 | `cavern_dynamo_ledge` | Уступ над крабом | sticks of dynamite | **L** `cavern_grave_entry` | — |
 
 ---

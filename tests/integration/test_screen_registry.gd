@@ -44,3 +44,7 @@ static func run() -> void:
 	TestAssert.true_("ocean_entry" in reachable, "ocean reachable from start")
 	TestAssert.true_("taxman_dock" in reachable, "taxman dock reachable from start")
 	TestAssert.true_("shop_interior" in ids, "shop interior scene exists")
+	TestAssert.true_("cavern_barrels" in ids, "cavern barrels scene exists")
+	TestAssert.true_("cavern_kitchen_door" in ids, "kitchen hatch scene exists")
+	TestAssert.true_("blackbeard_kitchen" in ids, "blackbeard kitchen scene exists")
+	TestAssert.true_("blackbeard_kitchen" in reachable, "kitchen branch linked from start graph")
