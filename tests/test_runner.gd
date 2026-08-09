@@ -11,6 +11,7 @@ const _TestTiItems := preload("res://tests/unit/test_ti_items.gd")
 const _TestTiGameplay := preload("res://tests/unit/test_ti_gameplay.gd")
 const _TestGameScreen := preload("res://tests/unit/test_game_screen.gd")
 const _TestArtSkin := preload("res://tests/unit/test_art_skin.gd")
+const _TestPregameUi := preload("res://tests/unit/test_pregame_ui.gd")
 const _TestLevelPlayability := preload("res://tests/unit/test_level_playability.gd")
 const _TestCoinLayout := preload("res://tests/unit/test_coin_layout.gd")
 const _TestSaveGame := preload("res://tests/unit/test_save_game.gd")
@@ -31,6 +32,7 @@ func _init() -> void:
 		{"name": "TiGameplay", "script": _TestTiGameplay},
 		{"name": "GameScreen", "script": _TestGameScreen},
 		{"name": "ArtSkin", "script": _TestArtSkin},
+		{"name": "PregameUi", "script": _TestPregameUi},
 		{"name": "LevelPlayability", "script": _TestLevelPlayability},
 		{"name": "CoinLayout", "script": _TestCoinLayout},
 		{"name": "SaveGame", "script": _TestSaveGame},

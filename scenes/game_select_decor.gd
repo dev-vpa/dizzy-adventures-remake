@@ -51,49 +51,41 @@ func _spawn_shooting_star() -> void:
 
 func _draw() -> void:
 	var sz := size
-	_draw_moon(sz)
 	_draw_stars(sz)
 	_draw_shooting_star()
-	_draw_horizon_glow(sz)
 	_draw_fireflies(sz)
-	_draw_palm_silhouettes(sz)
-	_draw_waves(sz)
-
-
-func _draw_moon(sz: Vector2) -> void:
-	var moon_center := Vector2(sz.x * 0.84, sz.y * 0.09)
-	var glow := 0.28 + 0.1 * sin(_time * 1.4)
-	draw_circle(moon_center, 22.0, Color(1.0, 0.94, 0.72, glow * 0.35))
-	draw_circle(moon_center, 16.0, Color(1.0, 0.94, 0.72, 0.38))
-	draw_circle(moon_center + Vector2(5.0, -2.0), 13.0, Color(0.2, 0.28, 0.48, 0.55))
 
 
 func _draw_stars(sz: Vector2) -> void:
 	for i in STAR_POSITIONS.size():
-		var pos := Vector2(STAR_POSITIONS[i].x * sz.x, STAR_POSITIONS[i].y * sz.y)
+		var pos := Vector2(
+			floorf(STAR_POSITIONS[i].x * sz.x),
+			floorf(STAR_POSITIONS[i].y * sz.y)
+		)
 		var twinkle := 0.45 + 0.55 * (0.5 + 0.5 * sin(_time * 2.4 + float(i) * 1.9))
-		var radius := 1.2 if i % 3 == 0 else 0.9
-		draw_circle(pos, radius, Color(1.0, 0.97, 0.82, twinkle))
+		var pixel_size := 2.0 if i % 3 == 0 else 1.0
+		draw_rect(Rect2(pos, Vector2(pixel_size, pixel_size)), Color(1.0, 0.97, 0.82, twinkle))
 		if i % 4 == 0 and twinkle > 0.92:
-			draw_line(pos - Vector2(3, 0), pos + Vector2(3, 0), Color(1, 1, 0.9, twinkle * 0.35), 1.0)
-			draw_line(pos - Vector2(0, 3), pos + Vector2(0, 3), Color(1, 1, 0.9, twinkle * 0.35), 1.0)
+			var shine := Color(1.0, 1.0, 0.9, twinkle * 0.42)
+			draw_rect(Rect2(pos - Vector2(3, 0), Vector2(7, 1)), shine)
+			draw_rect(Rect2(pos - Vector2(0, 3), Vector2(1, 7)), shine)
 
 
 func _draw_shooting_star() -> void:
 	if _shooting_star_progress >= 1.0:
 		return
 	var head := _shooting_star_start.lerp(_shooting_star_end, _shooting_star_progress)
-	var tail := _shooting_star_start.lerp(_shooting_star_end, maxf(_shooting_star_progress - 0.18, 0.0))
 	var alpha := 1.0 - _shooting_star_progress
-	draw_line(tail, head, Color(1.0, 0.98, 0.86, alpha * 0.75), 2.0)
-	draw_circle(head, 1.6, Color(1.0, 1.0, 0.92, alpha))
-
-
-func _draw_horizon_glow(sz: Vector2) -> void:
-	var horizon_y := sz.y - 56.0
-	var pulse := 0.1 + 0.04 * sin(_time * 0.9)
-	draw_rect(Rect2(0.0, horizon_y - 22.0, sz.x, 22.0), Color(0.95, 0.55, 0.22, pulse))
-	draw_rect(Rect2(0.0, horizon_y - 8.0, sz.x, 8.0), Color(0.72, 0.38, 0.18, pulse * 0.65))
+	var direction := (_shooting_star_end - _shooting_star_start).normalized()
+	for step in 6:
+		var point := head - direction * float(step * 3)
+		point = Vector2(floorf(point.x), floorf(point.y))
+		var pixel_size := 2.0 if step < 2 else 1.0
+		var fade := alpha * (1.0 - float(step) / 7.0)
+		draw_rect(
+			Rect2(point, Vector2(pixel_size, pixel_size)),
+			Color(1.0, 0.98, 0.86, fade)
+		)
 
 
 func _draw_fireflies(sz: Vector2) -> void:
@@ -103,41 +95,7 @@ func _draw_fireflies(sz: Vector2) -> void:
 			seed.x * sz.x + sin(_time * 0.7 + float(i) * 2.1) * 14.0,
 			seed.y * sz.y + cos(_time * 0.9 + float(i) * 1.6) * 8.0
 		)
+		pos = Vector2(floorf(pos.x), floorf(pos.y))
 		var glow := 0.25 + 0.75 * (0.5 + 0.5 * sin(_time * 3.0 + float(i) * 2.4))
-		draw_circle(pos, 2.2, Color(1.0, 0.92, 0.45, glow * 0.55))
-		draw_circle(pos, 1.0, Color(1.0, 0.98, 0.75, glow))
-
-
-func _draw_palm_silhouettes(sz: Vector2) -> void:
-	_draw_palm(sz, Vector2(sz.x * 0.06, sz.y - 56.0), 0.9, false, 0.0)
-	_draw_palm(sz, Vector2(sz.x * 0.92, sz.y - 56.0), 1.1, true, 1.7)
-
-
-func _draw_palm(_sz: Vector2, base: Vector2, scale: float, flip: bool, phase: float) -> void:
-	var trunk_color := Color(0.08, 0.06, 0.12, 0.55)
-	var leaf_color := Color(0.06, 0.14, 0.1, 0.5)
-	var dir := -1.0 if flip else 1.0
-	var sway := sin(_time * 1.1 + phase) * 0.06
-	var trunk_w := 6.0 * scale
-	var trunk_h := 34.0 * scale
-	draw_rect(Rect2(base.x - trunk_w * 0.5, base.y - trunk_h, trunk_w, trunk_h), trunk_color)
-	for i in 4:
-		var angle := (-0.35 + float(i) * 0.22 + sway) * dir
-		var length := (22.0 + float(i) * 3.0) * scale
-		var origin := base + Vector2(0.0, -trunk_h * 0.65)
-		var end := origin + Vector2(cos(angle), sin(angle)) * length
-		draw_line(origin, end, leaf_color, 3.0 * scale)
-
-
-func _draw_waves(sz: Vector2) -> void:
-	var sand_top := sz.y - 56.0
-	var wave_color := Color(0.35, 0.55, 0.72, 0.35)
-	var wave_hi := Color(0.48, 0.68, 0.86, 0.28)
-	for i in 4:
-		var y := sand_top - 4.0 - float(i) * 5.0
-		var offset := sin(_time * 1.6 + float(i) * 1.2) * 7.0
-		var crest_x := sz.x * 0.35 + offset
-		draw_line(Vector2(0.0, y), Vector2(crest_x, y - 2.0), wave_color, 2.0)
-		draw_line(Vector2(crest_x, y - 2.0), Vector2(sz.x, y), wave_color, 2.0)
-		if i == 0:
-			draw_line(Vector2(crest_x - 4.0, y - 3.0), Vector2(crest_x + 4.0, y - 1.0), wave_hi, 1.0)
+		draw_rect(Rect2(pos - Vector2.ONE, Vector2(3, 3)), Color(1.0, 0.82, 0.3, glow * 0.22))
+		draw_rect(Rect2(pos, Vector2.ONE), Color(1.0, 0.98, 0.75, glow))

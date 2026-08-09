@@ -2,11 +2,15 @@ extends Control
 
 ## Treasure Island title — New Game / Continue after disclaimer.
 
+var _time := 0.0
+
 @onready var _backdrop: TextureRect = $Backdrop
 @onready var _fallback: ColorRect = $FallbackSky
-@onready var _continue_btn: Button = $Center/VBox/ContinueButton
-@onready var _new_btn: Button = $Center/VBox/NewGameButton
-@onready var _back_btn: Button = $Center/VBox/BackButton
+@onready var _continue_btn: Button = $Center/TitlePanel/Margin/VBox/ContinueButton
+@onready var _new_btn: Button = $Center/TitlePanel/Margin/VBox/NewGameButton
+@onready var _back_btn: Button = $Center/TitlePanel/Margin/VBox/BackButton
+@onready var _hero: TextureRect = $Center/TitlePanel/Margin/VBox/TitleRow/HeroHolder/DizzyHero
+@onready var _input_hint: Label = $Center/TitlePanel/Margin/VBox/InputHint
 
 
 func _ready() -> void:
@@ -20,13 +24,19 @@ func _ready() -> void:
 	_continue_btn.pressed.connect(_on_continue)
 	_new_btn.pressed.connect(_on_new)
 	_back_btn.pressed.connect(_on_back)
+	_input_hint.text = PlatformUI.hint_text("Esc — Back", "Tap a button to continue")
 	if PlatformUI.is_touch_device():
 		for btn in [_continue_btn, _new_btn, _back_btn]:
-			btn.custom_minimum_size = Vector2(220, PlatformUI.MIN_TOUCH_SIZE)
+			btn.custom_minimum_size = Vector2(232, PlatformUI.MIN_TOUCH_SIZE)
 	if can_continue:
 		_continue_btn.grab_focus()
 	else:
 		_new_btn.grab_focus()
+
+
+func _process(delta: float) -> void:
+	_time += delta
+	_hero.position.y = 2.0 + roundf(sin(_time * 2.0) * 2.0)
 
 
 func _load_backdrop() -> void:
