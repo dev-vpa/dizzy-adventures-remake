@@ -57,18 +57,18 @@ Phase 2 slice — сжатый восточный маршрут. При рас�
 | `tree_lower_mushroom` | Под хижиной | mushrooms #6 | **L** `tree_lower_west`, **R** `tree_village_gate` | 6 |
 | `tree_lower_west` | Нижняя тропа | — | **L** `tree_balcony_east`, **R** `tree_lower_mushroom` | 7 |
 | `tree_balcony_east` | Балкон, лестница | wooden rail #1 | **L** `tree_upper_east`, **R** `tree_lower_west`, **U** jump → `tree_upper_east` | 8 |
-| `tree_upper_east` | Верхняя платформа | — | **L** `tree_upper_central`, **R** `tree_balcony_east` | 9 |
-| `tree_upper_central` | Центральная хижина | — | **L** `tree_upper_west_trunk`, **R** `tree_upper_east`, **D** `tree_village_gate` | 10 |
+| `tree_upper_east` | Верхняя платформа | glass sword | **L** `tree_upper_central`, **R** `tree_balcony_east`, **D** `tree_camera_ledge` | 9 |
+| `tree_upper_central` | Центральная хижина | detonator | **L** `tree_upper_west_trunk`, **R** `tree_upper_east`, **D** `tree_village_gate` | 10 |
 | `tree_upper_west_trunk` | Тропа вверх-влево | bit of trunk #1 | **L** `tree_upper_far_west`, **R** `tree_upper_central` | 11 |
 | `tree_upper_far_west` | Высокая платформа | **Trap** (ledge) | **L** `tree_lower_dip`, **R** `tree_upper_west_trunk` | 12 |
 | `tree_lower_dip` | Спуск/подъём | bit of trunk #2 | **L** `tree_trap_ledge`, **R** `tree_upper_far_west` | 13 |
 | `tree_trap_ledge` | Ловушка на уступе | **Trap** (floor) | **L** `tree_snorkel_hut`, **R** `tree_lower_dip` | 14 |
 | `tree_snorkel_hut` | Верхний hut | **rubber snorkel** | **L** `tree_above_mine`, **R** `tree_trap_ledge`, jump L → `tree_above_mine` | 15 |
 | `tree_above_mine` | Над шахтой | plant #3 | **D** `mine_shaft`, **R** `tree_snorkel_hut` | — |
-| `tree_detonator` | Верхний уровень | infra red detonator | **L** `tree_rail_coin`, **R** `tree_sword_hut` | — |
-| `tree_rail_coin` | Нижний балкон | wooden rail #2 | **R** `tree_detonator` | 29 |
-| `tree_sword_hut` | Правый верх | sharp glass sword | **L** `tree_detonator`, **D** `tree_camera_ledge` | — |
-| `tree_camera_ledge` | Под мечом | small video camera, **Trap** (trees) | **U** `tree_sword_hut` | — |
+| `tree_detonator` | *(слито в `tree_upper_central`)* | detonator | — | — |
+| `tree_rail_coin` | *(опц. stub)* | wooden rail #2 | — | — |
+| `tree_sword_hut` | *(слито в `tree_upper_east`)* | glass sword | — | — |
+| `tree_camera_ledge` | Под восточным верхом | video camera, **Trap** | **U** `tree_upper_east` | — |
 
 ---
 

@@ -23,3 +23,32 @@ static func run() -> void:
 	var boat: Array = data.get("boat_parts", [])
 	TestAssert.eq(boat.size(), 4, "four boat parts")
 	TestAssert.eq(TiItems.get_display_name("snorkel"), "Rubber Snorkel", "ti display name")
+	var levels_path := "res://games/treasure-island/levels"
+	for entry: Dictionary in items:
+		if not bool(entry.get("essential", false)):
+			continue
+		if not str(entry.get("obtained_from", "")).is_empty():
+			continue
+		var screen: String = str(entry.get("screen", ""))
+		var item_id: String = str(entry.get("id", ""))
+		if screen.is_empty() or item_id.is_empty():
+			continue
+		var scene_path := levels_path.path_join("%s.tscn" % screen)
+		TestAssert.true_(ResourceLoader.exists(scene_path), "essential %s screen exists: %s" % [item_id, screen])
+		var packed: PackedScene = load(scene_path)
+		TestAssert.ne(packed, null, "essential %s scene loads" % item_id)
+		var root: Node = packed.instantiate()
+		TestAssert.true_(
+			_tree_has_item(root, item_id),
+			"essential %s placed on %s" % [item_id, screen]
+		)
+		root.free()
+
+
+static func _tree_has_item(node: Node, item_id: String) -> bool:
+	if "item_id" in node and str(node.get("item_id")) == item_id:
+		return true
+	for child in node.get_children():
+		if _tree_has_item(child, item_id):
+			return true
+	return false

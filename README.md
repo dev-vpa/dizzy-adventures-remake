@@ -30,6 +30,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 - **Hazards:** `hazard_zone` + WaterZone (snorkel gate for `ocean_*`)
 - **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, dynamite+detonator→mine, bible→cursed treasure; `puzzle_barrier` + WorldState flags
 - **Kitchen:** golden key on `cavern_kitchen_door` → `kitchen_open` → `blackbeard_kitchen` (microwave)
+- **Camera:** `tree_camera_ledge` (↓ from `tree_upper_east`) — video camera for shop trade
 - **Coins:** exactly **30** world pickups (guarded by `test_coin_layout`)
 - **Win:** assemble boat on `pier_boat` (order), then Taxman on `taxman_dock` with 30 coins
 
@@ -120,7 +121,7 @@ Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). On la
 | Action | How |
 |--------|-----|
 | Reload current screen from disk | **F9** (respawns at center; picks up `.tscn` edits) |
-| Start on a specific screen | Set `starting_screen_id` in `games/treasure-island/treasure_island_config.tres` |
+| Start on a specific screen | In `scenes/game_world.gd` set `DEBUG_START_SCREEN` (e.g. `"cavern_kitchen_door"`); `""` = normal start. Optional `DEBUG_GIVE_ITEMS`. Puzzle screens auto-seed key items. |
 | Skip menus on F5 | Debug builds boot straight into TI gameplay. To see menus: Main Run Args `-- --menu` |
 
 ## Export targets

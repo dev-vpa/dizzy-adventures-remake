@@ -4,6 +4,11 @@ extends Node2D
 
 const PLAYER_SCENE := preload("res://core/player/player.tscn")
 
+## F5 playtest only: screen id, or "" for normal start (config / beach_start).
+const DEBUG_START_SCREEN := ""
+## Extra items on top of per-screen seeds below. Example: ["snorkel", "golden_key"]
+const DEBUG_GIVE_ITEMS: Array[String] = []
+
 @onready var screen_container: Node2D = $ScreenContainer
 @onready var player: CharacterBody2D = $Player
 
@@ -57,6 +62,8 @@ func _resolve_start_screen_id() -> String:
 	var configured := ScreenManager.get_start_screen_id()
 	if not OS.is_debug_build():
 		return configured
+	if not DEBUG_START_SCREEN.is_empty():
+		return DEBUG_START_SCREEN
 	for arg in OS.get_cmdline_user_args():
 		var value := ""
 		if arg.begins_with("--screen="):
@@ -71,6 +78,8 @@ func _resolve_start_screen_id() -> String:
 func _apply_debug_start_items(start_id: String) -> void:
 	if not OS.is_debug_build():
 		return
+	for item_id in DEBUG_GIVE_ITEMS:
+		Inventory.try_pick_up(item_id)
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--give="):
 			Inventory.try_pick_up(arg.trim_prefix("--give="))
@@ -90,6 +99,8 @@ func _apply_debug_start_items(start_id: String) -> void:
 		"ocean_bubble_cave":
 			Inventory.try_pick_up("snorkel")
 			Inventory.try_pick_up("salt_spade")
+		"cavern_kitchen_door", "blackbeard_kitchen":
+			Inventory.try_pick_up("golden_key")
 		"pier_boat":
 			Inventory.try_pick_up("dehydrated_boat")
 		"taxman_dock":

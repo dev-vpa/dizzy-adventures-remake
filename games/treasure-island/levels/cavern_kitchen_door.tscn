@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cavernkitchendoor"]
+[gd_scene format=3 uid="uid://dp47w02qkwixp"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://core/world/flag_visibility.gd" id="2"]

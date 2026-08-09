@@ -1,19 +1,18 @@
-[gd_scene format=3 uid="uid://gc1wf34xdv00"]
+[gd_scene format=3 uid="uid://treecameraledge"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/tree_backdrop.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://core/world/hazard_zone.tscn" id="4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
 
-[node name="TreeUpperEast" type="Node2D"]
+[node name="TreeCameraLedge" type="Node2D"]
 script = ExtResource("1")
-exit_left = "tree_upper_central"
-exit_right = "tree_balcony_east"
-exit_down = "tree_camera_ledge"
-use_exit_down_zone = true
-exit_down_zone = Rect2(200, 328, 112, 56)
+exit_up = "tree_upper_east"
+use_exit_up_zone = true
+exit_up_zone = Rect2(176, 300, 160, 68)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -29,37 +28,34 @@ offset_left = -256.0
 offset_top = -16.0
 offset_right = 256.0
 offset_bottom = 16.0
-color = Color(0.36, 0.28, 0.16, 1)
+color = Color(0.3, 0.22, 0.12, 1)
 
-[node name="Coin" parent="." instance=ExtResource("3")]
-position = Vector2(400, 339)
-item_id = "coin"
-display_name = "Coin"
-is_collectible = true
-world_id = "tree_upper_east/coin"
+[node name="VideoCamera" parent="." instance=ExtResource("3")]
+position = Vector2(300, 339)
+item_id = "video_camera"
+display_name = "Small Video Camera"
+world_id = "tree_camera_ledge/video_camera"
 
-[node name="GlassSword" parent="." instance=ExtResource("3")]
-position = Vector2(180, 339)
-item_id = "glass_sword"
-display_name = "Sharp Glass Sword"
-world_id = "tree_upper_east/glass_sword"
+[node name="TreeTrap" parent="." instance=ExtResource("4")]
+zone_size = Vector2(28, 24)
+zone_center = Vector2(180, 348)
 
-[node name="DownHint" type="Label" parent="."]
+[node name="TrapHint" type="Label" parent="."]
+offset_left = 152.0
+offset_top = 320.0
+offset_right = 208.0
+offset_bottom = 336.0
+theme_override_colors/font_color = Color(0.95, 0.2, 0.12, 1)
+theme_override_font_sizes/font_size = 10
+text = "TRAP"
+horizontal_alignment = 1
+
+[node name="UpHint" type="Label" parent="."]
 offset_left = 200.0
 offset_top = 352.0
 offset_right = 312.0
 offset_bottom = 368.0
 theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
 theme_override_font_sizes/font_size = 10
-text = "↓ Camera ledge"
+text = "↑ Upper east"
 horizontal_alignment = 1
-
-[node name="RightHint" type="Label" parent="."]
-offset_left = 420.0
-offset_top = 352.0
-offset_right = 504.0
-offset_bottom = 368.0
-theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
-theme_override_font_sizes/font_size = 10
-text = "→ Balcony"
-horizontal_alignment = 2
