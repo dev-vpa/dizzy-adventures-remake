@@ -7,6 +7,7 @@ const TI_CONFIG := preload("res://games/treasure-island/treasure_island_config.t
 const MENU_BACKDROP := "res://shared/ui/art/menu_night.png"
 const MENU_DIZZY := "res://shared/ui/art/menu_dizzy.png"
 const MENU_THEME := "res://shared/ui/menu_theme.tres"
+const VICTORY_BACKDROP := "res://shared/ui/art/victory_escape.png"
 
 
 static func run() -> void:
@@ -14,6 +15,7 @@ static func run() -> void:
 	_assert_shared_menu_art()
 	_assert_loading_screen()
 	_assert_ti_title()
+	_assert_win_screen()
 
 
 static func _assert_generated_assets() -> void:
@@ -21,6 +23,7 @@ static func _assert_generated_assets() -> void:
 		MENU_BACKDROP,
 		MENU_DIZZY,
 		"res://shared/ui/art/boot_splash.png",
+		VICTORY_BACKDROP,
 		"res://games/treasure-island/art/icons/select_ti.png",
 	]:
 		TestAssert.true_(ResourceLoader.exists(path), "pre-game asset exists: %s" % path)
@@ -125,6 +128,26 @@ static func _assert_ti_title() -> void:
 			"TI title %s is touch-sized" % name
 		)
 	title.free()
+
+
+static func _assert_win_screen() -> void:
+	var win := _instantiate("res://scenes/win_screen.tscn")
+	if win == null:
+		return
+	var backdrop := win.get_node_or_null("Backdrop") as TextureRect
+	TestAssert.ne(backdrop, null, "win screen replaces the flat backdrop with pixel art")
+	if backdrop != null and backdrop.texture != null:
+		TestAssert.eq(
+			backdrop.texture.resource_path,
+			VICTORY_BACKDROP,
+			"win screen uses the generated escape tableau"
+		)
+	TestAssert.ne(win.theme, null, "win screen uses shared menu theme")
+	TestAssert.ne(win.get_node_or_null("Center/VictoryPanel"), null, "win screen has a framed panel")
+	TestAssert.eq(win.find_children("*", "ColorRect", true, false).size(), 0, "win screen has no flat blocks")
+	var button := win.get_node("Center/VictoryPanel/Margin/VBox/MenuButton") as Button
+	TestAssert.true_(button.custom_minimum_size.y >= 44.0, "win screen action is touch-sized")
+	win.free()
 
 
 static func _instantiate(path: String) -> Control:

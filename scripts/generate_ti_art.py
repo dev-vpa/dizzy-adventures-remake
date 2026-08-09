@@ -26,7 +26,7 @@ def _expect(folder: str, names: list[str], size: tuple[int, int]) -> None:
 
 
 _expect("games/treasure-island/art/backdrops", ["beach", "tree", "ocean", "cavern", "hut"], (512, 384))
-_expect("shared/ui/art", ["menu_night", "boot_splash"], (512, 384))
+_expect("shared/ui/art", ["menu_night", "boot_splash", "victory_escape"], (512, 384))
 _expect("shared/ui/art", ["menu_dizzy"], (44, 56))
 _expect("games/treasure-island/art/icons", ["select_ti"], (48, 48))
 _expect("games/treasure-island/art/tiles", ["sand", "dirt", "wood", "rock", "cave"], (32, 32))
@@ -136,6 +136,7 @@ def validate_outputs() -> None:
 					or relative in (
 						"shared/ui/art/menu_night.png",
 						"shared/ui/art/boot_splash.png",
+						"shared/ui/art/victory_escape.png",
 					)
 				) and image.getextrema()[3] != (255, 255):
 					errors.append(f"{relative}: full-screen art contains transparent pixels")

@@ -266,6 +266,73 @@ def boot_splash_source() -> Image.Image:
 	return im
 
 
+def victory_escape_source() -> Image.Image:
+	"""Dawn escape tableau for the completed Treasure Island adventure."""
+	rng = random.Random(1989)
+	im = new_canvas(*SOURCE_SIZE, (35, 25, 64))
+	dither_vgrad(im, 0, 111, (35, 25, 64), (236, 126, 77), levels=8)
+
+	# The last stars fade above a warm sunrise and distant island silhouettes.
+	for _ in range(30):
+		x = rng.randrange(7, 249)
+		y = rng.randrange(7, 67)
+		color = rng.choice((GOLD_HI, SAND_HI, (178, 194, 221)))
+		px(im, x, y, color)
+		if rng.random() < 0.12:
+			px(im, x + 1, y, color)
+	fill_ellipse(im, (205, 66, 225, 86), SUN)
+	fill_ellipse(im, (209, 69, 222, 82), GOLD_HI)
+	fill_rect(im, 14, 72, 52, 74, (91, 70, 106))
+	fill_rect(im, 23, 69, 45, 73, (124, 85, 112))
+	fill_rect(im, 31, 67, 39, 70, (151, 98, 116))
+
+	fill_rect(im, 0, 105, 255, 191, SEA_DEEP)
+	fill_rect(im, 0, 111, 255, 144, (28, 75, 125))
+	fill_rect(im, 0, 145, 255, 191, SEA_MID)
+	fill_polygon(im, [(0, 107), (23, 96), (55, 101), (77, 111), (0, 114)], INK_BLUE)
+	fill_polygon(im, [(183, 109), (208, 97), (241, 99), (255, 106), (255, 114)], INK_BLUE)
+	draw_palm(im, 24, 104, 0.42)
+	draw_palm(im, 235, 103, 0.38, mirror=True)
+
+	# Broken, offset wavelets keep the broad water bands visibly hand-authored.
+	for row, y in enumerate(range(114, 190, 7)):
+		offset = (row * 11) % 29
+		for x in range(-25 + offset, 256, 38):
+			color = SEA_LIGHT if row % 3 else SEA_FOAM
+			pixel_line(im, [(max(0, x), y + 1), (min(255, x + 10), y)], color)
+	for y, half_width in ((112, 4), (119, 7), (127, 11), (136, 16), (147, 22)):
+		fill_rect(im, 215 - half_width, y, 215 + half_width, y, GOLD_HI)
+
+	# The repaired boat is the reward: motor, windscreen, wake, and Dizzy aboard.
+	fill_ellipse(im, (63, 166, 197, 178), SEA_DEEP)
+	pixel_line(im, [(54, 171), (87, 168), (112, 172)], SEA_FOAM, 2)
+	pixel_line(im, [(171, 169), (204, 166), (231, 168)], SEA_FOAM, 2)
+	fill_polygon(im, [(60, 146), (198, 146), (183, 170), (85, 172), (68, 163)], INK)
+	fill_polygon(im, [(65, 149), (193, 149), (179, 166), (87, 168), (72, 160)], TRUNK_DK)
+	fill_polygon(im, [(74, 150), (188, 150), (177, 160), (91, 163)], BOOT)
+	fill_polygon(im, [(82, 151), (184, 151), (176, 155), (88, 157)], BOOT_HI)
+	fill_rect(im, 79, 143, 187, 148, INK)
+	fill_rect(im, 83, 140, 183, 145, SAND_DRY)
+	fill_rect(im, 88, 140, 178, 141, SAND_HI)
+
+	# Windscreen and a tiny pennant sell motion without obscuring the hero.
+	fill_polygon(im, [(149, 139), (158, 126), (176, 126), (183, 139)], INK)
+	fill_polygon(im, [(153, 137), (160, 129), (174, 129), (178, 137)], SEA_LIGHT)
+	pixel_line(im, [(185, 143), (185, 115)], INK, 2)
+	fill_polygon(im, [(187, 116), (202, 121), (187, 125)], GOLD)
+	fill_polygon(im, [(187, 117), (198, 121), (187, 121)], GOLD_HI)
+	fill_rect(im, 54, 146, 65, 162, INK)
+	fill_rect(im, 56, 148, 63, 157, PANEL_HI)
+	fill_rect(im, 52, 158, 64, 164, INK_BLUE)
+
+	im.alpha_composite(menu_dizzy_source(), (106, 115))
+	fill_rect(im, 107, 141, 128, 147, SAND_DRY)
+	fill_rect(im, 108, 141, 127, 142, SAND_HI)
+
+	_draw_frame(im)
+	return im
+
+
 def treasure_island_icon_source() -> Image.Image:
 	im = new_canvas(24, 24, NIGHT_TOP)
 	dither_vgrad(im, 0, 14, NIGHT_TOP, (69, 93, 148), levels=4)
@@ -296,6 +363,7 @@ def main() -> None:
 	save(upscale_nearest(menu_night_source(), 2), SHARED_ART / "menu_night.png")
 	save(upscale_nearest(boot_splash_source(), 2), SHARED_ART / "boot_splash.png")
 	save(upscale_nearest(menu_dizzy_source(), 2), SHARED_ART / "menu_dizzy.png")
+	save(upscale_nearest(victory_escape_source(), 2), SHARED_ART / "victory_escape.png")
 	save(upscale_nearest(treasure_island_icon_source(), 2), TI_ICONS / "select_ti.png")
 	print("pre-game art done")
 

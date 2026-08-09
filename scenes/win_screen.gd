@@ -2,9 +2,9 @@ extends Control
 
 ## Win banner after escaping Treasure Island.
 
-@onready var _title: Label = $Center/VBox/Title
-@onready var _subtitle: Label = $Center/VBox/Subtitle
-@onready var _menu_button: Button = $Center/VBox/MenuButton
+@onready var _title: Label = $Center/VictoryPanel/Margin/VBox/Title
+@onready var _subtitle: Label = $Center/VictoryPanel/Margin/VBox/Subtitle
+@onready var _menu_button: Button = $Center/VictoryPanel/Margin/VBox/MenuButton
 
 
 func _ready() -> void:
