@@ -26,9 +26,14 @@ func _ready() -> void:
 
 
 func _debug_should_skip_menu() -> bool:
-	# F5 playtest: skip menus by default. Pass -- --menu to keep the full flow.
+	# Headless/CI and explicit --menu keep the normal boot flow.
+	if DisplayServer.get_name() == "headless":
+		return false
 	for arg in OS.get_cmdline_user_args():
 		if arg == "--menu" or arg == "menu":
+			return false
+	for arg in OS.get_cmdline_args():
+		if arg == "--headless":
 			return false
 	return true
 
