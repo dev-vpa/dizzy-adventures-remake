@@ -11,6 +11,9 @@ size = Vector2(512, 32)
 script = ExtResource("1")
 exit_left = "tree_lower_west"
 exit_right = "tree_village_gate"
+exit_up = "tree_magazine"
+use_exit_up_zone = true
+exit_up_zone = Rect2(200, 300, 112, 68)
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -40,6 +43,16 @@ item_id = "coin"
 display_name = "Coin"
 is_collectible = true
 world_id = "tree_lower_mushroom/coin"
+
+[node name="UpHint" type="Label" parent="."]
+offset_left = 200.0
+offset_top = 290.0
+offset_right = 312.0
+offset_bottom = 306.0
+theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
+theme_override_font_sizes/font_size = 10
+text = "↑ Magazine hut"
+horizontal_alignment = 1
 
 [node name="RightHint" type="Label" parent="."]
 offset_left = 420.0

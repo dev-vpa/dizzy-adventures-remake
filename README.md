@@ -31,6 +31,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 - **Puzzles:** axe→bridge↓, sword→grave↓, spade→bubbles↑, dynamite+detonator→mine, bible→cursed treasure; `puzzle_barrier` + WorldState flags
 - **Kitchen:** golden key on `cavern_kitchen_door` → `kitchen_open` → `blackbeard_kitchen` (microwave)
 - **Camera:** `tree_camera_ledge` (↓ from `tree_upper_east`) — video camera for shop trade
+- **Optional junk:** `tree_rail_coin` (↑ from central), `tree_magazine` (↑ from mushrooms)
 - **Coins:** exactly **30** world pickups (guarded by `test_coin_layout`)
 - **Win:** assemble boat on `pier_boat` (order), then Taxman on `taxman_dock` with 30 coins
 

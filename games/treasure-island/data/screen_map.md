@@ -66,9 +66,10 @@ Phase 2 slice — сжатый восточный маршрут. При рас�
 | `tree_snorkel_hut` | Верхний hut | **rubber snorkel** | **L** `tree_above_mine`, **R** `tree_trap_ledge`, jump L → `tree_above_mine` | 15 |
 | `tree_above_mine` | Над шахтой | plant #3 | **D** `mine_shaft`, **R** `tree_snorkel_hut` | — |
 | `tree_detonator` | *(слито в `tree_upper_central`)* | detonator | — | — |
-| `tree_rail_coin` | *(опц. stub)* | wooden rail #2 | — | — |
+| `tree_rail_coin` | Балкон над центральной | wooden rail #2 | **D** `tree_upper_central` | — |
 | `tree_sword_hut` | *(слито в `tree_upper_east`)* | glass sword | — | — |
 | `tree_camera_ledge` | Под восточным верхом | video camera, **Trap** | **U** `tree_upper_east` | — |
+| `tree_magazine` | Хижина с журналом | magazine (optional) | **D** `tree_lower_mushroom` | — |
 
 ---
 
@@ -112,7 +113,7 @@ Phase 2 slice — сжатый восточный маршрут. При рас�
 | `cavern_barrels` | Бочки наверх | — | **L** `cavern_skull_room`, **R** `cavern_kitchen_door` | — |
 | `cavern_kitchen_door` | Бочка-люк | golden key → `kitchen_open` | **L** `cavern_barrels`, **D** `blackbeard_kitchen` | — |
 | `blackbeard_kitchen` | Secret kitchen | microwave oven | **U** `cavern_kitchen_door` | — |
-| `cavern_dynamo_ledge` | Уступ над крабом | sticks of dynamite | **L** `cavern_grave_entry` | — |
+| `cavern_dynamo_ledge` | *(слито: dynamite в `cavern_skull_room`)* | — | — | — |
 
 ---
 
