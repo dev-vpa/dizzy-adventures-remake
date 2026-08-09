@@ -33,14 +33,11 @@ func _draw() -> void:
 	var inner := outer.grow(-4.0)
 	if inner.size.x <= 0.0 or inner.size.y <= 0.0:
 		return
-	var gap := 2.0
-	var block_width := floorf((inner.size.x - gap * float(BLOCK_COUNT - 1)) / float(BLOCK_COUNT))
-	if block_width < 1.0:
+	if inner.size.x < float(BLOCK_COUNT):
 		return
 	var filled := floori(_progress * float(BLOCK_COUNT) + 0.001)
 	for index in BLOCK_COUNT:
-		var x := inner.position.x + float(index) * (block_width + gap)
-		var rect := Rect2(Vector2(x, inner.position.y), Vector2(block_width, inner.size.y))
+		var rect := _block_rect(inner, index)
 		var color := Color(0.16, 0.13, 0.22, 1.0)
 		if index < filled:
 			color = (
@@ -49,3 +46,21 @@ func _draw() -> void:
 				else Color(0.94, 0.31, 0.23, 1.0)
 			)
 		draw_rect(rect, color)
+
+
+func _block_rect(inner: Rect2, index: int) -> Rect2:
+	# Derive every boundary from the full width. This distributes integer
+	# rounding and guarantees that the final block reaches inner.end.x.
+	var safe_index := clampi(index, 0, BLOCK_COUNT - 1)
+	var left := floorf(
+		inner.position.x + inner.size.x * float(safe_index) / float(BLOCK_COUNT)
+	)
+	var right := floorf(
+		inner.position.x + inner.size.x * float(safe_index + 1) / float(BLOCK_COUNT)
+	)
+	if safe_index < BLOCK_COUNT - 1:
+		right -= 2.0
+	return Rect2(
+		Vector2(left, inner.position.y),
+		Vector2(maxf(1.0, right - left), inner.size.y)
+	)

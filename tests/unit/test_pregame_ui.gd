@@ -88,6 +88,11 @@ static func _assert_loading_screen() -> void:
 	if strip != null and strip.has_method("set_progress"):
 		strip.call("set_progress", 0.5)
 		TestAssert.eq(strip.call("get_progress"), 0.5, "loading strip tracks progress")
+		strip.call("set_progress", 1.0)
+		TestAssert.eq(strip.call("get_progress"), 1.0, "loading strip reaches full progress")
+		var inner := Rect2(4.0, 4.0, 252.0, 8.0)
+		var last_rect: Rect2 = strip.call("_block_rect", inner, 15)
+		TestAssert.eq(last_rect.end.x, inner.end.x, "last loading block reaches the inner edge")
 	var button := loading.get_node("ContinueButton") as Button
 	TestAssert.true_(
 		button.custom_minimum_size.y >= 44.0,
