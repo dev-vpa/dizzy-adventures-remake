@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
 [ext_resource type="Script" path="res://games/treasure-island/underwater_backdrop.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://waterzone001" path="res://core/world/water_zone.tscn" id="4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
@@ -34,20 +33,6 @@ color = Color(0.68, 0.54, 0.3, 1)
 
 [node name="FullWater" parent="." instance=ExtResource("4")]
 position = Vector2(0, -48)
-
-[node name="Coin1" parent="." instance=ExtResource("3")]
-position = Vector2(180, 320)
-item_id = "coin"
-display_name = "Coin"
-is_collectible = true
-world_id = "underwater_shallow/coin1"
-
-[node name="Coin2" parent="." instance=ExtResource("3")]
-position = Vector2(360, 300)
-item_id = "coin"
-display_name = "Coin"
-is_collectible = true
-world_id = "underwater_shallow/coin2"
 
 [node name="SurfaceHint" type="Label" parent="."]
 offset_left = 196.0

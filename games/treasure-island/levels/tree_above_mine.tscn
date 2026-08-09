@@ -36,6 +36,13 @@ item_id = "plant_3"
 display_name = "Protected Species"
 world_id = "tree_above_mine/plant_3"
 
+[node name="Coin" parent="." instance=ExtResource("3")]
+position = Vector2(360, 339)
+item_id = "coin"
+display_name = "Coin"
+is_collectible = true
+world_id = "tree_above_mine/coin15"
+
 [node name="DownHint" type="Label" parent="."]
 offset_left = 204.0
 offset_top = 352.0

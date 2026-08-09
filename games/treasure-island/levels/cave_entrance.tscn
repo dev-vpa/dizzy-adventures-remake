@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://caveentrance"]
 
 [ext_resource type="Script" path="res://core/screens/game_screen.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://pickup001" path="res://core/items/pickup_item.tscn" id="2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(512, 32)
@@ -51,13 +50,6 @@ offset_top = -28.0
 offset_right = 40.0
 offset_bottom = 28.0
 color = Color(0.38, 0.34, 0.3, 1)
-
-[node name="Coin" parent="." instance=ExtResource("2")]
-position = Vector2(160, 339)
-item_id = "coin"
-display_name = "Coin"
-is_collectible = true
-world_id = "cave_entrance/coin"
 
 [node name="DownHint" type="Label" parent="."]
 offset_left = 196.0

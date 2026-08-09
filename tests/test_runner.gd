@@ -11,6 +11,7 @@ const _TestTiItems := preload("res://tests/unit/test_ti_items.gd")
 const _TestTiGameplay := preload("res://tests/unit/test_ti_gameplay.gd")
 const _TestGameScreen := preload("res://tests/unit/test_game_screen.gd")
 const _TestLevelPlayability := preload("res://tests/unit/test_level_playability.gd")
+const _TestCoinLayout := preload("res://tests/unit/test_coin_layout.gd")
 const _TestScreenRegistry := preload("res://tests/integration/test_screen_registry.gd")
 const _TestScreenManager := preload("res://tests/integration/test_screen_manager.gd")
 
@@ -27,6 +28,7 @@ func _init() -> void:
 		{"name": "TiGameplay", "script": _TestTiGameplay},
 		{"name": "GameScreen", "script": _TestGameScreen},
 		{"name": "LevelPlayability", "script": _TestLevelPlayability},
+		{"name": "CoinLayout", "script": _TestCoinLayout},
 		{"name": "ScreenRegistry", "script": _TestScreenRegistry},
 		{"name": "ScreenManager", "script": _TestScreenManager},
 	]
