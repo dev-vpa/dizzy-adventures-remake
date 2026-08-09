@@ -58,18 +58,18 @@ world_id = "ocean_wreck/skull_1"
 
 [node name="Hazard1" parent="." instance=ExtResource("5")]
 hazard_label = "Crab"
-zone_size = Vector2(56, 32)
-zone_center = Vector2(320, 300)
+zone_size = Vector2(36, 32)
+zone_center = Vector2(320, 344)
 patrol_enabled = true
-patrol_range = 70.0
+patrol_range = 80.0
 patrol_speed = 1.1
 
 [node name="Warn" type="Label" parent="."]
-offset_left = 250.0
-offset_top = 220.0
-offset_right = 400.0
-offset_bottom = 236.0
+offset_left = 230.0
+offset_top = 250.0
+offset_right = 420.0
+offset_bottom = 266.0
 theme_override_colors/font_color = Color(1, 0.55, 0.4, 0.95)
 theme_override_font_sizes/font_size = 10
-text = "Crab — walk under / jump"
+text = "Crab on sand — jump over or wait"
 horizontal_alignment = 1
