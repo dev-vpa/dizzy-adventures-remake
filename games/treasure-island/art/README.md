@@ -1,6 +1,7 @@
 # Treasure Island art
 
-Chunky pixel assets (nearest filter). Regenerate:
+Original homage pixel assets (nearest filter, CC BY-NC — not a rip of Codemasters art).
+Regenerate from repo root:
 
 ```bash
 python scripts/generate_ti_art.py

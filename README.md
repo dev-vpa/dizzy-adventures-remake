@@ -121,7 +121,7 @@ Retro **512×384** internal resolution (2× classic ZX Spectrum 256×192). On la
 |--------|-----|
 | Reload current screen from disk | **F9** (respawns at center; picks up `.tscn` edits) |
 | Start on a specific screen | In `scenes/game_world.gd` set `DEBUG_START_SCREEN` (e.g. `"cavern_kitchen_door"`); `""` = normal start. Optional `DEBUG_GIVE_ITEMS`. Puzzle screens auto-seed key items. |
-| Skip menus on F5 | Debug builds boot straight into TI gameplay. To see menus: Main Run Args `-- --menu` |
+| Skip menus (debug only) | Main Run Args `-- --skip-menu` — jumps straight into TI gameplay. F5 by default uses the full player flow (menu → title). |
 
 ## Export targets
 

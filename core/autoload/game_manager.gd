@@ -20,23 +20,21 @@ var active_config: GameConfig
 
 
 func _ready() -> void:
-	if OS.is_debug_build() and _debug_should_skip_menu():
+	# Normal player flow: main menu → select → disclaimer → title → gameplay.
+	# Opt-in debug shortcut only: --skip-menu
+	if OS.is_debug_build() and _debug_wants_skip_menu():
 		_debug_boot_into_gameplay()
 	else:
 		_show_main_menu()
 
 
-func _debug_should_skip_menu() -> bool:
-	# Headless/CI and explicit --menu keep the normal boot flow.
+func _debug_wants_skip_menu() -> bool:
 	if DisplayServer.get_name() == "headless":
 		return false
 	for arg in OS.get_cmdline_user_args():
-		if arg == "--menu" or arg == "menu":
-			return false
-	for arg in OS.get_cmdline_args():
-		if arg == "--headless":
-			return false
-	return true
+		if arg == "--skip-menu" or arg == "skip-menu":
+			return true
+	return false
 
 
 func _debug_boot_into_gameplay() -> void:
@@ -53,7 +51,7 @@ func _debug_boot_into_gameplay() -> void:
 	WorldState.reset()
 	SaveGame.clear_runtime()
 	ScreenManager.configure(config)
-	print("Debug: skip menu → %s (start: %s)" % [config.id, config.starting_screen_id])
+	print("Debug: --skip-menu → %s (start: %s)" % [config.id, config.starting_screen_id])
 	AudioManager.play_music()
 	_change_scene(GAME_WORLD_SCENE)
 

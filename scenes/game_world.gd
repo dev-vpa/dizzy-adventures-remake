@@ -4,9 +4,8 @@ extends Node2D
 
 const PLAYER_SCENE := preload("res://core/player/player.tscn")
 
-## F5 playtest only: screen id, or "" to use config (beach_start).
-## Full playthrough test: keep "beach_start" (or "").
-const DEBUG_START_SCREEN := "beach_start"
+## Optional debug override: screen id, or "" to use GameConfig.starting_screen_id.
+const DEBUG_START_SCREEN := ""
 ## Extra items on top of per-screen seeds below. Example: ["snorkel", "golden_key"]
 const DEBUG_GIVE_ITEMS: Array[String] = []
 

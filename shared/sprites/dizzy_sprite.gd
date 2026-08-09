@@ -99,7 +99,10 @@ func _draw() -> void:
 func _draw_snorkel_mask() -> void:
 	var mask := Color(0.18, 0.42, 0.72, 1.0)
 	var tube := Color(0.22, 0.58, 0.88, 1.0)
-	var y := -48.0
+	# Sit on upper third of current frame (works for 48–78px tall eggs).
+	var tex := _current_texture()
+	var h := tex.get_height() if tex else 60
+	var y := -float(h) * 0.72
 	var x0 := -10.0 if facing > 0 else -6.0
 	draw_rect(Rect2(x0, y, 20, 6), mask)
 	draw_rect(Rect2(x0 + 8.0, y - 10.0, 4, 12), tube)
