@@ -4,9 +4,15 @@ extends Node2D
 ## Pixel Dizzy — PNG frames: idle / walk / jump / roll; snorkel overlay when held.
 
 const FRAMES_PATH := "res://shared/sprites/dizzy/"
+const ROLL_DELAY := 0.08
+const ROLL_TURNS_PER_SECOND := 1.75
+const ROLL_FRAME_RATE := 8.0
 
 var facing: int = 1
 var _anim_phase: float = 0.0
+var _airborne_time: float = 0.0
+var _was_airborne := false
+var _roll_direction := 1
 var _idle: Texture2D
 var _walk_a: Texture2D
 var _walk_b: Texture2D
@@ -38,7 +44,16 @@ func _on_inventory_changed() -> void:
 
 
 func _process(delta: float) -> void:
-	if _is_walking() or _is_airborne():
+	var airborne := _is_airborne()
+	if airborne:
+		if not _was_airborne:
+			_airborne_time = 0.0
+			_roll_direction = facing
+		_airborne_time += delta
+	else:
+		_airborne_time = 0.0
+	_was_airborne = airborne
+	if _is_walking():
 		_anim_phase += delta * 10.0
 	queue_redraw()
 
@@ -66,13 +81,24 @@ func _is_airborne() -> bool:
 	return body != null and not body.is_on_floor()
 
 
+func _is_rolling() -> bool:
+	return _is_airborne() and _airborne_time >= ROLL_DELAY
+
+
+func _roll_angle() -> float:
+	if not _is_rolling():
+		return 0.0
+	var turns := (_airborne_time - ROLL_DELAY) * ROLL_TURNS_PER_SECOND
+	return fmod(turns * TAU, TAU) * float(_roll_direction)
+
+
 func _current_texture() -> Texture2D:
 	if _is_airborne():
-		var body := _body()
-		if body != null and body.velocity.y < -20.0 and _jump != null:
+		if not _is_rolling() and _jump != null:
 			return _jump
 		if _roll_a != null and _roll_b != null:
-			return _roll_a if int(_anim_phase) % 2 == 0 else _roll_b
+			var frame := int((_airborne_time - ROLL_DELAY) * ROLL_FRAME_RATE)
+			return _roll_a if frame % 2 == 0 else _roll_b
 		if _jump != null:
 			return _jump
 	if _is_walking() and _walk_a and _walk_b:
@@ -86,23 +112,26 @@ func _draw() -> void:
 		return
 	var size := tex.get_size()
 	var pos := Vector2(-size.x * 0.5, -size.y + 4.0)
-	if facing < 0:
-		draw_set_transform(Vector2(0, 0), 0.0, Vector2(-1, 1))
-	draw_texture(tex, pos)
-	if Inventory.has_item("snorkel"):
-		_draw_snorkel_mask()
-	if facing < 0:
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	if _is_rolling():
+		# Rotate around the visible body's centre, never around Dizzy's feet.
+		var pivot := pos + size * 0.5
+		var centered_pos := -size * 0.5
+		draw_set_transform(pivot, _roll_angle(), Vector2(float(facing), 1.0))
+		draw_texture(tex, centered_pos)
+		if Inventory.has_item("snorkel"):
+			_draw_snorkel_mask(tex, centered_pos.y)
+	else:
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(float(facing), 1.0))
+		draw_texture(tex, pos)
+		if Inventory.has_item("snorkel"):
+			_draw_snorkel_mask(tex, pos.y)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
-func _draw_snorkel_mask() -> void:
-	var tex := _current_texture()
-	if tex == null:
-		return
+func _draw_snorkel_mask(tex: Texture2D, frame_top: float) -> void:
 	# Keep the overlay on the 22px authored source grid at any export scale.
-	# It is authored facing right and mirrors with the body.
+	# It shares the body's transform, so it mirrors and somersaults with Dizzy.
 	var p := float(tex.get_width()) / 22.0
-	var frame_top := -float(tex.get_height()) + 4.0
 	var mask_y := frame_top + 8.0 * p
 	var mask_left := -5.0 * p
 	var rim := Color(0.08, 0.16, 0.28, 1.0)

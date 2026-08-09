@@ -157,32 +157,30 @@ def jump_pose() -> Image.Image:
 
 
 def roll_pose(frame: int) -> Image.Image:
+	"""Upright authored pose; the Godot renderer rotates the complete character."""
 	im = blank()
+	body(im, -1)
+	face_three_quarter(im, -1)
 	if frame == 0:
-		# Limbs pass behind the shell on this quarter-turn.
-		arm(im, (3, 14), (1, 18))
-		glove(im, 1, 19, -1)
-		boot(im, 18, 7, 1)
+		# Wide opposing limbs make the silhouette readable while it rotates.
+		arm(im, (4, 12), (2, 7))
+		arm(im, (17, 12), (19, 17))
+		glove(im, 2, 7, -1)
+		glove(im, 19, 17, 1)
+		pixel_line(im, [(8, 18), (6, 21)], EGG_EDGE, 2)
+		pixel_line(im, [(13, 18), (15, 21)], EGG_EDGE, 2)
+		boot(im, 6, 21, -1)
+		boot(im, 15, 21, 1)
 	else:
-		arm(im, (18, 13), (20, 17))
-		glove(im, 20, 18, 1)
-		boot(im, 3, 7, -1)
-	body(im, cy=13.0, rx=9.0, ry=7.1)
-	if frame == 0:
-		# Face rotates clockwise rather than becoming an unreadable black stripe.
-		fill_rect(im, 13, 9, 15, 11, EYE)
-		fill_rect(im, 14, 14, 16, 16, EYE)
-		px(im, 13, 9, GLOVE_HI)
-		px(im, 14, 14, GLOVE_HI)
-		px(im, 11, 15, SMILE)
-		px(im, 12, 16, SMILE)
-	else:
-		fill_rect(im, 6, 10, 8, 12, EYE)
-		fill_rect(im, 11, 8, 13, 10, EYE)
-		px(im, 6, 10, GLOVE_HI)
-		px(im, 11, 8, GLOVE_HI)
-		px(im, 7, 14, SMILE)
-		px(im, 8, 15, SMILE)
+		arm(im, (4, 12), (2, 17))
+		arm(im, (17, 12), (19, 7))
+		glove(im, 2, 17, -1)
+		glove(im, 19, 7, 1)
+		# A tucked second pose gives the spin life without changing its centre.
+		pixel_line(im, [(8, 18), (8, 20)], EGG_EDGE, 2)
+		pixel_line(im, [(13, 18), (13, 20)], EGG_EDGE, 2)
+		boot(im, 8, 20, 1)
+		boot(im, 13, 20, -1)
 	return im
 
 
