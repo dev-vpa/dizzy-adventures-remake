@@ -18,11 +18,23 @@ var _transition_cooldown := 0.0
 
 func _ready() -> void:
 	add_to_group("game_world")
-	var start_id := _resolve_start_screen_id()
-	ScreenManager.load_screen(start_id, screen_container, player)
-	_apply_debug_start_items(start_id)
-	if OS.is_debug_build() and start_id != ScreenManager.get_start_screen_id():
-		print("Debug start screen: %s" % start_id)
+	var restore := SaveGame.consume_restore()
+	if not restore.is_empty():
+		var sid := str(restore.get("screen_id", ""))
+		var pos: Vector2 = restore.get("position", Vector2(256, 350))
+		if sid.is_empty():
+			sid = ScreenManager.get_start_screen_id()
+		ScreenManager.load_screen(sid, screen_container, player, true)
+		player.global_position = pos
+		if player.has_method("on_screen_entered"):
+			player.call("on_screen_entered", sid)
+	else:
+		var start_id := _resolve_start_screen_id()
+		ScreenManager.load_screen(start_id, screen_container, player)
+		_apply_debug_start_items(start_id)
+		if OS.is_debug_build() and start_id != ScreenManager.get_start_screen_id():
+			print("Debug start screen: %s" % start_id)
+	SaveGame.apply_ground_items(screen_container)
 
 
 func _unhandled_input(event: InputEvent) -> void:

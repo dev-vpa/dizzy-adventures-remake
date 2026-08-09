@@ -103,5 +103,22 @@ func try_use_selected() -> bool:
 	var item_id := get_selected_item()
 	if item_id.is_empty():
 		return false
+	AudioManager.play_sfx("use")
 	item_used.emit(item_id)
 	return true
+
+
+func load_items(items: PackedStringArray, selected: int = 0) -> void:
+	_items.clear()
+	for item_id in items:
+		if item_id.is_empty() or _items.has(item_id):
+			continue
+		if _items.size() >= max_slots:
+			break
+		_items.append(item_id)
+	if _items.is_empty():
+		selected_index = 0
+	else:
+		selected_index = clampi(selected, 0, _items.size() - 1)
+	inventory_changed.emit()
+	selection_changed.emit()

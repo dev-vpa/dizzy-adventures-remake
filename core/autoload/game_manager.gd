@@ -1,12 +1,13 @@
 extends Node
 
-## Root flow: menu → game select → loading → gameplay.
+## Root flow: menu → game select → loading → title → gameplay.
 
-enum State { MAIN_MENU, GAME_SELECT, LOADING, PLAYING }
+enum State { MAIN_MENU, GAME_SELECT, LOADING, TITLE, PLAYING }
 
 const MAIN_MENU_SCENE := preload("res://scenes/main_menu.tscn")
 const GAME_SELECT_SCENE := preload("res://scenes/game_select.tscn")
 const LOADING_SCENE := preload("res://scenes/loading_screen.tscn")
+const TITLE_SCENE := preload("res://games/treasure-island/title_screen.tscn")
 const GAME_WORLD_SCENE := preload("res://scenes/game_world.tscn")
 const WIN_SCENE := preload("res://scenes/win_screen.tscn")
 
@@ -50,8 +51,10 @@ func _debug_boot_into_gameplay() -> void:
 	Lives.configure(config.starting_lives)
 	Collectibles.configure(config.collectible_name, config.collectible_total)
 	WorldState.reset()
+	SaveGame.clear_runtime()
 	ScreenManager.configure(config)
 	print("Debug: skip menu → %s (start: %s)" % [config.id, config.starting_screen_id])
+	AudioManager.play_music()
 	_change_scene(GAME_WORLD_SCENE)
 
 
@@ -65,11 +68,13 @@ func _change_scene(scene: PackedScene) -> void:
 func _show_main_menu() -> void:
 	state = State.MAIN_MENU
 	active_config = null
+	AudioManager.stop_music()
 	_change_scene(MAIN_MENU_SCENE)
 
 
 func show_game_select() -> void:
 	state = State.GAME_SELECT
+	AudioManager.stop_music()
 	_change_scene(GAME_SELECT_SCENE)
 
 
@@ -79,11 +84,41 @@ func start_game(config: GameConfig) -> void:
 		return
 	active_config = config
 	state = State.LOADING
-	Inventory.configure(config.inventory_slots)
-	Lives.configure(config.starting_lives)
-	Collectibles.configure(config.collectible_name, config.collectible_total)
-	WorldState.reset()
 	_change_scene(LOADING_SCENE)
+
+
+func show_title_screen() -> void:
+	if active_config == null:
+		_show_main_menu()
+		return
+	state = State.TITLE
+	_change_scene(TITLE_SCENE)
+
+
+func begin_new_game() -> void:
+	if active_config == null:
+		_show_main_menu()
+		return
+	Inventory.configure(active_config.inventory_slots)
+	Lives.configure(active_config.starting_lives)
+	Collectibles.configure(active_config.collectible_name, active_config.collectible_total)
+	WorldState.reset()
+	SaveGame.begin_new_game(active_config.id)
+	enter_gameplay()
+
+
+func begin_continue_game() -> void:
+	if active_config == null:
+		_show_main_menu()
+		return
+	Inventory.configure(active_config.inventory_slots)
+	Lives.configure(active_config.starting_lives)
+	Collectibles.configure(active_config.collectible_name, active_config.collectible_total)
+	WorldState.reset()
+	if not SaveGame.begin_continue(active_config.id):
+		begin_new_game()
+		return
+	enter_gameplay()
 
 
 func enter_gameplay() -> void:
@@ -93,20 +128,28 @@ func enter_gameplay() -> void:
 		return
 	state = State.PLAYING
 	ScreenManager.configure(active_config)
+	AudioManager.play_music()
 	_change_scene(GAME_WORLD_SCENE)
 
 
 func quit_to_main_menu() -> void:
+	if state == State.PLAYING and active_config:
+		SaveGame.request_save(active_config.id)
 	ScreenManager.reset()
 	Inventory.clear()
 	Lives.reset()
 	Collectibles.reset()
 	WorldState.reset()
+	SaveGame.clear_runtime()
 	_show_main_menu()
 
 
 func declare_win() -> void:
 	state = State.MAIN_MENU
+	if active_config:
+		SaveGame.delete_save(active_config.id)
+	AudioManager.stop_music()
+	AudioManager.play_sfx("win")
 	ScreenManager.reset()
 	Inventory.clear()
 	Lives.reset()

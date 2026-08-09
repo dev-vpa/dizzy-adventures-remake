@@ -48,4 +48,9 @@ func _on_start_timer_timeout() -> void:
 func _continue() -> void:
 	if not _can_continue:
 		return
-	GameManager.enter_gameplay()
+	AudioManager.play_sfx("ui_click")
+	# TI title (New Game / Continue); other games go straight in.
+	if GameManager.active_config and GameManager.active_config.id == "treasure-island":
+		GameManager.show_title_screen()
+	else:
+		GameManager.begin_new_game()

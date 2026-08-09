@@ -43,3 +43,32 @@ func clear_flag(flag_id: String) -> void:
 		return
 	_flags.erase(flag_id)
 	flag_changed.emit(flag_id, false)
+
+
+func get_flag_ids() -> PackedStringArray:
+	var ids: PackedStringArray = []
+	for key in _flags.keys():
+		if _flags[key]:
+			ids.append(str(key))
+	ids.sort()
+	return ids
+
+
+func get_collected_ids() -> PackedStringArray:
+	var ids: PackedStringArray = []
+	for key in _collected.keys():
+		if _collected[key]:
+			ids.append(str(key))
+	ids.sort()
+	return ids
+
+
+func load_state(flag_ids: PackedStringArray, collected_ids: PackedStringArray) -> void:
+	_flags.clear()
+	_collected.clear()
+	for flag_id in flag_ids:
+		if not str(flag_id).is_empty():
+			_flags[str(flag_id)] = true
+	for world_id in collected_ids:
+		if not str(world_id).is_empty():
+			_collected[str(world_id)] = true

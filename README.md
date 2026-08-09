@@ -19,7 +19,7 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 | Treasure Island Dizzy | **Phase 3 content playable** — 51 screens, puzzles, 30 coins, win chain |
 | Other adventure games | Planned |
 
-**Current milestone:** **Phase 4 art in progress** — PNG backdrops, tiles, items, hazards, NPCs, Dizzy walk/jump/roll; next: holistic visual review, then SFX/title/release.
+**Current milestone:** **Pre-playtest polish** — art + SFX/BGM + TI title (New/Continue) + save/load; awaiting full playthrough. Release/CI later.
 
 ### Phase 3 progress (Treasure Island)
 
@@ -30,6 +30,8 @@ This project is a free fan recreation for preservation and enjoyment. It is not 
 - **Optional junk:** `tree_rail_coin`, `tree_magazine`
 - **Coins:** exactly **30** (guarded by `test_coin_layout`)
 - **Win:** boat parts on `pier_boat` (order) → Taxman on `taxman_dock` with 30 coins
+- **Title / save:** after disclaimer → TI title (New Game / Continue); autosave on screen change + quit; drops persist
+- **Audio:** SFX (jump/pickup/drop/use/death/win) + looping TI theme
 
 ### Phase 2 gameplay (still available on east path)
 

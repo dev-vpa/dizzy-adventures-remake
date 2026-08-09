@@ -63,8 +63,7 @@ func _on_body_exited(body: Node2D) -> void:
 func try_pick_up() -> bool:
 	if is_collectible:
 		if Collectibles.try_collect(item_id):
-			WorldState.mark_collected(_get_world_id())
-			queue_free()
+			_on_picked()
 			return true
 		return false
 	if not requires_item_id.is_empty() and not Inventory.has_item(requires_item_id):
@@ -72,10 +71,17 @@ func try_pick_up() -> bool:
 			_kill_nearby_player()
 		return false
 	if Inventory.try_pick_up(item_id):
-		WorldState.mark_collected(_get_world_id())
-		queue_free()
+		_on_picked()
 		return true
 	return false
+
+
+func _on_picked() -> void:
+	WorldState.mark_collected(_get_world_id())
+	if has_meta("ground_uid"):
+		SaveGame.remove_ground_uid(str(get_meta("ground_uid")))
+	AudioManager.play_sfx("pickup")
+	queue_free()
 
 
 func _kill_nearby_player() -> void:

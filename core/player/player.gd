@@ -45,6 +45,7 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		AudioManager.play_sfx("jump", -4.0)
 
 	move_and_slide()
 	ScreenManager.clamp_player_to_bounds(self, _screen_container)
@@ -105,11 +106,17 @@ func _try_drop_item() -> void:
 		return
 
 	var screen := _screen_container.get_child(0) as Node2D
+	var drop_pos := global_position + Vector2(float(_facing) * 12.0, -8.0)
+	var uid := SaveGame.record_drop(ScreenManager.current_screen_id, item_id, drop_pos)
 	var pickup: Area2D = PICKUP_SCENE.instantiate()
 	pickup.item_id = item_id
 	pickup.display_name = ItemCatalog.get_display_name(item_id)
+	if not uid.is_empty():
+		pickup.world_id = "drop/%s" % uid
+		pickup.set_meta("ground_uid", uid)
 	screen.add_child(pickup)
-	pickup.global_position = global_position + Vector2(float(_facing) * 12.0, -8.0)
+	pickup.global_position = drop_pos
+	AudioManager.play_sfx("drop")
 
 
 func _check_fall_death() -> void:
@@ -129,6 +136,7 @@ func die_from_hazard() -> void:
 func _handle_death() -> void:
 	if not is_inside_tree():
 		return
+	AudioManager.play_sfx("death")
 	var game_over := Lives.lose_life()
 	if game_over:
 		GameManager.quit_to_main_menu()

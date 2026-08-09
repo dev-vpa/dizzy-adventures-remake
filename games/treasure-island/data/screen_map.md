@@ -202,11 +202,11 @@ flowchart TB
 ## Реализация (Phase 3 checklist)
 
 - [x] Полная карта (этот файл)
-- [ ] `items.json` — все предметы и зависимости
-- [ ] .tscn для каждого id (48 + slice merge)
-- [ ] 30 монет по таблице
-- [ ] Hazards: trap, fish, crab, jellyfish, fire
-- [ ] Win screen / taxman на `taxman_dock`
+- [x] `items.json` — все предметы и зависимости
+- [x] .tscn для каждого id (51 scenes; 3 map ids merged)
+- [x] 30 монет по таблице
+- [x] Hazards: trap, fish, crab, cuttlefish (+ WaterZone)
+- [x] Win screen / taxman на `taxman_dock`
 
 ## Источники
 
