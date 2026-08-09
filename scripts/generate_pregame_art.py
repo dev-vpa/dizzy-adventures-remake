@@ -42,6 +42,7 @@ from ti_art_lib import (
 	fill_polygon,
 	fill_rect,
 	new_canvas,
+	outline,
 	pixel_line,
 	px,
 	save,
@@ -189,23 +190,61 @@ def _draw_text(
 				fill_rect(im, x, yy, x + scale - 1, yy + scale - 1, color)
 
 
+def menu_dizzy_source() -> Image.Image:
+	"""Friendly symmetric mascot for menus; gameplay keeps its directional face."""
+	im = new_canvas(22, 28)
+
+	# Limbs sit behind the shell and mirror exactly around its centre.
+	pixel_line(im, [(5, 13), (2, 16)], EGG_EDGE, 3)
+	pixel_line(im, [(5, 13), (2, 16)], EGG, 1)
+	pixel_line(im, [(16, 13), (19, 16)], EGG_EDGE, 3)
+	pixel_line(im, [(16, 13), (19, 16)], EGG, 1)
+	fill_ellipse(im, (-1, 14, 5, 20), INK_BLUE)
+	fill_ellipse(im, (0, 14, 4, 19), GLOVE)
+	fill_rect(im, 1, 14, 3, 15, GLOVE_HI)
+	fill_ellipse(im, (16, 14, 22, 20), INK_BLUE)
+	fill_ellipse(im, (17, 14, 21, 19), GLOVE)
+	fill_rect(im, 18, 14, 20, 15, GLOVE_HI)
+
+	fill_polygon(im, [(5, 19), (9, 19), (10, 22), (10, 26), (2, 26), (2, 22)], BOOT_DK)
+	fill_polygon(im, [(5, 20), (8, 20), (9, 22), (9, 24), (3, 24), (3, 22)], BOOT)
+	fill_rect(im, 4, 21, 7, 21, BOOT_HI)
+	fill_polygon(im, [(12, 19), (16, 19), (19, 22), (19, 26), (11, 26), (11, 22)], BOOT_DK)
+	fill_polygon(im, [(13, 20), (16, 20), (18, 22), (18, 24), (12, 24), (12, 22)], BOOT)
+	fill_rect(im, 14, 21, 17, 21, BOOT_HI)
+
+	body_layer = new_canvas(22, 28)
+	cx, cy, rx, ry = 10.5, 11.0, 7.5, 10.5
+	for y in range(24):
+		for x in range(22):
+			nx = (x - cx) / rx
+			ny = (y - cy) / ry
+			if nx * nx + ny * ny > 1.0:
+				continue
+			color = EGG
+			if x <= 5 or y >= 19:
+				color = EGG_SH
+			elif x >= 13 and y <= 6:
+				color = EGG_HI
+			px(body_layer, x, y, color)
+	outline(body_layer, EGG_EDGE, diagonal=False)
+	im.alpha_composite(body_layer)
+
+	# Identical eye boxes and inward pupils give a friendly front-facing gaze.
+	for eye_x in (6, 12):
+		fill_rect(im, eye_x, 6, eye_x + 3, 11, INK)
+		fill_rect(im, eye_x + 1, 7, eye_x + 2, 10, GLOVE_HI)
+	px(im, 8, 9, INK)
+	px(im, 13, 9, INK)
+	fill_rect(im, 10, 12, 11, 12, EGG_EDGE)
+	pixel_line(im, [(7, 14), (9, 16), (12, 16), (14, 14)], EGG_EDGE)
+	px(im, 10, 15, BOOT_HI)
+	px(im, 11, 15, BOOT_HI)
+	return im
+
+
 def _draw_mini_dizzy(im: Image.Image, cx: int, top: int) -> None:
-	fill_ellipse(im, (cx - 8, top, cx + 8, top + 22), EGG_EDGE)
-	fill_ellipse(im, (cx - 7, top + 1, cx + 7, top + 21), EGG)
-	fill_rect(im, cx + 3, top + 3, cx + 6, top + 7, EGG_HI)
-	fill_rect(im, cx - 4, top + 7, cx - 2, top + 10, INK_BLUE)
-	fill_rect(im, cx + 2, top + 6, cx + 4, top + 10, INK_BLUE)
-	px(im, cx - 3, top + 7, GLOVE_HI)
-	px(im, cx + 3, top + 6, GLOVE_HI)
-	pixel_line(im, [(cx - 3, top + 14), (cx, top + 16), (cx + 4, top + 14)], EGG_EDGE)
-	fill_ellipse(im, (cx - 13, top + 11, cx - 8, top + 16), GLOVE)
-	fill_ellipse(im, (cx + 8, top + 11, cx + 13, top + 16), GLOVE)
-	fill_rect(im, cx - 8, top + 20, cx - 1, top + 24, BOOT)
-	fill_rect(im, cx + 1, top + 20, cx + 8, top + 24, BOOT)
-	fill_rect(im, cx - 7, top + 20, cx - 3, top + 21, BOOT_HI)
-	fill_rect(im, cx + 2, top + 20, cx + 6, top + 21, BOOT_HI)
-	fill_rect(im, cx - 8, top + 24, cx - 1, top + 24, BOOT_DK)
-	fill_rect(im, cx + 1, top + 24, cx + 8, top + 24, BOOT_DK)
+	im.alpha_composite(menu_dizzy_source(), (cx - 11, top))
 
 
 def boot_splash_source() -> Image.Image:
@@ -258,6 +297,7 @@ def treasure_island_icon_source() -> Image.Image:
 def main() -> None:
 	save(upscale_nearest(menu_night_source(), 2), SHARED_ART / "menu_night.png")
 	save(upscale_nearest(boot_splash_source(), 2), SHARED_ART / "boot_splash.png")
+	save(upscale_nearest(menu_dizzy_source(), 2), SHARED_ART / "menu_dizzy.png")
 	save(upscale_nearest(treasure_island_icon_source(), 2), TI_ICONS / "select_ti.png")
 	print("pre-game art done")
 

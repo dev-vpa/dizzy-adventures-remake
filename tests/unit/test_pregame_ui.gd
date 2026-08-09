@@ -5,6 +5,7 @@ const TestAssert := preload("res://tests/test_assert.gd")
 const TI_CONFIG := preload("res://games/treasure-island/treasure_island_config.tres")
 
 const MENU_BACKDROP := "res://shared/ui/art/menu_night.png"
+const MENU_DIZZY := "res://shared/ui/art/menu_dizzy.png"
 const MENU_THEME := "res://shared/ui/menu_theme.tres"
 
 
@@ -18,6 +19,7 @@ static func run() -> void:
 static func _assert_generated_assets() -> void:
 	for path in [
 		MENU_BACKDROP,
+		MENU_DIZZY,
 		"res://shared/ui/art/boot_splash.png",
 		"res://games/treasure-island/art/icons/select_ti.png",
 	]:
@@ -67,6 +69,8 @@ static func _assert_shared_menu_art() -> void:
 	if main != null:
 		var hero := main.get_node_or_null("MarginContainer/VBox/HeroHolder/DizzyHero") as TextureRect
 		TestAssert.ne(hero, null, "main menu has Dizzy pixel art")
+		if hero != null and hero.texture != null:
+			TestAssert.eq(hero.texture.resource_path, MENU_DIZZY, "main menu uses front-facing Dizzy")
 		var new_game := main.get_node("MarginContainer/VBox/NewGameButton") as Button
 		TestAssert.true_(
 			new_game.custom_minimum_size.y >= 44.0,
@@ -99,11 +103,15 @@ static func _assert_ti_title() -> void:
 		return
 	TestAssert.ne(title.theme, null, "TI title uses shared menu theme")
 	TestAssert.ne(title.get_node_or_null("Center/TitlePanel"), null, "TI title has pixel panel")
-	TestAssert.ne(
-		title.get_node_or_null("Center/TitlePanel/Margin/VBox/TitleRow/HeroHolder/DizzyHero"),
-		null,
-		"TI title has Dizzy art"
+	var hero := (
+		title.get_node_or_null(
+			"Center/TitlePanel/Margin/VBox/TitleRow/HeroHolder/DizzyHero"
+		)
+		as TextureRect
 	)
+	TestAssert.ne(hero, null, "TI title has Dizzy art")
+	if hero != null and hero.texture != null:
+		TestAssert.eq(hero.texture.resource_path, MENU_DIZZY, "TI title uses front-facing Dizzy")
 	for name in ["ContinueButton", "NewGameButton", "BackButton"]:
 		var path := "Center/TitlePanel/Margin/VBox/%s" % name
 		var button := title.get_node(path) as Button
