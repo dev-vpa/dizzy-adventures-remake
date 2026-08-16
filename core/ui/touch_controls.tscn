@@ -41,7 +41,7 @@ mouse_filter = 2
 
 [node name="MoveRow" type="HBoxContainer" parent="Root"]
 layout_mode = 0
-offset_left = 560
+offset_left = 768
 offset_top = 656
 offset_right = 1008
 offset_bottom = 752

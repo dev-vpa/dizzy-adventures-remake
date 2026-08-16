@@ -44,9 +44,9 @@ world_id = "taxman_dock/coin30"
 
 [node name="EndHint" type="Label" parent="."]
 offset_left = 16
-offset_top = 80
+offset_top = 240
 offset_right = 800
-offset_bottom = 144
+offset_bottom = 304
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
 theme_override_font_sizes/font_size = 20
 text = "Talk (E): need boat_ready + 30 coins to escape"

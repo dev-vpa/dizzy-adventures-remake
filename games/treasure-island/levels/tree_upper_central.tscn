@@ -49,9 +49,9 @@ world_id = "tree_upper_central/detonator"
 
 [node name="UpHint" type="Label" parent="."]
 offset_left = 400
-offset_top = 580
+offset_top = 520
 offset_right = 624
-offset_bottom = 612
+offset_bottom = 552
 theme_override_colors/font_color = Color(0.18, 0.28, 0.12, 1)
 theme_override_font_sizes/font_size = 20
 text = "↑ Rail balcony"

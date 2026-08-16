@@ -77,10 +77,10 @@ block_edge_on_arrival = "left"
 
 [node name="HintLabel" type="Label" parent="ShopDoor"]
 visible = false
-offset_left = -56
-offset_top = -104
-offset_right = 56
-offset_bottom = -68
+offset_left = -184
+offset_top = -124
+offset_right = -64
+offset_bottom = -88
 theme_override_colors/font_color = Color(1, 0.95, 0.55, 1)
 theme_override_font_sizes/font_size = 22
 text = "E — Shop"
@@ -99,11 +99,11 @@ theme_override_font_sizes/font_size = 20
 text = "← Beach path"
 
 [node name="DoorHint" type="Label" parent="."]
-offset_left = 720
-offset_top = 520
-offset_right = 1000
-offset_bottom = 552
+offset_left = 600
+offset_top = 640
+offset_right = 720
+offset_bottom = 672
 theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
 theme_override_font_sizes/font_size = 18
-text = "E hut → Shop"
+text = "Shop →"
 horizontal_alignment = 1

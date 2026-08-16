@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import random
 
-from PIL import Image
-
 from ti_art_lib import (
 	INK,
 	INK_BROWN,
@@ -33,7 +31,9 @@ from ti_art_lib import (
 	fill_ellipse,
 	fill_polygon,
 	fill_rect,
-	new_canvas,
+	logical_canvas,
+	outline,
+	paint_scale,
 	pixel_line,
 	px,
 	save,
@@ -42,10 +42,11 @@ from ti_art_lib import (
 
 TILES = REPO_ROOT / "games/treasure-island/art/tiles"
 SIZE = 32
+NATIVE_SCALE = 2
 
 
 def sand(rng: random.Random):
-	im = new_canvas(SIZE, SIZE, SAND_MID)
+	im = logical_canvas(SIZE, SIZE, SAND_MID)
 	fill_rect(im, 0, 0, 31, 2, SAND_HI)
 	fill_rect(im, 0, 3, 31, 5, SAND_DRY)
 	for y, color, phase in [
@@ -63,7 +64,7 @@ def sand(rng: random.Random):
 
 
 def dirt(rng: random.Random):
-	im = new_canvas(SIZE, SIZE, (91, 61, 39))
+	im = logical_canvas(SIZE, SIZE, (91, 61, 39))
 	fill_rect(im, 0, 0, 31, 2, LEAF_HI)
 	fill_rect(im, 0, 3, 31, 5, LEAF)
 	for x in range(0, SIZE, 5):
@@ -81,7 +82,7 @@ def dirt(rng: random.Random):
 
 
 def wood(rng: random.Random):
-	im = new_canvas(SIZE, SIZE, WOOD)
+	im = logical_canvas(SIZE, SIZE, WOOD)
 	for y in (0, 15, 31):
 		fill_rect(im, 0, y, 31, min(31, y + 1), WOOD_DK)
 		if y < 31:
@@ -101,7 +102,7 @@ def wood(rng: random.Random):
 
 
 def rock(rng: random.Random):
-	im = new_canvas(SIZE, SIZE, ROCK_DK)
+	im = logical_canvas(SIZE, SIZE, ROCK_DK)
 	facets = [
 		([(0, 1), (10, 0), (14, 9), (7, 15), (0, 12)], ROCK),
 		([(11, 0), (25, 0), (31, 6), (23, 13), (14, 9)], ROCK_HI),
@@ -124,7 +125,7 @@ def rock(rng: random.Random):
 
 
 def cave(rng: random.Random):
-	im = new_canvas(SIZE, SIZE, (72, 53, 52))
+	im = logical_canvas(SIZE, SIZE, (72, 53, 52))
 	blocks = [
 		(0, 0, 12, 8, (94, 67, 61)),
 		(13, 0, 27, 10, (61, 48, 53)),
@@ -147,7 +148,7 @@ def cave(rng: random.Random):
 
 
 def ledge(name: str, material: str, rng: random.Random) -> None:
-	im = new_canvas(32, 16)
+	im = logical_canvas(32, 16)
 	if material == "sand":
 		fill_rect(im, 0, 0, 31, 12, SAND_MID)
 		fill_rect(im, 0, 0, 31, 2, SAND_HI)
@@ -190,7 +191,7 @@ def ledge(name: str, material: str, rng: random.Random) -> None:
 
 
 def pier() -> Image.Image:
-	im = new_canvas(32, 16, WOOD_DK)
+	im = logical_canvas(32, 16, WOOD_DK)
 	fill_rect(im, 0, 0, 31, 2, WOOD_HI)
 	fill_rect(im, 0, 3, 31, 11, WOOD)
 	fill_rect(im, 0, 12, 31, 15, TRUNK_DK)
@@ -204,7 +205,7 @@ def pier() -> Image.Image:
 
 
 def bridge() -> Image.Image:
-	im = new_canvas(32, 16)
+	im = logical_canvas(32, 16)
 	pixel_line(im, [(0, 2), (31, 2)], (96, 63, 42), 2)
 	pixel_line(im, [(0, 14), (31, 14)], INK_BROWN, 2)
 	for x in range(-2, 34, 8):
@@ -216,7 +217,7 @@ def bridge() -> Image.Image:
 
 
 def roof() -> Image.Image:
-	im = new_canvas(32, 16, (132, 61, 38))
+	im = logical_canvas(32, 16, (132, 61, 38))
 	fill_rect(im, 0, 0, 31, 2, (238, 151, 66))
 	for y, phase, color in [
 		(3, 0, (205, 102, 47)),
@@ -231,7 +232,7 @@ def roof() -> Image.Image:
 
 
 def counter() -> Image.Image:
-	im = new_canvas(32, 52, WOOD_DK)
+	im = logical_canvas(32, 52, WOOD_DK)
 	fill_rect(im, 0, 0, 31, 5, TRUNK_DK)
 	fill_rect(im, 0, 0, 31, 2, WOOD_HI)
 	fill_rect(im, 2, 6, 29, 50, WOOD)
@@ -245,7 +246,7 @@ def counter() -> Image.Image:
 
 
 def barrel_stack() -> Image.Image:
-	im = new_canvas(32, 16, TRUNK_DK)
+	im = logical_canvas(32, 16, TRUNK_DK)
 	for x0 in (-2, 14, 30):
 		fill_ellipse(im, (x0, 1, x0 + 17, 14), WOOD_DK)
 		fill_ellipse(im, (x0 + 2, 3, x0 + 15, 12), WOOD)
@@ -256,7 +257,7 @@ def barrel_stack() -> Image.Image:
 
 
 def shelf() -> Image.Image:
-	im = new_canvas(32, 16)
+	im = logical_canvas(32, 16)
 	fill_rect(im, 0, 3, 31, 10, WOOD_DK)
 	fill_rect(im, 0, 3, 31, 5, WOOD_HI)
 	fill_rect(im, 2, 6, 29, 9, WOOD)
@@ -266,7 +267,7 @@ def shelf() -> Image.Image:
 
 
 def rail() -> Image.Image:
-	im = new_canvas(32, 16)
+	im = logical_canvas(32, 16)
 	fill_rect(im, 0, 1, 31, 5, WOOD_DK)
 	fill_rect(im, 0, 1, 31, 2, WOOD_HI)
 	fill_rect(im, 0, 12, 31, 15, TRUNK_DK)
@@ -279,7 +280,7 @@ def rail() -> Image.Image:
 
 
 def water() -> Image.Image:
-	im = new_canvas(32, 16, (30, 105, 158, 78))
+	im = logical_canvas(32, 16, (30, 105, 158, 78))
 	fill_rect(im, 0, 0, 31, 2, (*SEA_FOAM, 180))
 	for x in range(-4, 32, 12):
 		pixel_line(im, [(max(0, x), 5), (min(31, x + 6), 4), (min(31, x + 10), 5)], (*SEA_LIGHT, 150), 2)
@@ -291,7 +292,7 @@ def water() -> Image.Image:
 
 
 def zone_glow(color: tuple[int, int, int]) -> Image.Image:
-	im = new_canvas(32, 16)
+	im = logical_canvas(32, 16)
 	soft = (*color, 42)
 	bright = (*color, 165)
 	fill_rect(im, 0, 5, 31, 13, soft)
@@ -306,6 +307,11 @@ def zone_glow(color: tuple[int, int, int]) -> Image.Image:
 
 def main() -> None:
 	TILES.mkdir(parents=True, exist_ok=True)
+	with paint_scale(NATIVE_SCALE):
+		_write_tiles()
+
+
+def _write_tiles() -> None:
 	generators = {
 		"sand": sand,
 		"dirt": dirt,
@@ -331,10 +337,6 @@ def main() -> None:
 	}
 	for name, image in special_tiles.items():
 		save(image, TILES / f"{name}.png")
-	# Paint at 32px logical tiles; export ×2 for 1024×768 viewport.
-	for path in TILES.glob("*.png"):
-		im = Image.open(path)
-		save(im.resize((im.width * 2, im.height * 2), Image.Resampling.NEAREST), path)
 	print("tiles done")
 
 

@@ -3,6 +3,12 @@ extends Node2D
 
 ## Base flick-screen. Override exits in the editor or via @export.
 
+const TOUCH_HINT_MARGIN := 8.0
+const TOUCH_CONTROL_RECTS := [
+	Rect2(736.0, 552.0, 272.0, 96.0), # Pick / Jump
+	Rect2(768.0, 656.0, 240.0, 96.0), # Left / Right
+]
+
 @export var exit_left: String = ""
 @export var exit_right: String = ""
 @export var exit_up: String = ""
@@ -32,6 +38,8 @@ func _ready() -> void:
 	var skin_path := "res://games/treasure-island/art_skin.gd"
 	if ResourceLoader.exists(skin_path):
 		(load(skin_path) as GDScript).call("apply_screen", self)
+	if PlatformUI.is_touch_device():
+		_apply_touch_hint_safe_areas()
 
 
 func _enable_ledge_one_way(node: Node) -> void:
@@ -48,6 +56,37 @@ func _enable_ledge_one_way(node: Node) -> void:
 						(child as CollisionShape2D).one_way_collision_margin = 2.0
 	for child in node.get_children():
 		_enable_ledge_one_way(child)
+
+
+func _apply_touch_hint_safe_areas() -> void:
+	for node in find_children("*", "Label", true, false):
+		var label := node as Label
+		if label == null or not _is_world_hint(label):
+			continue
+		label.global_position += get_touch_hint_adjustment(label.get_global_rect())
+
+
+func _is_world_hint(label: Label) -> bool:
+	var node_name := String(label.name).to_lower()
+	return (
+		node_name.contains("hint")
+		or node_name.contains("warn")
+		or node_name.contains("status")
+	)
+
+
+func get_touch_hint_adjustment(hint_rect: Rect2) -> Vector2:
+	var adjusted := hint_rect
+	for _pass in TOUCH_CONTROL_RECTS.size():
+		var moved := false
+		for obstacle: Rect2 in TOUCH_CONTROL_RECTS:
+			if not adjusted.intersects(obstacle):
+				continue
+			adjusted.position.y += obstacle.position.y - TOUCH_HINT_MARGIN - adjusted.end.y
+			moved = true
+		if not moved:
+			break
+	return adjusted.position - hint_rect.position
 
 
 func get_exits() -> Dictionary:

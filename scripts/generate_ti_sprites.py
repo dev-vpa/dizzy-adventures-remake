@@ -62,13 +62,71 @@ HAZARDS = ROOT / "hazards"
 NPCS = ROOT / "npc"
 PROPS = ROOT / "props"
 
+# Logical authoring grid (classic sizes). Rendered at DETAIL× for finer pixels
+# while keeping the same on-screen export size as the old paint→×2 pipeline.
+DETAIL = 2
 ITEM_SIZE = 22
 Paint = Callable[[Image.Image, ImageDraw.ImageDraw], None]
 
 
+class ScaledDraw:
+	"""ImageDraw proxy: logical coords × DETAIL onto a larger canvas."""
+
+	def __init__(self, draw: ImageDraw.ImageDraw, scale: int = DETAIL) -> None:
+		self._d = draw
+		self._s = scale
+
+	def _xy(self, xy):
+		s = self._s
+		# Sequence of points: ((x,y), ...) or [(x,y), ...]
+		if xy and isinstance(xy[0], (list, tuple)) and len(xy[0]) == 2:
+			return [(p[0] * s, p[1] * s) for p in xy]
+		if len(xy) == 2 and not isinstance(xy[0], (list, tuple)):
+			return (xy[0] * s, xy[1] * s)
+		if len(xy) == 4 and all(isinstance(v, (int, float)) for v in xy):
+			x0, y0, x1, y1 = xy
+			return (x0 * s, y0 * s, x1 * s + (s - 1), y1 * s + (s - 1))
+		# Flat polyline: x0, y0, x1, y1, ...
+		return [v * s for v in xy]
+
+	def _pts(self, points):
+		s = self._s
+		return [(p[0] * s, p[1] * s) for p in points]
+
+	def rectangle(self, xy, **kwargs):
+		self._d.rectangle(self._xy(xy), **kwargs)
+
+	def rounded_rectangle(self, xy, radius=0, **kwargs):
+		self._d.rounded_rectangle(self._xy(xy), radius=radius * self._s, **kwargs)
+
+	def ellipse(self, xy, **kwargs):
+		self._d.ellipse(self._xy(xy), **kwargs)
+
+	def line(self, xy, **kwargs):
+		if "width" in kwargs and kwargs["width"]:
+			kwargs = {**kwargs, "width": max(1, int(kwargs["width"]) * self._s)}
+		self._d.line(self._xy(xy), **kwargs)
+
+	def point(self, xy, **kwargs):
+		# Fat point so highlights survive the finer grid.
+		x, y = xy[0] * self._s, xy[1] * self._s
+		self._d.rectangle((x, y, x + self._s - 1, y + self._s - 1), **kwargs)
+
+	def polygon(self, xy, **kwargs):
+		if xy and isinstance(xy[0], (list, tuple)):
+			self._d.polygon(self._pts(xy), **kwargs)
+		else:
+			self._d.polygon(self._xy(xy), **kwargs)
+
+	def arc(self, xy, start, end, **kwargs):
+		if "width" in kwargs and kwargs["width"]:
+			kwargs = {**kwargs, "width": max(1, int(kwargs["width"]) * self._s)}
+		self._d.arc(self._xy(xy), start, end, **kwargs)
+
+
 def item(name: str, paint: Paint, outline_color=INK) -> None:
-	im = new_canvas(ITEM_SIZE, ITEM_SIZE)
-	paint(im, ImageDraw.Draw(im))
+	im = new_canvas(ITEM_SIZE * DETAIL, ITEM_SIZE * DETAIL)
+	paint(im, ScaledDraw(ImageDraw.Draw(im)))
 	outline(im, outline_color, diagonal=True)
 	save(im, ITEMS / f"{name}.png")
 
@@ -82,15 +140,15 @@ def sprite_asset(
 	outline_color=INK,
 	add_outline: bool = True,
 ) -> None:
-	im = new_canvas(width, height)
-	paint(im, ImageDraw.Draw(im))
+	im = new_canvas(width * DETAIL, height * DETAIL)
+	paint(im, ScaledDraw(ImageDraw.Draw(im)))
 	if add_outline:
 		outline(im, outline_color, diagonal=True)
 	save(im, folder / f"{name}.png")
 
 
 # ---------------------------------------------------------------------------
-# Inventory and world items (22×22, so world rendering is crisp at 1:1).
+# Inventory and world items (logical 22×22, exported at DETAIL× = 44×44).
 
 
 def paint_default(im: Image.Image, d: ImageDraw.ImageDraw) -> None:
@@ -843,11 +901,7 @@ def main() -> None:
 	sprite_asset(PROPS, "stump", 48, 64, paint_stump, INK_BROWN)
 	sprite_asset(PROPS, "hut", 40, 36, paint_hut, INK_BROWN)
 	sprite_asset(PROPS, "shop_facade", 112, 76, paint_shop_facade, INK_BROWN)
-	# Paint at half-res; export ×2 for 1024×768.
-	for folder in (ITEMS, HAZARDS, NPCS, PROPS):
-		for path in folder.glob("*.png"):
-			im = Image.open(path)
-			save(im.resize((im.width * 2, im.height * 2), Image.Resampling.NEAREST), path)
+	# Native DETAIL× canvas via ScaledDraw (no PNG upscale step).
 	print("sprites done")
 
 

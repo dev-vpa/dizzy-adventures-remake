@@ -1,8 +1,8 @@
 extends CanvasLayer
 
-## In-game HUD: title, lives, inventory slots, menu.
+## Compact in-game HUD: collectibles, inventory, lives, and menu.
 
-const MIN_PANEL_WIDTH := 384.0
+const MIN_PANEL_WIDTH := 560.0
 
 var _slot_panels: Array[PanelContainer] = []
 var _slot_icons: Array[HudItemIcon] = []
@@ -19,9 +19,19 @@ func _ready() -> void:
 	_keep_playing_button = $Root/QuitOverlay/Center/Panel/VBox/Buttons/KeepPlayingButton
 	_hud_panel.clip_contents = true
 	_hud_panel.custom_minimum_size.x = MIN_PANEL_WIDTH
-	if GameManager.active_config:
-		$Root/HudPanel/VBox/HeaderRow/TitleLabel.text = GameManager.active_config.title
 	$Root/HudPanel/VBox/ActionsHBox.visible = _is_touch
+	$Root/HudPanel/VBox/DetailRow/ControlsLabel.visible = not _is_touch
+	$Root/HudPanel/VBox/DetailRow/ItemNameLabel.horizontal_alignment = (
+		HORIZONTAL_ALIGNMENT_CENTER if _is_touch else HORIZONTAL_ALIGNMENT_LEFT
+	)
+	if _is_touch:
+		var menu_btn: Button = $Root/HudPanel/VBox/MainRow/MenuButton
+		menu_btn.custom_minimum_size = Vector2(0, PlatformUI.MIN_TOUCH_SIZE)
+		for button: Button in [
+			$Root/HudPanel/VBox/ActionsHBox/DropButton,
+			$Root/HudPanel/VBox/ActionsHBox/UseButton,
+		]:
+			button.custom_minimum_size.y = PlatformUI.MIN_TOUCH_SIZE
 	_build_slots()
 	Inventory.inventory_changed.connect(_refresh)
 	Inventory.selection_changed.connect(_refresh)
@@ -44,14 +54,14 @@ func _fit_panel_size() -> void:
 
 
 func _slot_size() -> Vector2:
-	var side := 28.0
+	var side := 44.0
 	if _is_touch:
 		side = PlatformUI.MIN_TOUCH_SIZE
 	return Vector2(side, side)
 
 
 func _build_slots() -> void:
-	var container: HBoxContainer = $Root/HudPanel/VBox/InventoryRow/Slots
+	var container: HBoxContainer = $Root/HudPanel/VBox/MainRow/Slots
 	for child in container.get_children():
 		child.queue_free()
 	_slot_panels.clear()
@@ -93,10 +103,13 @@ func _sync_slot_icon_sizes() -> void:
 
 func _make_slot_style(selected: bool) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.1, 0.08, 0.16, 0.98)
+	style.bg_color = (
+		Color(0.28, 0.2, 0.1, 0.98) if selected
+		else Color(0.08, 0.065, 0.14, 0.98)
+	)
 	style.border_color = Color(0.62, 0.54, 0.4, 1.0) if not selected else Color(1.0, 0.88, 0.35, 1.0)
 	style.set_border_width_all(2 if selected else 1)
-	style.set_corner_radius_all(4)
+	style.set_corner_radius_all(3)
 	return style
 
 
@@ -108,6 +121,7 @@ func _refresh() -> void:
 		var slot := _slot_panels[i]
 		var is_selected := i == selected and not items.is_empty()
 		slot.add_theme_stylebox_override("panel", _make_slot_style(is_selected))
+		icon.set_selected(is_selected)
 		if i < items.size():
 			icon.configure(items[i])
 		else:
@@ -128,28 +142,21 @@ func _update_action_buttons() -> void:
 
 
 func _update_hint(items: Array[String]) -> void:
-	var summary: Label = $Root/HudPanel/VBox/InventoryLabel
+	var summary: Label = $Root/HudPanel/VBox/DetailRow/ItemNameLabel
 	if items.is_empty():
-		summary.text = PlatformUI.hint_text("Tab · R drop · U use", "Tap slot · Drop / Use")
+		summary.text = "EMPTY HANDS"
 	else:
 		var held := ItemCatalog.get_display_name(Inventory.get_selected_item())
-		summary.text = PlatformUI.hint_text(
-			"Held: %s · Tab/R/U" % held,
-			"Held: %s" % held
-		)
+		summary.text = held.to_upper()
 
 
 func _refresh_lives() -> void:
-	var hearts := ""
-	for i in Lives.current_lives:
-		hearts += "♥"
-	if hearts.is_empty():
-		hearts = "♡"
-	$Root/HudPanel/VBox/HeaderRow/LivesLabel.text = hearts
+	var count := maxi(Lives.current_lives, 0)
+	$Root/HudPanel/VBox/MainRow/LivesLabel.text = "♥ %d" % count if count > 0 else "♡ 0"
 
 
 func _refresh_coins() -> void:
-	var coins_label: Label = $Root/HudPanel/VBox/CoinsLabel
+	var coins_label: Label = $Root/HudPanel/VBox/MainRow/CoinsLabel
 	if Collectibles.total <= 0:
 		coins_label.visible = false
 		return

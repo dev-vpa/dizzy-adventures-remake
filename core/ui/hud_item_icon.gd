@@ -7,6 +7,7 @@ const ITEMS_PATH := "res://games/treasure-island/art/items/"
 
 var icon_id: String = ""
 var empty_label: String = ""
+var is_selected := false
 var _texture: Texture2D
 
 
@@ -30,6 +31,13 @@ func set_empty_label(text: String) -> void:
 	queue_redraw()
 
 
+func set_selected(selected: bool) -> void:
+	if is_selected == selected:
+		return
+	is_selected = selected
+	queue_redraw()
+
+
 func _load_texture() -> void:
 	_texture = null
 	if icon_id.is_empty():
@@ -50,11 +58,23 @@ func _draw() -> void:
 	if size.x < 2.0 or size.y < 2.0:
 		return
 
+	if is_selected:
+		var marker_width := maxf(10.0, roundf(size.x * 0.28))
+		var marker_height := maxf(2.0, roundf(size.y * 0.045))
+		var marker_pos := Vector2(
+			roundf((size.x - marker_width) * 0.5),
+			size.y - marker_height - 2.0
+		)
+		draw_rect(
+			Rect2(marker_pos, Vector2(marker_width, marker_height)),
+			Color(1.0, 0.9, 0.34, 1.0)
+		)
+
 	if icon_id.is_empty():
 		if empty_label.is_empty():
 			return
 		var font := ThemeDB.fallback_font
-		var font_size := 11
+		var font_size := 14
 		var color := Color(0.5, 0.45, 0.36, 1.0)
 		var baseline_y := (size.y + font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5
 		draw_string(
@@ -66,7 +86,7 @@ func _draw() -> void:
 	if _texture != null:
 		var tw := float(_texture.get_width())
 		var th := float(_texture.get_height())
-		var scale := minf(size.x / tw, size.y / th) * 0.85
+		var scale := minf(size.x / tw, size.y / th) * 0.92
 		var draw_size := Vector2(tw * scale, th * scale)
 		var pos := (size - draw_size) * 0.5
 		draw_texture_rect(_texture, Rect2(pos, draw_size), false)

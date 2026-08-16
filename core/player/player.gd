@@ -73,10 +73,14 @@ func _try_action_nearby() -> void:
 		return
 	_action_queued = false
 
+	var nearby_pickups: Array[Area2D] = []
 	for area in pickup_area.get_overlapping_areas():
 		if area.is_in_group("pickup") and area.has_method("try_pick_up"):
-			if area.call("try_pick_up"):
-				return
+			nearby_pickups.append(area)
+	nearby_pickups.sort_custom(_pickup_is_closer)
+	for area in nearby_pickups:
+		if area.call("try_pick_up"):
+			return
 
 	for node in get_tree().get_nodes_in_group("interactable"):
 		if node is Area2D and (node as Area2D).overlaps_body(self):
@@ -87,6 +91,14 @@ func _try_action_nearby() -> void:
 		if area.is_in_group("interactable") and area.has_method("try_interact"):
 			if area.call("try_interact"):
 				return
+
+
+func _pickup_is_closer(first: Area2D, second: Area2D) -> bool:
+	var first_distance := first.global_position.distance_squared_to(global_position)
+	var second_distance := second.global_position.distance_squared_to(global_position)
+	if is_equal_approx(first_distance, second_distance):
+		return first.get_instance_id() < second.get_instance_id()
+	return first_distance < second_distance
 
 
 func drop_item() -> void:

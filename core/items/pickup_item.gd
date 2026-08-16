@@ -38,16 +38,48 @@ func _process(_delta: float) -> void:
 func _update_hint() -> void:
 	if _hint == null:
 		return
-	var show := _player_near
-	if not is_collectible:
-		show = show and not Inventory.is_full()
-	elif Collectibles.total > 0 and Collectibles.collected >= Collectibles.total:
-		show = false
+	var show := is_hint_candidate()
+	if show:
+		show = _is_nearest_hint_candidate()
 	if PlatformUI.is_touch_device():
 		_hint.text = "Pick"
 	else:
 		_hint.text = "E"
 	_hint.visible = show
+
+
+func is_hint_candidate() -> bool:
+	var show := _player_near
+	if not is_collectible:
+		show = show and not Inventory.is_full()
+	elif Collectibles.total > 0 and Collectibles.collected >= Collectibles.total:
+		show = false
+	return show
+
+
+func _is_nearest_hint_candidate() -> bool:
+	var tree := get_tree()
+	if tree == null:
+		return true
+	var player := tree.get_first_node_in_group("player") as Node2D
+	if player == null:
+		return true
+	var own_distance := global_position.distance_squared_to(player.global_position)
+	var own_id := get_instance_id()
+	for node in tree.get_nodes_in_group("pickup"):
+		if node == self or not is_instance_valid(node) or node.is_queued_for_deletion():
+			continue
+		if not node.has_method("is_hint_candidate") or not node.call("is_hint_candidate"):
+			continue
+		var candidate := node as Node2D
+		if candidate == null:
+			continue
+		var distance := candidate.global_position.distance_squared_to(player.global_position)
+		if distance < own_distance:
+			return false
+		if is_equal_approx(distance, own_distance) and candidate.get_instance_id() < own_id:
+			return false
+	return true
 
 
 func _on_body_entered(body: Node2D) -> void:

@@ -25,7 +25,9 @@ func _ready() -> void:
 	_new_btn.pressed.connect(_on_new)
 	_back_btn.pressed.connect(_on_back)
 	_input_hint.text = PlatformUI.hint_text("Esc — Back", "Tap a button to continue")
-	if PlatformUI.is_touch_device():
+	var is_touch := PlatformUI.is_touch_device()
+	_input_hint.visible = not is_touch
+	if is_touch:
 		for btn in [_continue_btn, _new_btn, _back_btn]:
 			btn.custom_minimum_size = Vector2(464, PlatformUI.MIN_TOUCH_SIZE)
 	if can_continue:

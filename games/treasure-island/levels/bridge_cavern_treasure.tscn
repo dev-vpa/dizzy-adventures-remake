@@ -57,10 +57,10 @@ requires_item_id = "holy_bible"
 die_without_required = true
 
 [node name="Hint" type="Label" parent="."]
-offset_left = 400
-offset_top = 400
-offset_right = 880
-offset_bottom = 464
+offset_left = 160
+offset_top = 552
+offset_right = 560
+offset_bottom = 600
 theme_override_colors/font_color = Color(0.72, 0.66, 0.52, 1)
 theme_override_font_sizes/font_size = 18
 text = "Hold Holy Bible to take treasure safely"

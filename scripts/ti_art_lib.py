@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import math
 import random
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Iterable, Iterator, Sequence
 
 from PIL import Image, ImageDraw
 
@@ -79,6 +80,28 @@ _BAYER_4 = (
 	(15, 7, 13, 5),
 )
 
+# Generators author in a compact logical grid; paint_scale draws straight into
+# the final native pixel size (no separate PNG upscale step).
+_PAINT_SCALE = 1
+
+
+@contextmanager
+def paint_scale(scale: int) -> Iterator[int]:
+	"""Draw logical coordinates into a scale× native canvas until the block exits."""
+	global _PAINT_SCALE
+	if scale < 1:
+		raise ValueError("paint_scale must be >= 1")
+	previous = _PAINT_SCALE
+	_PAINT_SCALE = scale
+	try:
+		yield scale
+	finally:
+		_PAINT_SCALE = previous
+
+
+def paint_scale_value() -> int:
+	return _PAINT_SCALE
+
 
 def rgba(color: Sequence[int], alpha: int = 255) -> tuple[int, int, int, int]:
 	if len(color) == 4:
@@ -106,18 +129,34 @@ def save(img: Image.Image, path: Path) -> None:
 
 
 def new_canvas(w: int, h: int, fill=(0, 0, 0, 0)) -> Image.Image:
+	"""Create a canvas in *native* pixels (already final size)."""
 	return Image.new("RGBA", (w, h), rgba(fill))
 
 
-def upscale_nearest(im: Image.Image, scale: int) -> Image.Image:
-	if scale <= 0:
-		raise ValueError("scale must be positive")
-	return im.resize((im.width * scale, im.height * scale), Image.Resampling.NEAREST)
+def logical_canvas(lw: int, lh: int, fill=(0, 0, 0, 0)) -> Image.Image:
+	"""Create a native canvas for a logical lw×lh authoring grid at current paint_scale."""
+	s = _PAINT_SCALE
+	return new_canvas(lw * s, lh * s, fill)
+
+
+def _native_box(x0: int, y0: int, x1: int, y1: int) -> tuple[int, int, int, int]:
+	s = _PAINT_SCALE
+	return (
+		int(x0) * s,
+		int(y0) * s,
+		int(x1) * s + (s - 1),
+		int(y1) * s + (s - 1),
+	)
 
 
 def px(im: Image.Image, x: int, y: int, color: Sequence[int]) -> None:
-	if 0 <= x < im.width and 0 <= y < im.height:
-		im.putpixel((x, y), rgba(color))
+	s = _PAINT_SCALE
+	if s == 1:
+		if 0 <= x < im.width and 0 <= y < im.height:
+			im.putpixel((x, y), rgba(color))
+		return
+	nx, ny = int(x) * s, int(y) * s
+	ImageDraw.Draw(im).rectangle([nx, ny, nx + s - 1, ny + s - 1], fill=rgba(color))
 
 
 def fill_rect(
@@ -128,11 +167,12 @@ def fill_rect(
 	y1: int,
 	color: Sequence[int],
 ) -> None:
-	ImageDraw.Draw(im).rectangle([x0, y0, x1, y1], fill=rgba(color))
+	ImageDraw.Draw(im).rectangle(list(_native_box(x0, y0, x1, y1)), fill=rgba(color))
 
 
 def fill_ellipse(im: Image.Image, box: Sequence[int], color: Sequence[int]) -> None:
-	ImageDraw.Draw(im).ellipse(tuple(box), fill=rgba(color))
+	x0, y0, x1, y1 = box
+	ImageDraw.Draw(im).ellipse(_native_box(x0, y0, x1, y1), fill=rgba(color))
 
 
 def fill_polygon(
@@ -140,7 +180,9 @@ def fill_polygon(
 	points: Iterable[tuple[int, int]],
 	color: Sequence[int],
 ) -> None:
-	ImageDraw.Draw(im).polygon(list(points), fill=rgba(color))
+	s = _PAINT_SCALE
+	native = [(int(p[0]) * s, int(p[1]) * s) for p in points]
+	ImageDraw.Draw(im).polygon(native, fill=rgba(color))
 
 
 def pixel_eye(im: Image.Image, x: int, y: int, look: int = 0) -> None:
@@ -160,7 +202,9 @@ def pixel_line(
 	color: Sequence[int],
 	width: int = 1,
 ) -> None:
-	ImageDraw.Draw(im).line(list(points), fill=rgba(color), width=max(1, width))
+	s = _PAINT_SCALE
+	native = [(int(p[0]) * s, int(p[1]) * s) for p in points]
+	ImageDraw.Draw(im).line(native, fill=rgba(color), width=max(1, int(width) * s))
 
 
 def dither_vgrad(
@@ -173,14 +217,17 @@ def dither_vgrad(
 ) -> None:
 	"""Ordered vertical gradient using a small, finite colour ramp."""
 	levels = max(2, levels)
+	s = _PAINT_SCALE
+	lw = im.width // s
+	lh = im.height // s
 	height = max(1, y1 - y0)
-	for y in range(max(0, y0), min(im.height, y1)):
+	for y in range(max(0, y0), min(lh, y1)):
 		t = (y - y0) / max(1, height - 1)
 		position = t * (levels - 1)
 		low = int(math.floor(position))
 		high = min(levels - 1, low + 1)
 		frac = position - low
-		for x in range(im.width):
+		for x in range(lw):
 			threshold = (_BAYER_4[y & 3][x & 3] + 0.5) / 16.0
 			band = high if frac > threshold else low
 			px(im, x, y, blend(c0, c1, band / (levels - 1)))
@@ -192,29 +239,50 @@ def outline(
 	diagonal: bool = True,
 	alpha_threshold: int = 24,
 ) -> None:
-	"""Add a one-pixel outline behind existing non-transparent pixels."""
-	source = im.copy()
+	"""Add a one-logical-pixel outline behind existing non-transparent pixels."""
+	s = _PAINT_SCALE
 	offsets = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 	if diagonal:
 		offsets.extend([(-1, -1), (1, -1), (-1, 1), (1, 1)])
-	for y in range(im.height):
-		for x in range(im.width):
-			if source.getpixel((x, y))[3] >= alpha_threshold:
+
+	if s == 1:
+		source = im.copy()
+		for y in range(im.height):
+			for x in range(im.width):
+				if source.getpixel((x, y))[3] >= alpha_threshold:
+					continue
+				for dx, dy in offsets:
+					nx, ny = x + dx, y + dy
+					if (
+						0 <= nx < im.width
+						and 0 <= ny < im.height
+						and source.getpixel((nx, ny))[3] >= alpha_threshold
+					):
+						px(im, x, y, color)
+						break
+		im.alpha_composite(source)
+		return
+
+	source = im.copy()
+	lw, lh = im.width // s, im.height // s
+
+	def logical_opaque(lx: int, ly: int) -> bool:
+		return source.getpixel((lx * s, ly * s))[3] >= alpha_threshold
+
+	for ly in range(lh):
+		for lx in range(lw):
+			if logical_opaque(lx, ly):
 				continue
 			for dx, dy in offsets:
-				nx, ny = x + dx, y + dy
-				if (
-					0 <= nx < im.width
-					and 0 <= ny < im.height
-					and source.getpixel((nx, ny))[3] >= alpha_threshold
-				):
-					px(im, x, y, color)
+				nx, ny = lx + dx, ly + dy
+				if 0 <= nx < lw and 0 <= ny < lh and logical_opaque(nx, ny):
+					px(im, lx, ly, color)
 					break
 	im.alpha_composite(source)
 
 
 def draw_cloud(im: Image.Image, cx: int, cy: int, scale: float = 1.0) -> None:
-	"""Blocky layered cloud intended for a 256×192 source backdrop."""
+	"""Blocky layered cloud intended for a 256×192 logical backdrop."""
 	blobs = [(-12, 1, 12), (-3, -4, 14), (8, -2, 12), (16, 2, 8)]
 	for ox, oy, radius in blobs:
 		r = max(2, int(radius * scale))
@@ -328,8 +396,10 @@ def speckles(
 	sizes: Sequence[int] = (1,),
 ) -> None:
 	"""Deterministic clustered pixels; useful for sand, bark, and stone."""
+	s = _PAINT_SCALE
+	lw, lh = im.width // s, im.height // s
 	x0, y0 = max(0, x0), max(0, y0)
-	x1, y1 = min(im.width, x1), min(im.height, y1)
+	x1, y1 = min(lw, x1), min(lh, y1)
 	if x1 <= x0 or y1 <= y0:
 		return
 	area = (x1 - x0) * (y1 - y0)

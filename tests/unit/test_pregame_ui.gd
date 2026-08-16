@@ -16,6 +16,7 @@ static func run() -> void:
 	_assert_loading_screen()
 	_assert_ti_title()
 	_assert_win_screen()
+	_assert_touch_controls()
 
 
 static func _assert_generated_assets() -> void:
@@ -101,7 +102,13 @@ static func _assert_loading_screen() -> void:
 		button.custom_minimum_size.y >= 88.0,
 		"disclaimer continue action is touch-sized"
 	)
-	TestAssert.ne(loading.get_node_or_null("InputHint"), null, "disclaimer has input hint")
+	var input_hint := loading.get_node_or_null("InputHint") as Label
+	TestAssert.ne(input_hint, null, "disclaimer has input hint")
+	if input_hint != null:
+		TestAssert.true_(
+			input_hint.offset_top - button.offset_bottom >= 12.0,
+			"disclaimer hint clears the continue button"
+		)
 	loading.free()
 
 
@@ -148,6 +155,25 @@ static func _assert_win_screen() -> void:
 	var button := win.get_node("Center/VictoryPanel/Margin/VBox/MenuButton") as Button
 	TestAssert.true_(button.custom_minimum_size.y >= 88.0, "win screen action is touch-sized")
 	win.free()
+
+
+static func _assert_touch_controls() -> void:
+	var packed := load("res://core/ui/touch_controls.tscn") as PackedScene
+	TestAssert.ne(packed, null, "touch controls scene loads")
+	if packed == null:
+		return
+	var controls := packed.instantiate() as CanvasLayer
+	var move_row := controls.get_node("Root/MoveRow") as HBoxContainer
+	var occupied_width := 0.0
+	for child in move_row.get_children():
+		occupied_width += (child as Control).custom_minimum_size.x
+	occupied_width += move_row.get_theme_constant("separation") * (move_row.get_child_count() - 1)
+	TestAssert.eq(
+		move_row.offset_right - move_row.offset_left,
+		occupied_width,
+		"touch move row has no invisible input-blocking area"
+	)
+	controls.free()
 
 
 static func _instantiate(path: String) -> Control:

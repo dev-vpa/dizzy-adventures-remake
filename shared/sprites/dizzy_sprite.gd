@@ -129,8 +129,8 @@ func _draw() -> void:
 
 
 func _draw_snorkel_mask(tex: Texture2D, frame_top: float) -> void:
-	# Keep the overlay on the 22px authored source grid at any export scale.
-	# It shares the body's transform, so it mirrors and somersaults with Dizzy.
+	# Overlay coords use the classic 22-unit face grid; p maps them onto the
+	# exported texture (88px wide from a 44×56 authored frame ×2).
 	var p := float(tex.get_width()) / 22.0
 	var mask_y := frame_top + 8.0 * p
 	var mask_left := -5.0 * p

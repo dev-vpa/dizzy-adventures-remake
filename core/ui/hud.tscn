@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://core/ui/hud.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.12, 0.1, 0.2, 0.92)
+bg_color = Color(0.12, 0.1, 0.2, 0.94)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.55, 0.48, 0.38, 1)
+border_color = Color(0.72, 0.56, 0.25, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -29,6 +29,10 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu_hover"]
 bg_color = Color(0.3, 0.22, 0.36, 1)
@@ -41,6 +45,10 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_panel"]
 bg_color = Color(0.1, 0.08, 0.18, 0.98)
@@ -97,69 +105,91 @@ mouse_filter = 2
 
 [node name="HudPanel" type="PanelContainer" parent="Root"]
 layout_mode = 0
-offset_left = 16
-offset_top = 16
-offset_right = 16
-offset_bottom = 16
+offset_left = 8
+offset_top = 8
+offset_right = 8
+offset_bottom = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="VBox" type="VBoxContainer" parent="Root/HudPanel"]
 layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MainRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HeaderRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="TitleLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0
-theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
-theme_override_font_sizes/font_size = 22
-text = "Treasure Island Dizzy"
-clip_text = false
-text_overrun_behavior = 0
-
-[node name="LivesLabel" type="Label" parent="Root/HudPanel/VBox/HeaderRow"]
-custom_minimum_size = Vector2(32, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.45, 0.42, 1)
-theme_override_font_sizes/font_size = 22
-text = "♥"
-horizontal_alignment = 2
-
-[node name="CoinsLabel" type="Label" parent="Root/HudPanel/VBox"]
+[node name="CoinsLabel" type="Label" parent="Root/HudPanel/VBox/MainRow"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.82, 0.28, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 16
 text = "Coins: 0/30"
+vertical_alignment = 1
 
-[node name="InventoryRow" type="VBoxContainer" parent="Root/HudPanel/VBox"]
+[node name="SpacerL" type="Control" parent="Root/HudPanel/VBox/MainRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Slots" type="HBoxContainer" parent="Root/HudPanel/VBox/MainRow"]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="InventoryTag" type="Label" parent="Root/HudPanel/VBox/InventoryRow"]
+[node name="SpacerR" type="Control" parent="Root/HudPanel/VBox/MainRow"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.72, 0.66, 0.52, 1)
-theme_override_font_sizes/font_size = 20
-text = "Items"
+size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="Slots" type="HBoxContainer" parent="Root/HudPanel/VBox/InventoryRow"]
+[node name="LivesLabel" type="Label" parent="Root/HudPanel/VBox/MainRow"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_colors/font_color = Color(0.96, 0.42, 0.38, 1)
+theme_override_font_sizes/font_size = 16
+text = "♥ 1"
+vertical_alignment = 1
+
+[node name="MenuButton" type="Button" parent="Root/HudPanel/VBox/MainRow"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.78, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
+text = "Menu"
+
+[node name="DetailRow" type="HBoxContainer" parent="Root/HudPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ItemNameLabel" type="Label" parent="Root/HudPanel/VBox/DetailRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.9, 0.52, 1)
+theme_override_font_sizes/font_size = 15
+text = "EMPTY HANDS"
+text_overrun_behavior = 3
+vertical_alignment = 1
+
+[node name="ControlsLabel" type="Label" parent="Root/HudPanel/VBox/DetailRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.76, 0.72, 0.64, 1)
+theme_override_font_sizes/font_size = 13
+text = "[Tab] Select  •  [R] Drop  •  [U] Use"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="ActionsHBox" type="HBoxContainer" parent="Root/HudPanel/VBox"]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
 [node name="DropButton" type="Button" parent="Root/HudPanel/VBox/ActionsHBox"]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
@@ -171,30 +201,12 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_menu")
 text = "Use"
-
-[node name="InventoryLabel" type="Label" parent="Root/HudPanel/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.68, 0.62, 0.5, 1)
-theme_override_font_sizes/font_size = 18
-text = "Tab — select  ·  R — drop  ·  U — use"
-autowrap_mode = 2
-
-[node name="MenuButton" type="Button" parent="Root/HudPanel/VBox"]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.82, 0.72, 1)
-theme_override_colors/font_hover_color = Color(1, 0.95, 0.78, 1)
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_menu")
-theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_hover")
-text = "Menu"
 
 [node name="QuitOverlay" type="Control" parent="Root"]
 visible = false
@@ -279,8 +291,8 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_quit_danger")
 theme_override_styles/focus = SubResource("StyleBoxFlat_quit_danger")
 text = "Main Menu"
 
+[connection signal="pressed" from="Root/HudPanel/VBox/MainRow/MenuButton" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="Root/HudPanel/VBox/ActionsHBox/DropButton" to="." method="_on_drop_pressed"]
 [connection signal="pressed" from="Root/HudPanel/VBox/ActionsHBox/UseButton" to="." method="_on_use_pressed"]
-[connection signal="pressed" from="Root/HudPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="Root/QuitOverlay/Center/Panel/VBox/Buttons/KeepPlayingButton" to="." method="_on_quit_keep_playing"]
 [connection signal="pressed" from="Root/QuitOverlay/Center/Panel/VBox/Buttons/MainMenuButton" to="." method="_on_quit_main_menu"]

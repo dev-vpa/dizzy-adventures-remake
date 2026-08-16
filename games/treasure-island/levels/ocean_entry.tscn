@@ -49,9 +49,9 @@ world_id = "ocean_entry/coin16"
 
 [node name="UpHint" type="Label" parent="."]
 offset_left = 16
-offset_top = 80
+offset_top = 240
 offset_right = 320
-offset_bottom = 112
+offset_bottom = 272
 theme_override_colors/font_color = Color(0.72, 0.88, 1, 0.95)
 theme_override_font_sizes/font_size = 20
 text = "↑ Beach (snorkel)"

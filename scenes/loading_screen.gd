@@ -27,11 +27,7 @@ func _ready() -> void:
 	_continue_button.disabled = true
 	_loading_strip.set_progress(0.0)
 	_input_hint.text = PlatformUI.hint_text("Enter — Continue", "Tap Continue when ready")
-	if PlatformUI.is_touch_device():
-		_continue_button.custom_minimum_size = Vector2(416, PlatformUI.MIN_TOUCH_SIZE)
-		_continue_button.offset_left = -116.0
-		_continue_button.offset_right = 116.0
-		_continue_button.offset_top = -68.0
+	_input_hint.visible = not PlatformUI.is_touch_device()
 	_start_timer.start(2.0)
 
 

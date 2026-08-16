@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Original 256×192-style biome paintings, exported at the 512×384 viewport."""
+"""Original 256×192-style biome paintings, drawn native at 1024×768."""
 from __future__ import annotations
 
 import math
@@ -47,21 +47,17 @@ from ti_art_lib import (
 	fill_ellipse,
 	fill_polygon,
 	fill_rect,
-	new_canvas,
+	logical_canvas,
+	paint_scale,
 	pixel_line,
 	px,
 	save,
 	speckles,
-	upscale_nearest,
 )
 
 BACKDROPS = REPO_ROOT / "games/treasure-island/art/backdrops"
 W, H = 256, 192
-EXPORT_SCALE = 4
-
-
-def _export(im: Image.Image) -> Image.Image:
-	return upscale_nearest(im, EXPORT_SCALE)
+NATIVE_SCALE = 4
 
 
 def _grass_tuft(im: Image.Image, x: int, y: int, color=LEAF_DK) -> None:
@@ -79,7 +75,7 @@ def _fern(im: Image.Image, x: int, y: int, scale: int = 1) -> None:
 
 
 def beach(rng: random.Random) -> Image.Image:
-	im = new_canvas(W, H, SKY_TOP)
+	im = logical_canvas(W, H, SKY_TOP)
 	dither_vgrad(im, 0, 76, SKY_TOP, SKY_MID, 6)
 	dither_vgrad(im, 76, 105, SKY_MID, SKY_HORIZON, 5)
 
@@ -146,11 +142,11 @@ def beach(rng: random.Random) -> Image.Image:
 		px(im, sx, sy + 1, SAND_DARK)
 	draw_palm(im, 26, 148, 0.55, mirror=True)
 	draw_palm(im, 222, 181, 1.1)
-	return _export(im)
+	return im
 
 
 def tree(rng: random.Random) -> Image.Image:
-	im = new_canvas(W, H, (25, 74, 72))
+	im = logical_canvas(W, H, (25, 74, 72))
 	dither_vgrad(im, 0, 102, (44, 113, 112), (21, 65, 61), 5)
 
 	# Blue daylight holes keep the canopy from collapsing into a black void.
@@ -225,11 +221,11 @@ def tree(rng: random.Random) -> Image.Image:
 	speckles(im, 0, 151, W, H, [TRUNK_DK, (92, 73, 43), LEAF_DK], 0.022, rng, (1, 2))
 	for fx in range(8, W, 22):
 		_fern(im, fx, 180 - (fx % 7), 1)
-	return _export(im)
+	return im
 
 
 def ocean(rng: random.Random) -> Image.Image:
-	im = new_canvas(W, H, SEA_DEEP)
+	im = logical_canvas(W, H, SEA_DEEP)
 	dither_vgrad(im, 0, H, (19, 70, 126), (15, 47, 91), 7)
 
 	# Surface shimmer and broad light shafts.
@@ -254,12 +250,21 @@ def ocean(rng: random.Random) -> Image.Image:
 		fill_polygon(im, [(x - 6 * direction, y), (x - 10 * direction, y - 4), (x - 10 * direction, y + 4)], INK_BLUE)
 
 	# Bubble trails use rings rather than opaque polka dots.
+	from ti_art_lib import paint_scale_value
+
+	s = paint_scale_value()
 	d = ImageDraw.Draw(im)
 	for _ in range(24):
 		x = rng.randrange(8, W - 8)
 		y = rng.randrange(15, 145)
 		radius = rng.choice((1, 1, 2, 3))
-		d.ellipse((x - radius, y - radius, x + radius, y + radius), outline=(*SEA_FOAM, 255), width=1)
+		box = (
+			(x - radius) * s,
+			(y - radius) * s,
+			(x + radius) * s + (s - 1),
+			(y + radius) * s + (s - 1),
+		)
+		d.ellipse(box, outline=(*SEA_FOAM, 255), width=max(1, s))
 		px(im, x - radius, y - radius, (232, 245, 226))
 
 	# Sand shelf, ripples, rocks, coral and several seaweed silhouettes.
@@ -283,11 +288,11 @@ def ocean(rng: random.Random) -> Image.Image:
 		pixel_line(im, [(cx, cy), (cx, cy - 17)], color, 2)
 		pixel_line(im, [(cx, cy - 8), (cx - 7, cy - 14)], color, 2)
 		pixel_line(im, [(cx, cy - 5), (cx + 7, cy - 12)], color, 2)
-	return _export(im)
+	return im
 
 
 def cavern(rng: random.Random) -> Image.Image:
-	im = new_canvas(W, H, (34, 29, 42))
+	im = logical_canvas(W, H, (34, 29, 42))
 	dither_vgrad(im, 0, H, (31, 28, 43), (64, 47, 49), 5)
 
 	# Far wall strata and a central arch give the cave a readable silhouette.
@@ -336,11 +341,11 @@ def cavern(rng: random.Random) -> Image.Image:
 	# A narrow puddle catches a few cave colours.
 	fill_ellipse(im, (135, 177, 204, 188), (42, 67, 76))
 	pixel_line(im, [(145, 181), (168, 179), (192, 181)], (83, 136, 137))
-	return _export(im)
+	return im
 
 
 def hut(rng: random.Random) -> Image.Image:
-	im = new_canvas(W, H, WOOD)
+	im = logical_canvas(W, H, WOOD)
 	for y in range(0, 153, 9):
 		base = WOOD if (y // 9) % 2 else (157, 95, 47)
 		fill_rect(im, 0, y, W - 1, y + 7, base)
@@ -405,20 +410,21 @@ def hut(rng: random.Random) -> Image.Image:
 	for x in range(8, W, 32):
 		pixel_line(im, [(x, 153), (x - 10 + (x % 5), H - 1)], INK_BROWN)
 	speckles(im, 0, 153, W, H, [TRUNK, WOOD_HI, INK_BROWN], 0.012, rng)
-	return _export(im)
+	return im
 
 
 def main() -> None:
 	BACKDROPS.mkdir(parents=True, exist_ok=True)
-	generators = {
-		"beach": (beach, 42),
-		"tree": (tree, 43),
-		"ocean": (ocean, 44),
-		"cavern": (cavern, 45),
-		"hut": (hut, 46),
-	}
-	for name, (generate, seed) in generators.items():
-		save(generate(random.Random(seed)), BACKDROPS / f"{name}.png")
+	with paint_scale(NATIVE_SCALE):
+		generators = {
+			"beach": (beach, 42),
+			"tree": (tree, 43),
+			"ocean": (ocean, 44),
+			"cavern": (cavern, 45),
+			"hut": (hut, 46),
+		}
+		for name, (generate, seed) in generators.items():
+			save(generate(random.Random(seed)), BACKDROPS / f"{name}.png")
 	print("backdrops done")
 
 

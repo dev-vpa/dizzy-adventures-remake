@@ -41,14 +41,14 @@ from ti_art_lib import (
 	fill_ellipse,
 	fill_polygon,
 	fill_rect,
-	new_canvas,
+	logical_canvas,
+	paint_scale,
+	paint_scale_value,
 	outline,
-	pixel_eye,
 	pixel_line,
 	px,
 	save,
 	speckles,
-	upscale_nearest,
 )
 
 SHARED_ART = REPO_ROOT / "shared/ui/art"
@@ -142,7 +142,7 @@ def _draw_frame(im: Image.Image) -> None:
 
 def menu_night_source() -> Image.Image:
 	rng = random.Random(1987)
-	im = new_canvas(*SOURCE_SIZE, NIGHT_TOP)
+	im = logical_canvas(*SOURCE_SIZE, NIGHT_TOP)
 	dither_vgrad(im, 0, 121, NIGHT_TOP, NIGHT_HORIZON, levels=7)
 	_draw_stars(im, rng)
 
@@ -191,58 +191,80 @@ def _draw_text(
 				fill_rect(im, x, yy, x + scale - 1, yy + scale - 1, color)
 
 
+
 def menu_dizzy_source() -> Image.Image:
 	"""Friendly symmetric mascot for menus; gameplay keeps its directional face."""
-	im = new_canvas(22, 28)
+	with paint_scale(2):
+		return _menu_dizzy_native()
+
+
+def _menu_dizzy_native() -> Image.Image:
+	im = logical_canvas(44, 56)
 
 	# Limbs sit behind the shell and mirror exactly around its centre.
-	pixel_line(im, [(5, 13), (2, 16)], EGG_EDGE, 3)
-	pixel_line(im, [(5, 13), (2, 16)], EGG, 1)
-	pixel_line(im, [(16, 13), (19, 16)], EGG_EDGE, 3)
-	pixel_line(im, [(16, 13), (19, 16)], EGG, 1)
-	fill_ellipse(im, (-1, 14, 5, 20), INK_BLUE)
-	fill_ellipse(im, (0, 14, 4, 19), GLOVE)
-	fill_rect(im, 1, 14, 3, 15, GLOVE_HI)
-	fill_ellipse(im, (16, 14, 22, 20), INK_BLUE)
-	fill_ellipse(im, (17, 14, 21, 19), GLOVE)
-	fill_rect(im, 18, 14, 20, 15, GLOVE_HI)
+	pixel_line(im, [(10, 26), (4, 32)], EGG_EDGE, 5)
+	pixel_line(im, [(10, 26), (4, 32)], EGG, 2)
+	pixel_line(im, [(32, 26), (38, 32)], EGG_EDGE, 5)
+	pixel_line(im, [(32, 26), (38, 32)], EGG, 2)
+	fill_ellipse(im, (-2, 28, 10, 40), INK_BLUE)
+	fill_ellipse(im, (0, 28, 8, 38), GLOVE)
+	fill_rect(im, 2, 28, 6, 30, GLOVE_HI)
+	fill_ellipse(im, (32, 28, 44, 40), INK_BLUE)
+	fill_ellipse(im, (34, 28, 42, 38), GLOVE)
+	fill_rect(im, 36, 28, 40, 30, GLOVE_HI)
 
-	fill_polygon(im, [(5, 19), (9, 19), (10, 22), (10, 26), (2, 26), (2, 22)], BOOT_DK)
-	fill_polygon(im, [(5, 20), (8, 20), (9, 22), (9, 24), (3, 24), (3, 22)], BOOT)
-	fill_rect(im, 4, 21, 7, 21, BOOT_HI)
-	fill_polygon(im, [(12, 19), (16, 19), (19, 22), (19, 26), (11, 26), (11, 22)], BOOT_DK)
-	fill_polygon(im, [(13, 20), (16, 20), (18, 22), (18, 24), (12, 24), (12, 22)], BOOT)
-	fill_rect(im, 14, 21, 17, 21, BOOT_HI)
+	fill_polygon(im, [(10, 38), (18, 38), (20, 44), (20, 52), (4, 52), (4, 44)], BOOT_DK)
+	fill_polygon(im, [(10, 40), (16, 40), (18, 44), (18, 48), (6, 48), (6, 44)], BOOT)
+	fill_rect(im, 8, 42, 14, 42, BOOT_HI)
+	fill_polygon(im, [(24, 38), (32, 38), (38, 44), (38, 52), (22, 52), (22, 44)], BOOT_DK)
+	fill_polygon(im, [(26, 40), (32, 40), (36, 44), (36, 48), (24, 48), (24, 44)], BOOT)
+	fill_rect(im, 28, 42, 34, 42, BOOT_HI)
 
-	body_layer = new_canvas(22, 28)
-	cx, cy, rx, ry = 10.5, 11.0, 7.5, 10.5
-	for y in range(24):
-		for x in range(22):
+	body_layer = logical_canvas(44, 56)
+	cx, cy, rx, ry = 21.0, 22.0, 15.0, 21.0
+	for y in range(48):
+		for x in range(44):
 			nx = (x - cx) / rx
 			ny = (y - cy) / ry
 			if nx * nx + ny * ny > 1.0:
 				continue
 			color = EGG
-			if x <= 5 or y >= 19:
+			if x <= 10 or y >= 38:
 				color = EGG_SH
-			elif x >= 13 and y <= 6:
+			elif x >= 26 and y <= 12:
 				color = EGG_HI
+			elif nx * nx + ny * ny > 0.72 and x < cx:
+				color = EGG_SH
 			px(body_layer, x, y, color)
 	outline(body_layer, EGG_EDGE, diagonal=False)
 	im.alpha_composite(body_layer)
 
-	# Matching stepped ovals keep the greeting pose friendly and front-facing.
-	pixel_eye(im, 5, 6)
-	pixel_eye(im, 11, 6)
-	fill_rect(im, 10, 12, 11, 12, EGG_EDGE)
-	pixel_line(im, [(8, 14), (10, 16), (11, 16), (13, 14)], EGG_EDGE)
-	px(im, 10, 15, BOOT_HI)
-	px(im, 11, 15, BOOT_HI)
+	# Matching stepped ovals — front-facing greeting pose (finer grid).
+	_menu_eye(im, 10, 12)
+	_menu_eye(im, 22, 12)
+	fill_rect(im, 20, 24, 22, 24, EGG_EDGE)
+	pixel_line(im, [(16, 28), (20, 32), (22, 32), (26, 28)], EGG_EDGE, 2)
+	px(im, 20, 30, BOOT_HI)
+	px(im, 21, 30, BOOT_HI)
+	px(im, 22, 30, BOOT_HI)
 	return im
 
 
+def _menu_eye(im: Image.Image, x: int, y: int) -> None:
+	fill_rect(im, x + 2, y, x + 6, y, (248, 248, 252))
+	fill_rect(im, x + 1, y + 1, x + 7, y + 4, (248, 248, 252))
+	fill_rect(im, x + 2, y + 5, x + 6, y + 6, (248, 248, 252))
+	fill_rect(im, x + 2, y + 2, x + 6, y + 4, GLOVE_HI)
+	fill_rect(im, x + 4, y + 2, x + 5, y + 4, INK_BLUE)
+	px(im, x + 4, y + 2, (40, 48, 72))
+	px(im, x + 5, y + 3, GLOVE_HI)
+
+
 def _draw_mini_dizzy(im: Image.Image, cx: int, top: int) -> None:
-	im.alpha_composite(menu_dizzy_source(), (cx - 11, top))
+	# Parent scene is native at paint_scale(4). Mascot is 88×112 (= 22×28 logical ×4).
+	mascot = menu_dizzy_source()
+	s = paint_scale_value()
+	im.alpha_composite(mascot, ((cx - 11) * s, top * s))
 
 
 def boot_splash_source() -> Image.Image:
@@ -269,7 +291,7 @@ def boot_splash_source() -> Image.Image:
 def victory_escape_source() -> Image.Image:
 	"""Dawn escape tableau for the completed Treasure Island adventure."""
 	rng = random.Random(1989)
-	im = new_canvas(*SOURCE_SIZE, (35, 25, 64))
+	im = logical_canvas(*SOURCE_SIZE, (35, 25, 64))
 	dither_vgrad(im, 0, 111, (35, 25, 64), (236, 126, 77), levels=8)
 
 	# The last stars fade above a warm sunrise and distant island silhouettes.
@@ -325,7 +347,8 @@ def victory_escape_source() -> Image.Image:
 	fill_rect(im, 56, 148, 63, 157, PANEL_HI)
 	fill_rect(im, 52, 158, 64, 164, INK_BLUE)
 
-	im.alpha_composite(menu_dizzy_source(), (106, 115))
+	s = paint_scale_value()
+	im.alpha_composite(menu_dizzy_source(), (106 * s, 115 * s))
 	fill_rect(im, 107, 141, 128, 147, SAND_DRY)
 	fill_rect(im, 108, 141, 127, 142, SAND_HI)
 
@@ -334,7 +357,7 @@ def victory_escape_source() -> Image.Image:
 
 
 def treasure_island_icon_source() -> Image.Image:
-	im = new_canvas(24, 24, NIGHT_TOP)
+	im = logical_canvas(24, 24, NIGHT_TOP)
 	dither_vgrad(im, 0, 14, NIGHT_TOP, (69, 93, 148), levels=4)
 	fill_rect(im, 0, 14, 23, 23, SEA_DEEP)
 	for x in range(0, 24, 6):
@@ -360,11 +383,15 @@ def treasure_island_icon_source() -> Image.Image:
 
 
 def main() -> None:
-	save(upscale_nearest(menu_night_source(), 4), SHARED_ART / "menu_night.png")
-	save(upscale_nearest(boot_splash_source(), 4), SHARED_ART / "boot_splash.png")
-	save(upscale_nearest(menu_dizzy_source(), 4), SHARED_ART / "menu_dizzy.png")
-	save(upscale_nearest(victory_escape_source(), 4), SHARED_ART / "victory_escape.png")
-	save(upscale_nearest(treasure_island_icon_source(), 4), TI_ICONS / "select_ti.png")
+	SHARED_ART.mkdir(parents=True, exist_ok=True)
+	TI_ICONS.mkdir(parents=True, exist_ok=True)
+	with paint_scale(4):
+		save(menu_night_source(), SHARED_ART / "menu_night.png")
+		save(boot_splash_source(), SHARED_ART / "boot_splash.png")
+		save(victory_escape_source(), SHARED_ART / "victory_escape.png")
+		save(treasure_island_icon_source(), TI_ICONS / "select_ti.png")
+	with paint_scale(2):
+		save(menu_dizzy_source(), SHARED_ART / "menu_dizzy.png")
 	print("pre-game art done")
 
 
